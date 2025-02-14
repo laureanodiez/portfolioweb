@@ -1,0 +1,27 @@
+/* src/components/Menu.css */
+.menu {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  margin: 100px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.menu-red { background: #ffe5e5; }
+.menu-blue { background: #e5f0ff; }
+.menu-yellow { background: #fffbe5; }
+.menu-green { background: #e5ffe5; }
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
