@@ -1,117 +1,234 @@
 /* src/components/ContactCard.css */
 
-/* src/components/ContactCard.css */
-
-/* Estilos generales de la tarjeta */
-
+/* Contenedor principal con perspectiva 3D */
 .card-container {
   position: relative;
   display: inline-block;
-  overflow: visible; /* Aseguramos que los elementos hijos que sobresalen sean visibles */
+  overflow: visible;
+  perspective: 1000px;
 }
 
+/* Tarjeta básica: tamaño de tarjeta de negocio */
 .contact-card {
   position: relative;
-  width: 350px;
-  max-width: 90%;
-  background: #1c1c1c; /* Fondo de la tarjeta */
-  border: 2px solid #000000; /* Borde rojo oscuro */
+  width: 300px;
+  height: 180px;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  overflow: visible;
-  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  background: inherit; /* Se usará el color/fondo del estilo elegido */
 }
 
-.contact-card.floating {
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+/* Clase para la tarjeta expandida (cuando se voltea y muestra sección) */
+.contact-card.expanded {
+  width: 90%;
+  max-width: 600px;
+  height: 70vh;
 }
 
-/* Contenido de la tarjeta */
+/* Responsive: en pantallas pequeñas */
+@media (max-width: 480px) {
+  .contact-card {
+    width: 90%;
+    height: auto;
+  }
+}
+
+/* Contenedor interno para el flip */
+.flip-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Contenedor del flip */
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Caras de la tarjeta */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: inherit;
+}
+
+/* Cara frontal */
+.card-front {
+  background: inherit;
+}
+
+/* Cara trasera: inicialmente oculta (rotada 180° en Y) */
+.card-back {
+  background: inherit;
+  transform: rotateY(180deg);
+}
+
+/* Contenido interno */
 .card-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 15px;
+  padding: 10px 8px;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
 }
 
-/* Imagen de la tarjeta */
+/* Área scrollable en caso de exceso de contenido */
+.scrollable {
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+}
+
+/* Botón para colapsar (volver a estado normal) */
+.collapse-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 6px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Estilos para el visor del PDF */
+.cv-container {
+  width: 100%;
+  height: 200px;
+  margin-top: 10px;
+}
+
+.cv-viewer {
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilos de textos e imágenes */
 .card-header {
   width: 100%;
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .card-photo {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: 2px solid #C8102E;
   object-fit: cover;
 }
 
-/* Texto de la tarjeta */
 .card-body {
   text-align: center;
 }
 
 .card-name {
   font-family: 'Train One', serif;
-  font-size: 24px;
-  color: #8c8c8c;
-  margin: 5px 0;
+  font-size: 20px;
+  margin: 3px 0;
 }
 
 .card-title {
   font-family: 'Times New Roman', serif;
-  font-size: 18px;
-  color: #ebc80086;
-  margin: 5px 0;
+  font-size: 16px;
+  margin: 3px 0;
 }
 
-/* Bordes decorativos */
-.contact-card::before,
-.contact-card::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 5px;
-  background: #333333;
+.card-summary {
+  font-size: 12px;
+  margin: 3px 0;
 }
 
-.contact-card::before {
-  top: 0;
-  left: 0;
+/* Grupo de botones de acción */
+.btn-group {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
-.contact-card::after {
-  bottom: 0;
-  left: 0;
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
 }
 
-/* Luces de neón y títulos */
-/* Estilos para las luces de neón */
+/* Estilos de tarjeta elegantes */
+
+/* Minimalista */
+.minimalista {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+/* Cyberpunk */
+.cyberpunk {
+  background: #1a1a1a;
+  border: 2px solid #0ff;
+  color: #0ff;
+  box-shadow: 0 0 10px #0ff;
+}
+
+/* Clásico Elegante */
+.clasico-elegante {
+  background: url('./textured_background.jpg') center/cover;
+  border: 1px solid gold;
+  color: #333;
+}
+
+/* Futurista Transparente */
+.futurista-transparente {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+/* Oscuro Premium */
+.oscuro-premium {
+  background: #000;
+  border: 1px solid #aaa;
+  color: #eee;
+}
+
+/* Luces de neón (adaptadas a las nuevas dimensiones) */
 .neon-lights {
   position: absolute;
   top: 0;
   left: 0;
-  width: 350px; /* Igual al ancho de la tarjeta */
+  width: 300px;
   max-width: 100%;
   height: 100%;
-  z-index: 0; /* Debajo de la tarjeta */
+  z-index: 0;
 }
 
 .neon-side {
   position: absolute;
-  pointer-events: auto; /* Permite la interacción */
+  pointer-events: auto;
 }
 
-/* Estilos para cada lado */
 .neon-0 { /* Arriba */
-  top: -35px;
-  left: -33px;
+  top: -20px;
+  left: -20px;
   width: 110%;
-  height: 20px;
+  height: 12px;
 }
 
 .neon-0::before {
@@ -120,16 +237,16 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 5px;
-  background: rgba(255, 0, 0, 0.5); /* Rojo */
+  height: 2px;
+  background: rgba(255, 0, 0, 0.5);
   transition: all 0.3s;
-  filter: blur(5px);
+  filter: blur(2px);
 }
 
 .neon-1 { /* Derecha */
   top: -5px;
-  right: -23px;
-  width: 20px;
+  right: -15px;
+  width: 12px;
   height: 110%;
 }
 
@@ -138,18 +255,18 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 5px;
+  width: 2px;
   height: 100%;
-  background: rgba(0, 0, 255, 0.5); /* Azul */
+  background: rgba(0, 0, 255, 0.5);
   transition: all 0.3s;
-  filter: blur(5px);
+  filter: blur(2px);
 }
 
 .neon-2 { /* Abajo */
-  bottom: -35px;
-  left: -33px;
+  bottom: -20px;
+  left: -20px;
   width: 110%;
-  height: 20px;
+  height: 12px;
 }
 
 .neon-2::before {
@@ -158,16 +275,16 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 5px;
-  background: rgba(255, 255, 0, 0.5); /* Amarillo */
+  height: 2px;
+  background: rgba(255, 255, 0, 0.5);
   transition: all 0.3s;
-  filter: blur(5px);
+  filter: blur(2px);
 }
 
 .neon-3 { /* Izquierda */
   top: -5px;
-  left: -53px;
-  width: 20px;
+  left: -30px;
+  width: 12px;
   height: 110%;
 }
 
@@ -176,17 +293,15 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 5px;
+  width: 2px;
   height: 100%;
-  background: rgba(0, 255, 0, 0.5); /* Verde */
+  background: rgba(0, 255, 0, 0.5);
   transition: all 0.3s;
-  filter: blur(5px);
+  filter: blur(2px);
 }
 
-/* Efecto hover para intensificar la sombra y mostrar el título */
 .neon-side:hover::before {
-  /*transform: scale(1.5);*/
-  filter: blur(3px);
+  filter: blur(1px);
   cursor: pointer;
 }
 
@@ -194,44 +309,41 @@
   display: block;
 }
 
-/* Títulos de las secciones */
 .section-title {
   position: absolute;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   white-space: nowrap;
   text-shadow: 0 0 5px currentColor;
   display: none;
 }
 
-/* Posicionamiento de los títulos */
-.neon-0 .section-title { /* Arriba */
-  bottom: 100%; /* Por encima de la sombra */
+.neon-0 .section-title {
+  bottom: 100%;
   left: 38%;
-  transform: translate(-50%, -10px);
+  transform: translate(-50%, -8px);
   cursor: pointer;
 }
 
 .neon-1 .section-title {
   top: 38%;
   left: 100%;
-  transform: translate(10px, -50%) rotate(-90deg); 
+  transform: translate(8px, -50%) rotate(-90deg);
   transform-origin: left;
   cursor: pointer;
 }
 
-
-.neon-2 .section-title { /* Abajo */
-  top: 100%; /* Por debajo de la sombra */
+.neon-2 .section-title {
+  top: 100%;
   left: 38%;
-  transform: translate(-50%, 10px) rotate(180deg);
+  transform: translate(-50%, 8px) rotate(180deg);
   cursor: pointer;
 }
 
-.neon-3 .section-title { /* Izquierda */
+.neon-3 .section-title {
   top: 43%;
   right: 100%;
-  transform: translate(-10px, -50%) rotate(90deg);
+  transform: translate(-8px, -50%) rotate(90deg);
   transform-origin: right;
   cursor: pointer;
 }
