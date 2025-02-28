@@ -7,9 +7,12 @@ import './App.css';
 
 const backgrounds = [
   'https://i.gifer.com/SVoq.gif',
-  'https://www.pixelstalk.net/wp-content/uploads/2016/06/Free-Desktop-Gif-Pictures-HD.gif',
   'https://mir-s3-cdn-cf.behance.net/project_modules/1400/47171428008799.56e41b3897dfb.gif',
-  'https://mir-s3-cdn-cf.behance.net/project_modules/source/7099fc28008799.56e41b31e770e.gif'
+  'https://mir-s3-cdn-cf.behance.net/project_modules/source/7099fc28008799.56e41b31e770e.gif',
+  'https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/4e0cc328008799.56e41b35c50a5.gif',
+  'https://i.gifer.com/4Cb2.gif',
+  'https://i.gifer.com/4tZP.gif',
+  'https://i.gifer.com/CTM.gif'
 ];
 
 const cardStyles = ['minimalista', 'cyberpunk', 'clasico-elegante', 'futurista-transparente', 'oscuro-premium'];

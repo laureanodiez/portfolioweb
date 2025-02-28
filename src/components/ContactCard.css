@@ -21,12 +21,76 @@
   background: inherit; /* Se usará el color/fondo del estilo elegido */
 }
 
-/* Clase para la tarjeta expandida (cuando se voltea y muestra sección) */
-.contact-card.expanded {
-  width: 90%;
-  max-width: 600px;
-  height: 70vh;
+/* =========================
+   NUEVAS REGLAS PARA LABEL Y EXPANSIÓN
+   ========================= */
+
+/* Estilo para el label que aparece al hacer click en el costado */
+.section-label {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  background: transparent;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-size:larger;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
+
+/* Para el lado superior: centrado horizontalmente */
+.section-label.top {
+  top: -85px;
+  left: 33%;
+  transform: translateX(-50%);
+}
+
+/* Para el lado inferior: centrado horizontalmente y rotado 180° */
+.section-label.bottom {
+  bottom: -80px;
+  left: 35%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+/* Para el lado derecho: el texto se muestra en vertical (de arriba hacia abajo) */
+.section-label.right {
+  right: -100px;
+  top: 25%;
+  transform: translateY(-50%);
+  writing-mode: vertical-lr;
+}
+
+/* Para el lado izquierdo: el texto se muestra en vertical (de abajo hacia arriba) */
+.section-label.left {
+  left: -95px;
+  top: 37%;
+  transform: translateY(50%);
+  writing-mode: vertical-lr;
+}
+
+/* La tarjeta expandida se centra en la pantalla */
+.contact-card.expanded {
+  position: absolute;
+  width: 90vw;
+  height: 90vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  transition: all 0.5s ease-out;
+}
+
+/* Contenido de sección en modo "section" (nuevo contenido) */
+.section-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+
+
 
 /* Responsive: en pantallas pequeñas */
 @media (max-width: 480px) {
@@ -107,7 +171,7 @@
 /* Estilos para el visor del PDF */
 .cv-container {
   width: 100%;
-  height: 200px;
+  height: calc(100% - 100px); /* Ajustá según convenga para que se vea bien en la tarjeta expandida */
   margin-top: 10px;
 }
 
@@ -115,6 +179,7 @@
   width: 100%;
   height: 100%;
 }
+
 
 /* Estilos de textos e imágenes */
 .card-header {
@@ -208,7 +273,8 @@
   color: #eee;
 }
 
-/* Luces de neón (adaptadas a las nuevas dimensiones) */
+/*
+  /* Luces de neón (adaptadas a las nuevas dimensiones)
 .neon-lights {
   position: absolute;
   top: 0;
@@ -224,7 +290,7 @@
   pointer-events: auto;
 }
 
-.neon-0 { /* Arriba */
+.neon-0 { /* Arriba 
   top: -20px;
   left: -20px;
   width: 110%;
@@ -243,7 +309,7 @@
   filter: blur(2px);
 }
 
-.neon-1 { /* Derecha */
+.neon-1 { /* Derecha 
   top: -5px;
   right: -15px;
   width: 12px;
@@ -262,7 +328,7 @@
   filter: blur(2px);
 }
 
-.neon-2 { /* Abajo */
+.neon-2 { /* Abajo 
   bottom: -20px;
   left: -20px;
   width: 110%;
@@ -281,7 +347,7 @@
   filter: blur(2px);
 }
 
-.neon-3 { /* Izquierda */
+.neon-3 { /* Izquierda 
   top: -5px;
   left: -30px;
   width: 12px;
@@ -346,4 +412,59 @@
   transform: translate(-8px, -50%) rotate(90deg);
   transform-origin: right;
   cursor: pointer;
+}
+
+
+*/
+
+
+/* ======= Pantalla de carga ======= */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  z-index: 1000;
+}
+
+/* ======= Pentágono girando ======= */
+.pentagon-loader {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  animation: rotatePentagon 2s linear infinite;
+}
+
+.pentagon-loader::before {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: white;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+/* Animación para rotar el pentágono */
+@keyframes rotatePentagon {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ======= Texto debajo del pentágono ======= */
+.loading-text {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.8;
 }
