@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/laureanodiez/portfolioweb/static/css/main.2e3ad5b8.css",
+    "main.js": "/laureanodiez/portfolioweb/static/js/main.9016b0d0.js",
+    "static/js/488.9aa6ade9.chunk.js": "/laureanodiez/portfolioweb/static/js/488.9aa6ade9.chunk.js",
+    "static/media/textured_background.jpg": "/laureanodiez/portfolioweb/static/media/textured_background.65a81a2463b0c2d89dc2.jpg",
+    "index.html": "/laureanodiez/portfolioweb/index.html",
+    "main.2e3ad5b8.css.map": "/laureanodiez/portfolioweb/static/css/main.2e3ad5b8.css.map",
+    "main.9016b0d0.js.map": "/laureanodiez/portfolioweb/static/js/main.9016b0d0.js.map",
+    "488.9aa6ade9.chunk.js.map": "/laureanodiez/portfolioweb/static/js/488.9aa6ade9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2e3ad5b8.css",
+    "static/js/main.9016b0d0.js"
+  ]
+}
