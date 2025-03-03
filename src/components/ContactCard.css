@@ -90,23 +90,25 @@
   box-sizing: border-box; /* Incluye padding en el tamaño total */
 }
 
+
 /* Responsive: en pantallas pequeñas */
 @media (max-width: 480px) {
   .contact-card {
-    width: 90%; /* Ancho adaptable en dispositivos pequeños */
-    height: auto; /* Alto automático para ajustar el contenido */
+    width: 90%;
+    height: auto;
   }
 }
 
-/* Nuevo bloque: Responsive para orientación vertical en dispositivos móviles */
-/* Se asegura que la tarjeta se muestre correctamente en orientación retrato */
+/* Nuevo bloque: Forzar visibilidad en orientación vertical (portrait) en móviles */
 @media (orientation: portrait) and (max-width: 480px) {
   .contact-card {
-    width: 95%; /* Se amplía ligeramente para aprovechar el ancho */
-    height: auto; /* Altura automática para evitar recortes */
-    margin: 0 auto; /* Centrado horizontal */
+    width: 95%;                    /* Aumenta el ancho para aprovechar el viewport */
+    height: auto;                  /* Altura automática para ajustar el contenido */
+    margin: 20px auto;             /* Centrado con márgenes para visibilidad */
+    transform: none !important;    /* Quita transformaciones que puedan desplazar la tarjeta */
   }
 }
+
 
 /* Contenedor interno para el flip */
 .flip-container {
