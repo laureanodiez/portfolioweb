@@ -62,7 +62,7 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
     return (
       <div className="loading-screen">
         <div className="pentagon-loader"></div>
-        <p className="loading-text">vALPHA - © Laureano Diez</p>
+        <p className="loading-text">vPROTOTYPE - © Laureano Diez</p>
       </div>
     );
   }
