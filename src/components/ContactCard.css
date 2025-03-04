@@ -10,17 +10,18 @@
 
 /* Tarjeta básica: tamaño de tarjeta de negocio */
 .contact-card {
-  position: relative; /* Posicionamiento relativo para elementos internos */
-  width: 300px; /* Ancho fijo inicial */
-  height: 180px; /* Alto fijo inicial */
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
-  cursor: pointer; /* Cursor pointer para indicar interactividad */
-  overflow: hidden; /* Oculta contenido desbordante */
-  transform-style: preserve-3d; /* Permite transformaciones 3D de los hijos */
-  background: inherit; /* Usa el color/fondo del estilo padre */
-  /* Propiedad añadida para optimizar animaciones por GPU */
-  will-change: transform, box-shadow; 
+  position: relative;
+  width: 40vw;               /* Ancho relativo al viewport */
+  max-width: 400px;          /* Tamaño máximo para pantallas grandes */
+  min-width: 250px;          /* Tamaño mínimo para pantallas pequeñas */
+  aspect-ratio: 300 / 180;    /* Mantiene la proporción original (puedes ajustar según convenga) */
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  background: inherit;
+  will-change: transform, box-shadow;
 }
 
 /* =========================
@@ -41,32 +42,31 @@
 
 /* Para el lado superior: centrado horizontalmente */
 .section-label.top {
-  top: -85px; /* Posición superior negativa para salir del contenedor */
-  left: 33%; /* Centrado horizontal aproximadamente */
-  transform: translateX(-50%); /* Ajusta para centrar */
+  top: -30%; /* Posición superior negativa para salir del contenedor */
+  left: 50%; /* Centrado horizontal aproximadamente */
+  transform: translateX(-50%) !important; /* Ajusta para centrar */
 }
 
 /* Para el lado inferior: centrado horizontalmente y rotado 180° */
 .section-label.bottom {
-  bottom: -80px; /* Posición inferior negativa */
-  left: 35%; /* Aproximadamente centrado */
-  transform: translateX(-50%) rotate(180deg); /* Centrado y rotado */
+  bottom: -30%; /* Posición inferior negativa */
+  left: 50%; /* Aproximadamente centrado */
+  transform: translateX(-50%) !important; /* Centrado y rotado */
 }
 
 /* Para el lado derecho: el texto se muestra en vertical (de arriba hacia abajo) */
 .section-label.right {
-  right: -100px; /* Posición a la derecha fuera del contenedor */
-  top: 25%; /* Centrado verticalmente */
-  transform: translateY(-50%); /* Ajusta para centrar */
+  right: -32%; /* Posición a la derecha fuera del contenedor */
+  top: 47%; /* Centrado verticalmente */
+  transform: translateY(-50%) !important; /* Ajusta para centrar */
   writing-mode: vertical-lr; /* Muestra el texto de forma vertical */
 }
 
 /* Para el lado izquierdo: el texto se muestra en vertical (de abajo hacia arriba) */
 .section-label.left {
-  left: -95px; /* Posición a la izquierda fuera del contenedor */
-  top: 37%; /* Ajuste vertical */
-  transform: translateY(50%); /* Ajusta para centrar */
-  writing-mode: vertical-lr; /* Muestra el texto verticalmente */
+  left: -25%; /* Posición a la izquierda fuera del contenedor */
+  top: 50%; /* Ajuste vertical */
+  transform: translate(-50%, -50%) rotate(-90deg) !important;  /* Rota el texto para que se lea verticalmente de derecha a izquierda */
 }
 
 /* La tarjeta expandida se centra en la pantalla */
@@ -94,20 +94,23 @@
 /* Responsive: en pantallas pequeñas */
 @media (max-width: 480px) {
   .contact-card {
-    width: 90%;
-    height: auto;
+    width: 95vw;   /* Ocupa casi todo el ancho de la pantalla */
+    height: auto;  /* La altura se ajusta manteniendo el aspect ratio */
+    margin: 20px auto; /* Centrado con márgenes */
   }
 }
+
 
 /* Nuevo bloque: Forzar visibilidad en orientación vertical (portrait) en móviles */
 @media (orientation: portrait) and (max-width: 480px) {
   .contact-card {
-    width: 95%;                    /* Aumenta el ancho para aprovechar el viewport */
+    width: auto;                    /* Aumenta el ancho para aprovechar el viewport */
     height: auto;                  /* Altura automática para ajustar el contenido */
     margin: 20px auto;             /* Centrado con márgenes para visibilidad */
-    transform: none !important;    /* Quita transformaciones que puedan desplazar la tarjeta */
+    /* transform: none !important; */ /* Se comenta para permitir las animaciones de la tarjeta */
   }
 }
+
 
 
 /* Contenedor interno para el flip */
@@ -390,7 +393,7 @@
   background: gold;     /* Fondo dorado para clásico elegante */
 }
 .futurista-transparente .pentagon-logo {
-  background: rgba(255, 111, 0, 0.2); /* Fondo semitransparente */
+  background: rgba(255, 153, 0, 0.482); /* Fondo semitransparente */
 }
 .oscuro-premium .pentagon-logo {
   background: #aaa;     /* Fondo gris claro para oscuro premium */
