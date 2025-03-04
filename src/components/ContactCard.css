@@ -222,8 +222,10 @@
 }
 
 .card-summary {
-  font-size: 12px; /* Tamaño pequeño para resúmenes */
+  font-size: 4vh; /* Tamaño pequeño para resúmenes */
   margin: 3px 0; /* Margen vertical */
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 /* Grupo de botones de acción */
@@ -336,3 +338,70 @@
   font-size: 14px; /* Tamaño de fuente */
   opacity: 0.8; /* Transparencia para suavizar el texto */
 }
+
+
+/* NUEVO: Ajuste para el logo pentágono para que se centre y tenga tamaño mayor */
+.pentagon-logo {
+  display: block;       /* Permite centrar */
+  margin: 0 auto;       /* Centrado horizontal */
+}
+
+/* NUEVO: Regla para la cara frontal y trasera del flip */
+/* Se asegura que ambas caras tengan backface-visibility oculta */
+.flip-card .card-face {
+  backface-visibility: hidden;  
+  -webkit-backface-visibility: hidden;
+}
+
+/* NUEVO: La cara trasera se rota 180° en Y para funcionar como reverso */
+.flip-card .card-back {
+  transform: rotateY(180deg);
+}
+
+/* NUEVO: Para la cara trasera, centramos el contenido */
+.card-back {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* NUEVO: Estilo para el efecto de reflejo dinámico; la regla base se usa si no se calcula inline */
+.card-reflection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform: translateZ(1px);
+  /* Esta regla de background se sobreescribe inline en el JSX para efecto dinámico */
+}
+
+/* NUEVO: Color del pentágono según el estilo de la tarjeta */
+.minimalista .pentagon-logo {
+  background: #000000;  /* Fondo blanco para minimalista */
+}
+.cyberpunk .pentagon-logo {
+  background: #0ff;     /* Fondo cian para cyberpunk */
+}
+.clasico-elegante .pentagon-logo {
+  background: gold;     /* Fondo dorado para clásico elegante */
+}
+.futurista-transparente .pentagon-logo {
+  background: rgba(255, 111, 0, 0.2); /* Fondo semitransparente */
+}
+.oscuro-premium .pentagon-logo {
+  background: #aaa;     /* Fondo gris claro para oscuro premium */
+}
+
+
+
+
+/* NUEVO: Estilo base para el contenido del CV */
+.cv-content {
+  border-radius: 10px;  /* Bordes redondeados para mantener consistencia */
+}
+
+
