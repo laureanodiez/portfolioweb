@@ -36,6 +36,8 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
   
   // Estado para registrar la posición inicial del toque (para interacciones táctiles)
   const [touchStartPos, setTouchStartPos] = useState(null);
+  // NUEVO: Estado para registrar la posición actual del toque en movimiento
+  const [touchCurrentPos, setTouchCurrentPos] = useState(null);
   
   // Se mantiene fastMoveCount para el cálculo de movimientos rápidos (aunque no se usará para activar "cv")
   const fastMoveCount = useRef(0);
@@ -169,24 +171,80 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
   const handleTouchStart = (e) => {
     const touch = e.touches[0]; // Toma el primer toque
     setTouchStartPos({ x: touch.clientX, y: touch.clientY }); // Guarda la posición inicial
+    setTouchCurrentPos({ x: touch.clientX, y: touch.clientY }); // NUEVO: Inicializa la posición actual del toque
   };
 
   // Maneja el movimiento táctil para calcular la diferencia y aplicar efecto de giro
   const handleTouchMove = (e) => {
-    if (!touchStartPos) return; // Si no hay posición inicial, no hace nada
-    const touch = e.touches[0];
-    // Lógica similar al arrastre con mouse podría implementarse aquí si se requiere efecto de giro
+    // NUEVO: Verificamos que exista una posición inicial guardada
+    if (!touchStartPos) return; 
+    const touch = e.touches[0]; // Obtenemos el toque actual
+    // NUEVO: Actualizamos la posición actual del toque
+    setTouchCurrentPos({ x: touch.clientX, y: touch.clientY });
+    // NUEVO: Calculamos la diferencia (delta) entre la posición actual y la posición inicial
+    const deltaX = touch.clientX - touchStartPos.x;
+    const deltaY = touch.clientY - touchStartPos.y;
+    // NUEVO: Factor para ajustar la sensibilidad de la rotación (similar al arrastre con mouse)
+    const factor = 0.5;
+    // NUEVO: Actualizamos la rotación en función del movimiento táctil
+    setDragRotation({
+      rotateX: -deltaY * factor, // Se invierte deltaY para que mover hacia arriba rote hacia el top
+      rotateY: deltaX * factor,  // deltaX se utiliza directamente para la rotación horizontal
+    });
   };
 
-  // Al finalizar el toque, activa el flip y expande la tarjeta (modo "cv")
+  // Al finalizar el toque, se decide si se activa el flip o se "ajusta" el ángulo (snap) según el movimiento
   const handleTouchEnd = (e) => {
-    if (!touchStartPos) return; // Si no hay posición inicial, no hace nada
-    const threshold = 50; // Umbral para considerar un movimiento significativo
-    // Se activa el flip y se expande la tarjeta para mostrar el CV y resumen
-    setIsFlipped(true);
-    setIsExpanded(true);
-    setMode("cv");
-    setTouchStartPos(null); // Reinicia la posición inicial del toque
+    // NUEVO: Si no hubo posición actual registrada, se considera un toque sin movimiento y se activa el flip
+    if (!touchCurrentPos || !touchStartPos) {
+      setIsFlipped(true);
+      setIsExpanded(true);
+      setMode("cv");
+      setTouchStartPos(null);
+      setTouchCurrentPos(null);
+      return;
+    }
+    // NUEVO: Calculamos la diferencia total en X e Y entre el inicio y el final del toque
+    const deltaX = touchCurrentPos.x - touchStartPos.x;
+    const deltaY = touchCurrentPos.y - touchStartPos.y;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    // NUEVO: Definimos umbrales para diferenciar un toque simple de un arrastre
+    const smallThreshold = 10;   // Umbral mínimo para considerar que no hubo movimiento significativo
+    const flipThreshold = 120;   // Umbral de movimiento para activar el flip completo
+    // NUEVO: Si el movimiento es ínfimo, se considera un toque simple: se activa el flip y la expansión
+    if (absDeltaX < smallThreshold && absDeltaY < smallThreshold) {
+      setIsFlipped(true);
+      setIsExpanded(true);
+      setMode("cv");
+      // NUEVO: Se reinician las posiciones y la rotación
+      setDragRotation({ rotateX: 0, rotateY: 0 });
+    } else if (absDeltaX > flipThreshold || absDeltaY > flipThreshold) {
+      // NUEVO: Si el movimiento supera el umbral de flip, se activa el flip completo similar al arrastre con mouse
+      setMode("cv");
+      setIsFlipped(true);
+      setIsExpanded(true);
+      setDragRotation({ rotateX: 0, rotateY: 0 });
+    } else {
+      // NUEVO: Si el movimiento es significativo pero no alcanza el umbral de flip, se "ajusta" la inclinación (snap)
+      let selectedSide = null;
+      if (absDeltaX > absDeltaY) {
+        selectedSide = deltaY < 0 ? 0 : 2; // Si el movimiento horizontal es mayor, se determina top o bottom
+      } else {
+        selectedSide = deltaX < 0 ? 1 : 3; // Si el movimiento vertical es mayor, se determina right o left
+      }
+      setLockedSide(selectedSide); // Bloquea el lado seleccionado
+      // NUEVO: Se define la rotación "ajustada" según el lado seleccionado
+      let snappedRotation = { rotateX: 0, rotateY: 0 };
+      if (selectedSide === 0) snappedRotation = { rotateX: -15, rotateY: 0 }; // Top
+      else if (selectedSide === 1) snappedRotation = { rotateX: 0, rotateY: -15 }; // Right
+      else if (selectedSide === 2) snappedRotation = { rotateX: 15, rotateY: 0 };  // Bottom
+      else if (selectedSide === 3) snappedRotation = { rotateX: 0, rotateY: 15 };  // Left
+      setDragRotation(snappedRotation); // Actualiza la rotación con el "snap" para mantener la inclinación
+    }
+    // NUEVO: Se reinician las posiciones de toque al finalizar la interacción táctil
+    setTouchStartPos(null);
+    setTouchCurrentPos(null);
   };
 
   /* NUEVA SECCIÓN: Manejadores para arrastre (drag) y rotación de la tarjeta */
@@ -207,52 +265,51 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
     });
   };
 
-// Handler al finalizar el arrastre (drag)
-const handleDragEnd = (event, info) => {
-  setIsDragging(false); // Desactiva el estado de arrastre
+  // Handler al finalizar el arrastre (drag)
+  const handleDragEnd = (event, info) => {
+    setIsDragging(false); // Desactiva el estado de arrastre
 
-  // Calculamos la magnitud de la rotación acumulada a partir del drag
-  const { rotateX, rotateY } = dragRotation;
-  const absX = Math.abs(rotateX);
-  const absY = Math.abs(rotateY);
+    // Calculamos la magnitud de la rotación acumulada a partir del drag
+    const { rotateX, rotateY } = dragRotation;
+    const absX = Math.abs(rotateX);
+    const absY = Math.abs(rotateY);
 
-  const smallThreshold = 10;   // Umbral mínimo para considerar cualquier movimiento
-  const flipThreshold = 120;    // Umbral de rotación para activar el flip completo
+    const smallThreshold = 10;   // Umbral mínimo para considerar cualquier movimiento
+    const flipThreshold = 120;    // Umbral de rotación para activar el flip completo
 
-  // Si el movimiento es ínfimo, se reinicia la rotación sin hacer nada
-  if (absX < smallThreshold && absY < smallThreshold) {
-    setDragRotation({ rotateX: 0, rotateY: 0 });
-    return;
-  }
+    // Si el movimiento es ínfimo, se reinicia la rotación sin hacer nada
+    if (absX < smallThreshold && absY < smallThreshold) {
+      setDragRotation({ rotateX: 0, rotateY: 0 });
+      return;
+    }
 
-  // Si el movimiento supera el umbral de flip (media vuelta o más)
-  if (absX > flipThreshold || absY > flipThreshold) {
-    setMode("cv");         // Activa el modo "cv" para mostrar CV y resumen
-    setIsFlipped(true);    // Voltea la tarjeta
-    setIsExpanded(true);   // Expande la tarjeta para mostrar el contenido completo
-    setDragRotation({ rotateX: 0, rotateY: 0 }); // Reinicia la rotación (el flip se manejará con flipAnimation)
-    return; // Termina la función, ya que se realizó el flip completo
-  }
+    // Si el movimiento supera el umbral de flip (media vuelta o más)
+    if (absX > flipThreshold || absY > flipThreshold) {
+      setMode("cv");         // Activa el modo "cv" para mostrar CV y resumen
+      setIsFlipped(true);    // Voltea la tarjeta
+      setIsExpanded(true);   // Expande la tarjeta para mostrar el contenido completo
+      setDragRotation({ rotateX: 0, rotateY: 0 }); // Reinicia la rotación (el flip se manejará con flipAnimation)
+      return; // Termina la función, ya que se realizó el flip completo
+    }
 
-  // Si no se alcanzó el umbral de flip pero sí hay un movimiento significativo,
-  // se procede a determinar el lado para el "snap" de la inclinación
-  let selectedSide = null;
-  if (absX > absY) {
-    selectedSide = rotateX < 0 ? 0 : 2; // Lado superior si rotateX negativo, inferior si positivo
-  } else {
-    selectedSide = rotateY < 0 ? 1 : 3; // Lado derecho si rotateY negativo, izquierdo si positivo
-  }
-  setLockedSide(selectedSide); // Bloquea el lado seleccionado
+    // Si no se alcanzó el umbral de flip pero sí hay un movimiento significativo,
+    // se procede a determinar el lado para el "snap" de la inclinación
+    let selectedSide = null;
+    if (absX > absY) {
+      selectedSide = rotateX < 0 ? 0 : 2; // Lado superior si rotateX negativo, inferior si positivo
+    } else {
+      selectedSide = rotateY < 0 ? 1 : 3; // Lado derecho si rotateY negativo, izquierdo si positivo
+    }
+    setLockedSide(selectedSide); // Bloquea el lado seleccionado
 
-  // Se define el "snap" de la rotación a valores predefinidos según el lado seleccionado
-  let snappedRotation = { rotateX: 0, rotateY: 0 };
-  if (selectedSide === 0) snappedRotation = { rotateX: -15, rotateY: 0 }; // Top
-  else if (selectedSide === 1) snappedRotation = { rotateX: 0, rotateY: -15 }; // Right
-  else if (selectedSide === 2) snappedRotation = { rotateX: 15, rotateY: 0 };  // Bottom
-  else if (selectedSide === 3) snappedRotation = { rotateX: 0, rotateY: 15 };  // Left
-  setDragRotation(snappedRotation); // Actualiza la rotación con el "snap" para mantener la inclinación
-};
-
+    // Se define el "snap" de la rotación a valores predefinidos según el lado seleccionado
+    let snappedRotation = { rotateX: 0, rotateY: 0 };
+    if (selectedSide === 0) snappedRotation = { rotateX: -15, rotateY: 0 }; // Top
+    else if (selectedSide === 1) snappedRotation = { rotateX: 0, rotateY: -15 }; // Right
+    else if (selectedSide === 2) snappedRotation = { rotateX: 15, rotateY: 0 };  // Bottom
+    else if (selectedSide === 3) snappedRotation = { rotateX: 0, rotateY: 15 };  // Left
+    setDragRotation(snappedRotation); // Actualiza la rotación con el "snap" para mantener la inclinación
+  };
 
   /* Cálculo de la inclinación (tilt) y sombra radial */
   const currentSide = lockedSide !== null ? lockedSide : activeSide; // Determina el lado actual
@@ -350,8 +407,8 @@ const handleDragEnd = (event, info) => {
         onMouseMove={handleMouseMove} // Movimiento del mouse para detectar el lado
         onMouseLeave={handleMouseLeave} // Restaura el estado al salir el mouse
         onTouchStart={handleTouchStart} // Inicia la detección táctil
-        onTouchMove={handleTouchMove} // Actualiza la interacción táctil
-        onTouchEnd={handleTouchEnd} // Al finalizar el toque, activa el flip y muestra CV
+        onTouchMove={handleTouchMove}   // NUEVO: Actualiza la interacción táctil con el movimiento
+        onTouchEnd={handleTouchEnd}     // NUEVO: Al finalizar el toque, decide la acción (flip o snap)
         // Se activa la funcionalidad de arrastre (drag) con restricción para no mover la tarjeta de su centro
         drag={isFloating}
         dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
@@ -467,7 +524,6 @@ const handleDragEnd = (event, info) => {
           </motion.div>
         )}
 
-
         { isExpanded && mode === "cv" && (
           // NUEVO: Contenedor independiente para el modo expandido "CV"
           // Se posiciona igual que la tarjeta expandida, usando las mismas dimensiones y centrado.
@@ -524,7 +580,6 @@ const handleDragEnd = (event, info) => {
             </div>
           </motion.div>
         )}
-
 
         { isExpanded && mode === "section" && (
           <div className="section-content" onClick={stopPropagation}>
