@@ -21,14 +21,13 @@ const getLabelOffset = (side) => {
   return { x: 0, y: 0 }; // Sin desplazamiento si no se cumple ningún caso
 };
 
-const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) => {
-  const [isLoading, setIsLoading] = useState(true); // Estado para indicar si la tarjeta está cargando
+const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, hasLoaded, setHasLoaded }) => {
+  const [isLoading, setIsLoading] = useState(!hasLoaded); // Estado para indicar si la tarjeta está cargando
   const [activeSide, setActiveSide] = useState(null); // Estado para el lado activo al pasar el mouse
   const [lockedSide, setLockedSide] = useState(null); // Estado para el lado bloqueado tras click o arrastre
   const [isFlipped, setIsFlipped] = useState(false); // Estado para determinar si la tarjeta está volteada
   const [isExpanded, setIsExpanded] = useState(false); // Estado para la expansión de la tarjeta
   const [mode, setMode] = useState(null); // Estado para el modo ("cv" o "section")
-  
   // Estado para determinar si se está arrastrando con mouse
   const [isDragging, setIsDragging] = useState(false);
   // Estado para registrar la rotación durante el arrastre
@@ -45,10 +44,14 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
 
   // Simula la carga inicial de la tarjeta
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false); // Desactiva la pantalla de carga después de 2 segundos
-    }, 2000);
-  }, []);
+    if (!hasLoaded) {
+      setTimeout(() => {
+        setIsLoading(false);
+        setHasLoaded(true); // NUEVO: Marca que ya se cargó
+      }, 2000);
+    }
+  }, [hasLoaded, setHasLoaded]);
+
 
   // Resetea la selección si se hace clic fuera de la tarjeta (cuando no está expandida)
   useEffect(() => {
@@ -76,7 +79,7 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
     return (
       <div className="loading-screen">
         <div className="pentagon-loader"></div>
-        <p className="loading-text">vPROTOTYPE - © Laureano Diez</p>
+        <p className="loading-text">vAlpha - Laureano Diez ©</p>
       </div>
     );
   }
@@ -131,10 +134,13 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
   };
 
   const handleSectionTitleClick = (e) => {
-    e.stopPropagation();
-    setMode("section");
-    setIsFlipped(true);
-    setIsExpanded(true);
+    e.stopPropagation(); // Evita que el evento se propague al contenedor
+    if (lockedSide !== null) {
+      const sectionName = neonColorsData[lockedSide].title; // Obtiene el nombre de la sección
+      onSelectSection(sectionName); // NUEVO: Llama al callback para seleccionar la sección
+    }
+    // NUEVO: Se oculta la tarjeta (para que no se muestre el estado expandido detrás de la sección)
+    setIsExpanded(false);
   };
 
   const handleDoubleClick = (e) => {
@@ -464,8 +470,8 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle }) 
             className="expanded-cv" 
             style={{ 
               position: 'absolute', 
-              width: '90vw', 
-              height: '90vh', 
+              width: '95vw',      // NUEVO: Ancho casi completo con márgenes
+              height: '95vh',     // NUEVO: Alto casi completo con márgenes
               top: '50%', 
               left: '50%', 
               transform: 'translate(-50%, -50%)', 

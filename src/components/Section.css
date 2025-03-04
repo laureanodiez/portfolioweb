@@ -1,22 +1,81 @@
 /* src/components/Section.css */
-.section-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  overflow-y: auto;
+
+.section-container {
   padding: 20px;
-  box-sizing: border-box;
+  border-radius: 8px;
+  margin: 0 auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  /* Se usará el fondo y otros estilos heredados de la tarjeta mediante la clase cardStyle */
 }
 
-.back-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
+.back-btn {
+  margin-bottom: 20px;
+  padding: 8px 12px;
   border: none;
-  background: transparent;
-  font-size: 24px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: 2em;
+}
+
+.section-description p {
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.section-media {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.media-item {
+  flex: 1 1 200px;
+}
+
+.media-item.image {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.media-item.video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.media-item.code a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* src/components/Section.css */
+.section-wrapper {
+  position: fixed;      /* Cubre toda la pantalla */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.05);  /* Fondo muy sutil para indicar el overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 101;         /* Por encima de otros elementos */
+}
+
+.section-container {
+  width: 90vw;              /* Ocupa el 90% del ancho del viewport */
+  max-width: 600px;         /* Ancho máximo para pantallas grandes */
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;         /* Fondo blanco (puede heredar del cardStyle si es necesario) */
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  text-align: center;
 }

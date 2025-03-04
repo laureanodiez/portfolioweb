@@ -71,14 +71,14 @@
 
 /* La tarjeta expandida se centra en la pantalla */
 .contact-card.expanded {
-  position: absolute; /* Se posiciona de forma absoluta */
-  width: 90vw; /* Ancho relativo a la ventana */
-  height: 90vh; /* Alto relativo a la ventana */
-  top: 50%; /* Centrado verticalmente */
-  left: 50%; /* Centrado horizontalmente */
+  position: absolute;              /* Posicionamiento absoluto */
+  width: 95vw;                    /* Ancho casi completo */
+  height: 95vh;                   /* Alto casi completo */
+  top: 50%;                      /* Centrado vertical */
+  left: 50%;                     /* Centrado horizontal */
   transform: translate(-50%, -50%); /* Ajuste para centrar */
-  border-radius: 10px; /* Bordes redondeados */
-  transition: all 0.5s ease-out; /* Transición suave para todos los cambios */
+  border-radius: 10px;           /* Bordes redondeados */
+  transition: all 0.5s ease-out; /* Transición suave */
 }
 
 /* Contenido de sección en modo "section" (nuevo contenido) */
@@ -183,7 +183,7 @@
 
 /* Estilos para el visor del PDF */
 .cv-container {
-  width: 100%; /* Ancho completo */
+  width: 100% !important; /* Ancho completo */
   height: calc(100% - 100px); /* Alto ajustado para dejar espacio */
   margin-top: 10px; /* Separación superior */
 }
