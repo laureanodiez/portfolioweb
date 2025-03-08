@@ -1,8 +1,10 @@
 // src/components/ContactCard.jsx
+// Componente de la tarjeta de contacto con efecto 3D, flip y simulación de grosor.
+// La lógica de carga ha sido removida para concentrarse únicamente en la funcionalidad de la tarjeta.
 
-import React, { useState, useRef, useEffect } from 'react'; // Importación de React y hooks necesarios
-import { motion } from 'framer-motion'; // Importación de motion para animaciones
-import './ContactCard.css'; // Importación de estilos
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import './ContactCard.css'; // Estilos específicos para la tarjeta
 
 // Datos para los colores y títulos de neón en cada lado
 const neonColorsData = [
@@ -12,112 +14,84 @@ const neonColorsData = [
   { title: 'Música', color: 'green' },
 ];
 
-// Función que devuelve el offset inicial para la animación del label (opcional)
+// Función para obtener el offset inicial del label según el lado
 const getLabelOffset = (side) => {
-  if (side === 0) return { y: 20, x: 0 }; // Desplazamiento para el lado superior
-  if (side === 1) return { x: -20, y: 0 }; // Desplazamiento para el lado derecho
-  if (side === 2) return { y: -20, x: 0 }; // Desplazamiento para el lado inferior
-  if (side === 3) return { x: 20, y: 0 }; // Desplazamiento para el lado izquierdo
-  return { x: 0, y: 0 }; // Sin desplazamiento si no se cumple ningún caso
+  if (side === 0) return { y: 20, x: 0 }; // Lado superior
+  if (side === 1) return { x: -20, y: 0 }; // Lado derecho
+  if (side === 2) return { y: -20, x: 0 }; // Lado inferior
+  if (side === 3) return { x: 20, y: 0 }; // Lado izquierdo
+  return { x: 0, y: 0 };
 };
 
 const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, hasLoaded, setHasLoaded }) => {
-  const [isLoading, setIsLoading] = useState(!hasLoaded); // Estado para indicar si la tarjeta está cargando
-  const [activeSide, setActiveSide] = useState(null); // Estado para el lado activo al pasar el mouse
-  const [lockedSide, setLockedSide] = useState(null); // Estado para el lado bloqueado tras click o arrastre
-  const [isFlipped, setIsFlipped] = useState(false); // Estado para determinar si la tarjeta está volteada
-  const [isExpanded, setIsExpanded] = useState(false); // Estado para la expansión de la tarjeta
-  const [mode, setMode] = useState(null); // Estado para el modo ("cv" o "section")
-  // Estado para determinar si se está arrastrando con mouse
-  const [isDragging, setIsDragging] = useState(false);
-  // Estado para registrar la rotación durante el arrastre
-  const [dragRotation, setDragRotation] = useState({ rotateX: 0, rotateY: 0 });
-  
+  // Estados propios de la tarjeta (sin incluir la pantalla de carga)
+  const [activeSide, setActiveSide] = useState(null); // Lado activo al pasar el mouse
+  const [lockedSide, setLockedSide] = useState(null);   // Lado bloqueado tras click/arrastre
+  const [isFlipped, setIsFlipped] = useState(false);      // Estado de flip (parte trasera visible)
+  const [isExpanded, setIsExpanded] = useState(false);    // Estado de expansión (pantalla completa)
+  const [mode, setMode] = useState(null);                 // Modo: "cv" o "section"
+  const [isDragging, setIsDragging] = useState(false);    // Si se está arrastrando con el mouse
+
+  // Motion values "raw" para la rotación (sin suavizar)
+  const rawRotateX = useMotionValue(0);
+  const rawRotateY = useMotionValue(0);
+  // Se utiliza useSpring para suavizar los cambios en la rotación
+  const rotateX = useSpring(rawRotateX, { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(rawRotateY, { stiffness: 150, damping: 20 });
+
   // Estados para interacciones táctiles
-  const [touchStartPos, setTouchStartPos] = useState(null); // Posición inicial del toque
-  const [touchCurrentPos, setTouchCurrentPos] = useState(null); // Posición actual del toque
-  const [isTouchDragging, setIsTouchDragging] = useState(false); // NUEVO: Bandera para diferenciar arrastre táctil
-  
+  const [touchStartPos, setTouchStartPos] = useState(null);
+  const [touchCurrentPos, setTouchCurrentPos] = useState(null);
+  const [isTouchDragging, setIsTouchDragging] = useState(false);
+
   const fastMoveCount = useRef(0);
-  const lastMousePos = useRef({ x: 0, y: 0 }); // Referencia para la última posición del mouse
-  const cardRef = useRef(null); // Referencia al elemento de la tarjeta
+  const lastMousePos = useRef({ x: 0, y: 0 });
+  const cardRef = useRef(null);
 
-  // Simula la carga inicial de la tarjeta
+  // Efecto para actualizar la inclinación (tilt) cuando no se arrastra
   useEffect(() => {
-    if (!hasLoaded) {
-      setTimeout(() => {
-        setIsLoading(false);
-        setHasLoaded(true); // NUEVO: Marca que ya se cargó
-      }, 2000);
-    }
-  }, [hasLoaded, setHasLoaded]);
-
-
-  // Resetea la selección si se hace clic fuera de la tarjeta (cuando no está expandida)
-  useEffect(() => {
-    const handleDocClick = (e) => {
-      if (!isExpanded && lockedSide !== null) {
-        if (cardRef.current && !cardRef.current.contains(e.target)) {
-          setLockedSide(null); // Reinicia el lado bloqueado
-          setActiveSide(null); // Reinicia el lado activo
-        }
+    if (!isDragging) {
+      let computedTiltX = 0, computedTiltY = 0;
+      const currentSide = lockedSide !== null ? lockedSide : activeSide;
+      if (!isExpanded && isFloating && !isFlipped && currentSide !== null) {
+        if (currentSide === 0) computedTiltX = -15;
+        else if (currentSide === 1) computedTiltY = -15;
+        else if (currentSide === 2) computedTiltX = 15;
+        else if (currentSide === 3) computedTiltY = 15;
       }
-    };
-    document.addEventListener('click', handleDocClick);
-    return () => document.removeEventListener('click', handleDocClick);
-  }, [lockedSide, isExpanded]);
-
-  // Forzar modo "cv" si la tarjeta está volteada y expandida (para otros casos que no sean sección)
-  useEffect(() => {
-    if (isFlipped && isExpanded && mode !== "section") {
-      setMode("cv");
+      rawRotateX.set(computedTiltX);
+      rawRotateY.set(computedTiltY);
     }
-  }, [isFlipped, isExpanded, mode]);
+  }, [activeSide, lockedSide, isDragging, isExpanded, isFloating, isFlipped, rawRotateX, rawRotateY]);
 
-  // Si la tarjeta está cargando, muestra la pantalla de carga
-  if (isLoading) {
-    return (
-      <div className="loading-screen">
-        <div className="pentagon-loader"></div>
-        <p className="loading-text">vAlpha - Laureano Diez ©</p>
-      </div>
-    );
-  }
-
-  /* Manejo del movimiento del mouse */
+  // Manejo del movimiento del mouse
   const handleMouseMove = (e) => {
-    if (!isFloating || isDragging) return; // Solo procesa si está flotante y no se está arrastrando
-    const rect = cardRef.current.getBoundingClientRect(); // Obtiene la posición y dimensiones de la tarjeta
-    const threshold = 30; // Umbral para detectar cercanía a los bordes
+    if (!isFloating || isDragging) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const threshold = 30;
     let side = null;
-    if (e.clientY - rect.top <= threshold) side = 0;          // Lado superior
-    else if (rect.right - e.clientX <= threshold) side = 1;     // Lado derecho
-    else if (rect.bottom - e.clientY <= threshold) side = 2;    // Lado inferior
-    else if (e.clientX - rect.left <= threshold) side = 3;      // Lado izquierdo
-    setActiveSide(side); // Actualiza el lado activo
+    if (e.clientY - rect.top <= threshold) side = 0;
+    else if (rect.right - e.clientX <= threshold) side = 1;
+    else if (rect.bottom - e.clientY <= threshold) side = 2;
+    else if (e.clientX - rect.left <= threshold) side = 3;
+    setActiveSide(side);
 
+    const prevPos = lastMousePos.current;
     lastMousePos.current = { x: e.clientX, y: e.clientY };
-
-    const deltaX = e.clientX - lastMousePos.current.x;
-    const speed = Math.abs(deltaX);
-    if (speed > 30) {
-      fastMoveCount.current += 1;
-    } else {
-      fastMoveCount.current = 0;
-    }
-    if (fastMoveCount.current >= 3 && !lockedSide && !isExpanded) {
-      fastMoveCount.current = 0;
-    }
+    const deltaX = e.clientX - prevPos.x;
+    if (Math.abs(deltaX) > 30) fastMoveCount.current += 1;
+    else fastMoveCount.current = 0;
+    if (fastMoveCount.current >= 3 && !lockedSide && !isExpanded) fastMoveCount.current = 0;
   };
 
   const handleMouseLeave = () => {
     if (!isExpanded && !isDragging) setActiveSide(null);
   };
 
-  /* Manejo del clic en la tarjeta */
+  // Manejo de clic: activa el estado flotante y bloquea el lado según interacción
   const handleCardClick = (e) => {
     if (!isFloating) {
-      setIsFloating(true); // Activa el estado flotante
+      setIsFloating(true);
       return;
     }
     if (lockedSide !== null) {
@@ -127,30 +101,30 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
         return;
       }
     } else {
-      if (!isExpanded && activeSide !== null) {
-        setLockedSide(activeSide);
-      }
+      if (!isExpanded && activeSide !== null) setLockedSide(activeSide);
     }
   };
 
+  // Al hacer clic en el label se selecciona la sección y se oculta la tarjeta expandida
   const handleSectionTitleClick = (e) => {
-    e.stopPropagation(); // Evita que el evento se propague al contenedor
+    e.stopPropagation();
     if (lockedSide !== null) {
-      const sectionName = neonColorsData[lockedSide].title; // Obtiene el nombre de la sección
-      onSelectSection(sectionName); // NUEVO: Llama al callback para seleccionar la sección
+      const sectionName = neonColorsData[lockedSide].title;
+      onSelectSection(sectionName);
     }
-    // NUEVO: Se oculta la tarjeta (para que no se muestre el estado expandido detrás de la sección)
     setIsExpanded(false);
   };
 
+  // Doble clic para reiniciar estados y volver a la posición original
   const handleDoubleClick = (e) => {
     setIsExpanded(false);
     setIsFlipped(false);
     setLockedSide(null);
     setActiveSide(null);
     setMode(null);
-    setDragRotation({ rotateX: 0, rotateY: 0 });
-    setIsFloating(false); // Vuelve la tarjeta al estado de "suelo"
+    rawRotateX.set(0);
+    rawRotateY.set(0);
+    setIsFloating(false);
   };
 
   const handleCollapse = (e) => {
@@ -159,20 +133,15 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
 
   const stopPropagation = (e) => e.stopPropagation();
 
-  /* NUEVA SECCIÓN: Manejadores de eventos táctiles para dispositivos móviles */
-
-  // En dispositivos móviles, al iniciar el toque se activa el modo flotante (si aún no lo está)
+  /* --- Manejo de eventos táctiles (touch) --- */
   const handleTouchStart = (e) => {
     const touch = e.touches[0];
-    setTouchStartPos({ x: touch.clientX, y: touch.clientY }); // Guarda la posición inicial
-    setTouchCurrentPos({ x: touch.clientX, y: touch.clientY }); // Inicializa la posición actual
-    setIsTouchDragging(false); // Reinicia la bandera de arrastre táctil
-    if (!isFloating) {
-      setIsFloating(true); // Activa el modo flotante al primer toque en móvil
-    }
+    setTouchStartPos({ x: touch.clientX, y: touch.clientY });
+    setTouchCurrentPos({ x: touch.clientX, y: touch.clientY });
+    setIsTouchDragging(false);
+    if (!isFloating) setIsFloating(true);
   };
 
-  // Maneja el movimiento táctil; si el movimiento supera 5px, lo interpreta como arrastre
   const handleTouchMove = (e) => {
     if (!touchStartPos) return;
     const touch = e.touches[0];
@@ -180,114 +149,82 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
     setTouchCurrentPos(currentPos);
     const deltaX = currentPos.x - touchStartPos.x;
     const deltaY = currentPos.y - touchStartPos.y;
-    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
-      setIsTouchDragging(true); // Marca que se está arrastrando en móvil
-    }
-    // Actualiza la rotación similar al manejo con mouse
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) setIsTouchDragging(true);
     const factor = 0.5;
-    setDragRotation({
-      rotateX: -deltaY * factor,
-      rotateY: deltaX * factor,
-    });
+    rawRotateX.set(-deltaY * factor);
+    rawRotateY.set(deltaX * factor);
   };
 
-  // Al finalizar el toque se decide si fue un toque simple o un arrastre
   const handleTouchEnd = (e) => {
-    // Si se detectó arrastre, se aplica el "snap" sin activar el flip al CV
     if (isTouchDragging && touchStartPos && touchCurrentPos) {
       const deltaX = touchCurrentPos.x - touchStartPos.x;
       const deltaY = touchCurrentPos.y - touchStartPos.y;
       const absDeltaX = Math.abs(deltaX);
       const absDeltaY = Math.abs(deltaY);
-      const flipThreshold = 150; // Umbral mayor para evitar flip accidental en móvil
-      // Si el movimiento supera el umbral, se podría activar el flip; de lo contrario, se ajusta la inclinación
+      const flipThreshold = 150;
       if (absDeltaX > flipThreshold || absDeltaY > flipThreshold) {
-        // Opcional: Si se desea permitir el flip tras un arrastre muy marcado, se podría activar el modo "cv"
-        // setMode("cv");
-        // setIsFlipped(true);
-        // setIsExpanded(true);
-        // En este ejemplo, preferimos solo ajustar la inclinación sin flip
+        // No se activa flip en este ejemplo
       } else {
-        let selectedSide = null;
-        if (absDeltaX > absDeltaY) {
-          selectedSide = deltaY < 0 ? 0 : 2; // Determina top o bottom
-        } else {
-          selectedSide = deltaX < 0 ? 1 : 3; // Determina right o left
-        }
+        let selectedSide = absDeltaX > absDeltaY ? (deltaY < 0 ? 0 : 2) : (deltaX < 0 ? 1 : 3);
         setLockedSide(selectedSide);
         let snappedRotation = { rotateX: 0, rotateY: 0 };
         if (selectedSide === 0) snappedRotation = { rotateX: -15, rotateY: 0 };
         else if (selectedSide === 1) snappedRotation = { rotateX: 0, rotateY: -15 };
         else if (selectedSide === 2) snappedRotation = { rotateX: 15, rotateY: 0 };
         else if (selectedSide === 3) snappedRotation = { rotateX: 0, rotateY: 15 };
-        setDragRotation(snappedRotation);
+        rawRotateX.set(snappedRotation.rotateX);
+        rawRotateY.set(snappedRotation.rotateY);
       }
-    } else {
-      // Si no se detectó arrastre, se trata como un toque simple; en este caso no activamos el flip al CV
-      // Esto permite que el usuario active el modo flotante sin que se abra el CV
     }
-    // Reinicia las variables táctiles
     setTouchStartPos(null);
     setTouchCurrentPos(null);
     setIsTouchDragging(false);
   };
 
-  /* NUEVA SECCIÓN: Manejadores para arrastre (drag) con mouse (sin cambios) */
+  /* --- Manejo de arrastre (drag) con mouse --- */
   const handleDragStart = () => {
     setIsDragging(true);
   };
 
   const handleDrag = (event, info) => {
     const factor = 0.5;
-    setDragRotation({
-      rotateX: -info.offset.y * factor,
-      rotateY: info.offset.x * factor,
-    });
+    rawRotateX.set(-info.offset.y * factor);
+    rawRotateY.set(info.offset.x * factor);
   };
 
   const handleDragEnd = (event, info) => {
     setIsDragging(false);
-    const { rotateX, rotateY } = dragRotation;
-    const absX = Math.abs(rotateX);
-    const absY = Math.abs(rotateY);
+    const currentRotateX = rawRotateX.get();
+    const currentRotateY = rawRotateY.get();
+    const absX = Math.abs(currentRotateX);
+    const absY = Math.abs(currentRotateY);
     const smallThreshold = 10;
     const flipThreshold = 120;
     if (absX < smallThreshold && absY < smallThreshold) {
-      setDragRotation({ rotateX: 0, rotateY: 0 });
+      rawRotateX.set(0);
+      rawRotateY.set(0);
       return;
     }
     if (absX > flipThreshold || absY > flipThreshold) {
       setMode("cv");
       setIsFlipped(true);
       setIsExpanded(true);
-      setDragRotation({ rotateX: 0, rotateY: 0 });
+      rawRotateX.set(0);
+      rawRotateY.set(0);
       return;
     }
-    let selectedSide = null;
-    if (absX > absY) {
-      selectedSide = rotateX < 0 ? 0 : 2;
-    } else {
-      selectedSide = rotateY < 0 ? 1 : 3;
-    }
+    let selectedSide = absX > absY ? (currentRotateX < 0 ? 0 : 2) : (currentRotateY < 0 ? 1 : 3);
     setLockedSide(selectedSide);
     let snappedRotation = { rotateX: 0, rotateY: 0 };
     if (selectedSide === 0) snappedRotation = { rotateX: -15, rotateY: 0 };
     else if (selectedSide === 1) snappedRotation = { rotateX: 0, rotateY: -15 };
     else if (selectedSide === 2) snappedRotation = { rotateX: 15, rotateY: 0 };
     else if (selectedSide === 3) snappedRotation = { rotateX: 0, rotateY: 15 };
-    setDragRotation(snappedRotation);
+    rawRotateX.set(snappedRotation.rotateX);
+    rawRotateY.set(snappedRotation.rotateY);
   };
 
-  /* Cálculo de la inclinación (tilt) y sombra radial */
-  const currentSide = lockedSide !== null ? lockedSide : activeSide;
-  let tilt = { rotateX: 0, rotateY: 0, x: 0, y: 0 };
-  if (!isExpanded && isFloating && !isFlipped && !isDragging && currentSide !== null) {
-    if (currentSide === 0) tilt = { rotateX: -15, y: -10 };
-    else if (currentSide === 1) tilt = { rotateY: -15, x: 10 };
-    else if (currentSide === 2) tilt = { rotateX: 15, y: 10 };
-    else if (currentSide === 3) tilt = { rotateY: 15, x: -10 };
-  }
-  
+  /* --- Sombra radial según lado seleccionado --- */
   let radialShadow = {};
   if (lockedSide !== null && !isExpanded) {
     const color = neonColorsData[lockedSide].color;
@@ -297,21 +234,9 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
     else if (lockedSide === 3) radialShadow = { boxShadow: `-20px 0 30px 10px ${color}` };
   }
   
-  /* Animación de flip (para expansión) */
-  let flipAnimation = {};
-  if (isFlipped && isExpanded) {
-    if (mode === "cv") {
-      flipAnimation = { rotateY: 180 };
-    } else {
-      let currentSideForFlip = lockedSide !== null ? lockedSide : activeSide;
-      if (currentSideForFlip !== null) {
-        if (currentSideForFlip === 0 || currentSideForFlip === 2) flipAnimation = { rotateX: 180 };
-        else flipAnimation = { rotateY: 180 };
-      } else {
-        flipAnimation = { rotateY: 180 };
-      }
-    }
-  }
+  /* --- Configuración del flip --- */
+  // El flip se aplica al contenedor que agrupa front, edge y back.
+  const flipRotation = isFlipped && isExpanded ? 180 : 0;
   
   let expansionStyle = {};
   if (isExpanded) {
@@ -327,6 +252,13 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
   
   const showLabel = lockedSide !== null;
   
+  // Cálculo del reflejo (se mantiene el factor)
+  const currentRotateXVal = rawRotateX.get();
+  const currentRotateYVal = rawRotateY.get();
+  const reflectionFactor = 2;
+  const reflectionX = 50 - (currentRotateXVal * reflectionFactor);
+  const reflectionY = 50 - (currentRotateYVal * reflectionFactor);
+
   return (
     <div
       className="card-container"
@@ -380,73 +312,77 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
           rotateZ: isFloating ? 0 : -15,
           scale: isFloating ? 1.1 : 1,
           x: 0,
-          ...(isDragging ? dragRotation : tilt),
           ...radialShadow,
           ...expansionStyle,
-          ...flipAnimation,
         }}
         transition={{ type: 'spring', stiffness: 70, damping: 15 }}
+        // Aplicación de las rotaciones suavizadas
+        style={{ rotateX, rotateY }}
       >
-        { !isExpanded && (
+        {/* Contenedor de flip que incluye la cara frontal, el edge y la cara trasera */}
+        {!isExpanded && (
           <motion.div
             className="flip-container"
-            animate={{ rotateY: 0 }}
+            animate={{ rotateY: flipRotation }}
             transition={{ type: 'spring', stiffness: 70, damping: 15 }}
           >
-            <div className="flip-card">
-              <div className="card-face card-front">
-                <div className="card-content" style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%'
-                }}>
-                  <div
-                    className="pentagon-logo"
-                    style={{
-                      width: '100px',
-                      height: '100px',
-                      clipPath: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)'
-                    }}
-                  ></div>
-                  <h2 className="card-name" style={{
-                    marginTop: '10px',
-                    textAlign: 'center'
-                  }}>
-                    Laureano Diez
-                  </h2>
-                </div>
-              </div>
-              <div className="card-face card-back">
-                <div className="card-content" style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%',
+            {/* Cara frontal de la tarjeta */}
+            <div className="card-face card-front">
+              <div className="card-content" style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%'
+              }}>
+                <div
+                  className="pentagon-logo"
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    clipPath: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)'
+                  }}
+                ></div>
+                <h2 className="card-name" style={{
+                  marginTop: '10px',
                   textAlign: 'center'
                 }}>
-                  <div className="card-header">
-                    <h2 className="card-name">Laureano Diez</h2>
-                    <h4 className="card-title">Técnico Informático - Estudiante de IA</h4>
-                  </div>
-                  <div className="card-body">
-                    <div className="contact-details">
-                      <p>Email: ejemplo@correo.com</p>
-                      <p>Tel: +54 1234 5678</p>
-                    </div>
+                  Laureano Diez
+                </h2>
+              </div>
+            </div>
+            {/* Elemento que simula la profundidad (edge) */}
+            <div className="card-edge"></div>
+            {/* Cara trasera de la tarjeta */}
+            <div className="card-face card-back">
+              <div className="card-content" style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                textAlign: 'center'
+              }}>
+                <div className="card-header">
+                  <h2 className="card-name">Laureano Diez</h2>
+                  <h4 className="card-title">Técnico Informático - Estudiante de IA</h4>
+                </div>
+                <div className="card-body">
+                  <div className="contact-details">
+                    <p>Email: ejemplo@correo.com</p>
+                    <p>Tel: +54 1234 5678</p>
                   </div>
                 </div>
               </div>
             </div>
-            { isFloating && (
+            {/* Reflejo dinámico basado en la rotación */}
+            {isFloating && (
               (() => {
                 const factor = 2;
-                const reflectionX = 50 - (dragRotation.rotateX * factor);
-                const reflectionY = 50 - (dragRotation.rotateY * factor);
+                const reflectionX = 50 - (rawRotateX.get() * factor);
+                const reflectionY = 50 - (rawRotateY.get() * factor);
                 return (
-                  <div 
+                  <div
                     className="card-reflection"
                     style={{
                       position: 'absolute',
@@ -465,22 +401,23 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
           </motion.div>
         )}
 
-        { isExpanded && mode === "cv" && (
-          <motion.div 
-            className="expanded-cv" 
-            style={{ 
-              position: 'absolute', 
-              width: '95vw',      // NUEVO: Ancho casi completo con márgenes
-              height: '95vh',     // NUEVO: Alto casi completo con márgenes
-              top: '50%', 
-              left: '50%', 
-              transform: 'translate(-50%, -50%)', 
-              zIndex: 100 
+        {/* Contenido para el modo "cv" (expandido) */}
+        {isExpanded && mode === "cv" && (
+          <motion.div
+            className="expanded-cv"
+            style={{
+              position: 'absolute',
+              width: '95vw',
+              height: '95vh',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 100
             }}
             transition={{ type: 'spring', stiffness: 70, damping: 15 }}
           >
-            <div 
-              className="cv-content" 
+            <div
+              className="cv-content"
               style={{ overflowY: 'auto', padding: '20px', boxSizing: 'border-box', height: '100%' }}
             >
               <div style={{ textAlign: 'center' }}>
@@ -489,15 +426,15 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
               </div>
               <div className="contact-details" style={{ textAlign: 'center', margin: '10px 0' }}>
                 <p>Email: contactolaureanodiez@gmail.com</p>
-                <p /*className="card-summary"*/>
-                      Soy Técnico en Informática Profesional y Personal y estudiante universitario de
-                      tecnicatura en Inteligencia Artificial, en busca de empleo de medio tiempo para
-                      continuar desarrollándome y creciendo permanentemente.
-                      Tengo conocimientos académicos (grado técnico) y autodidactas de desarrollo de
-                      software, soporte de hardware, networking, data management (Microsoft Office y
-                      similares), diseño de páginas web (full-stack) y desarrollos creativos varios.
-                      Soy eficaz para adaptarme y aprender. Tengo experiencia liderando proyectos y
-                      habilidades de comunicación para mantener buenas relaciones de equipo y sociales.
+                <p>
+                  Soy Técnico en Informática Profesional y Personal y estudiante universitario de
+                  tecnicatura en Inteligencia Artificial, en busca de empleo de medio tiempo para
+                  continuar desarrollándome y creciendo permanentemente. Tengo conocimientos académicos 
+                  (grado técnico) y autodidactas de desarrollo de software, soporte de hardware, networking, 
+                  data management (Microsoft Office y similares), diseño de páginas web (full-stack) y 
+                  desarrollos creativos varios. Soy eficaz para adaptarme y aprender. Tengo experiencia 
+                  liderando proyectos y habilidades de comunicación para mantener buenas relaciones 
+                  de equipo y sociales.
                 </p>
               </div>
               <div className="cv-container" style={{ marginTop: '10px' }}>
@@ -513,7 +450,8 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
           </motion.div>
         )}
 
-        { isExpanded && mode === "section" && (
+        {/* Contenido para el modo "section" (expandido) */}
+        {isExpanded && mode === "section" && (
           <div className="section-content" onClick={stopPropagation}>
             <h2 style={{ color: neonColorsData[lockedSide].color }}>
               {neonColorsData[lockedSide].title}
