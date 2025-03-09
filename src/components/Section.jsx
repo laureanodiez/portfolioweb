@@ -11,9 +11,9 @@ const Section = ({ selectedSection, onBack, cardStyle }) => {
   }
 
   return (
-    // NUEVO: Wrapper que cubre toda la pantalla para detectar clicks en el fondo
+    // Wrapper que cubre toda la pantalla para detectar clicks en el fondo
     <div className="section-wrapper" onClick={(e) => { if(e.currentTarget === e.target) onBack(); }}>
-      {/* Se agrega onDoubleClick al contenedor del contenido para permitir salir con doble click */}
+      {/* Contenedor del contenido con doble click para salir */}
       <div className={`section-container ${cardStyle}`} onDoubleClick={onBack}>
         <h1 className="section-title">{content.title}</h1>
         <div className="section-description">

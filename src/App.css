@@ -30,10 +30,13 @@ html, body {
 }
 
 .content {
-  position: relative; /* Posicionamiento relativo para superponer contenido sobre el fondo */
-  width: 100%; /* Ancho completo */
-  height: 100%; /* Alto completo */
-  display: flex; /* Uso de Flexbox para centrar elementos */
-  justify-content: center; /* Centrado horizontal */
-  align-items: center; /* Centrado vertical */
+  position: relative;
+  margin-top: 60px; /* Excluye el header */
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 110;
 }
+
+

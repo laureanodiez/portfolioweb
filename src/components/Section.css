@@ -1,23 +1,56 @@
 /* src/components/Section.css */
 
+.section-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 101;
+}
+
 .section-container {
-  padding: 20px;
-  border-radius: 8px;
+  width: 90vw;
+  max-width: 600px;
   margin: 0 auto;
+  padding: 20px;
+  background: #fff; /* Fondo base que se puede sobreponer según el cardStyle */
+  border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  /* Se usará el fondo y otros estilos heredados de la tarjeta mediante la clase cardStyle */
+  text-align: left;
 }
 
-.back-btn {
-  margin-bottom: 20px;
-  padding: 8px 12px;
-  border: none;
-  background: #007bff;
+/* Estilos de fondo según el cardStyle usando colores sólidos */
+.section-container.minimalista {
+  background-color: #f7f7f7; /* Color claro y neutro */
+  color: #333;
+}
+
+.section-container.cyberpunk {
+  background-color: #1a1a1a; /* Color oscuro, casi negro */
   color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
+.section-container.clasico-elegante {
+  background-color: #fafafa; /* Color muy claro, elegante */
+  color: #222;
+}
+
+.section-container.futurista-transparente {
+  background-color: rgba(255, 255, 255, 0.8); /* Blanco semitransparente */
+  color: #000;
+}
+
+.section-container.oscuro-premium {
+  background-color: #222; /* Fondo oscuro */
+  color: #eee;
+}
+
+/* Títulos y descripción */
 .section-title {
   margin: 0 0 10px;
   font-size: 2em;
@@ -28,6 +61,7 @@
   margin: 10px 0;
 }
 
+/* Media */
 .section-media {
   margin-top: 20px;
   display: flex;
@@ -53,29 +87,4 @@
   color: #007bff;
   text-decoration: none;
   font-weight: bold;
-}
-
-/* src/components/Section.css */
-.section-wrapper {
-  position: fixed;      /* Cubre toda la pantalla */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.05);  /* Fondo muy sutil para indicar el overlay */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 101;         /* Por encima de otros elementos */
-}
-
-.section-container {
-  width: 90vw;              /* Ocupa el 90% del ancho del viewport */
-  max-width: 600px;         /* Ancho máximo para pantallas grandes */
-  margin: 0 auto;
-  padding: 20px;
-  background: #fff;         /* Fondo blanco (puede heredar del cardStyle si es necesario) */
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  text-align: center;
 }
