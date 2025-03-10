@@ -1,7 +1,5 @@
 // src/components/ContactCard.jsx
 // Componente de la tarjeta de contacto con efecto 3D, flip y simulación de grosor.
-// La lógica de carga ha sido removida para concentrarse únicamente en la funcionalidad de la tarjeta.
-
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import './ContactCard.css'; // Estilos específicos para la tarjeta
@@ -16,15 +14,15 @@ const neonColorsData = [
 
 // Función para obtener el offset inicial del label según el lado
 const getLabelOffset = (side) => {
-  if (side === 0) return { y: 20, x: 0 }; // Lado superior
-  if (side === 1) return { x: -20, y: 0 }; // Lado derecho
-  if (side === 2) return { y: -20, x: 0 }; // Lado inferior
-  if (side === 3) return { x: 20, y: 0 }; // Lado izquierdo
+  if (side === 0) return { y: 20, x: 0 };
+  if (side === 1) return { x: -20, y: 0 };
+  if (side === 2) return { y: -20, x: 0 };
+  if (side === 3) return { x: 20, y: 0 };
   return { x: 0, y: 0 };
 };
 
 const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, hasLoaded, setHasLoaded }) => {
-  // Estados propios de la tarjeta (sin incluir la pantalla de carga)
+  // Estados propios de la tarjeta
   const [activeSide, setActiveSide] = useState(null); // Lado activo al pasar el mouse
   const [lockedSide, setLockedSide] = useState(null);   // Lado bloqueado tras click/arrastre
   const [isFlipped, setIsFlipped] = useState(false);      // Estado de flip (parte trasera visible)
@@ -32,10 +30,10 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
   const [mode, setMode] = useState(null);                 // Modo: "cv" o "section"
   const [isDragging, setIsDragging] = useState(false);    // Si se está arrastrando con el mouse
 
-  // Motion values "raw" para la rotación (sin suavizar)
+  // Valores de movimiento para la rotación (sin suavizar)
   const rawRotateX = useMotionValue(0);
   const rawRotateY = useMotionValue(0);
-  // Se utiliza useSpring para suavizar los cambios en la rotación
+  // Suavizado de la rotación con useSpring
   const rotateX = useSpring(rawRotateX, { stiffness: 150, damping: 20 });
   const rotateY = useSpring(rawRotateY, { stiffness: 150, damping: 20 });
 
@@ -48,7 +46,7 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
   const lastMousePos = useRef({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
-  // Efecto para actualizar la inclinación (tilt) cuando no se arrastra
+  // Efecto para actualizar la inclinación cuando no se arrastra
   useEffect(() => {
     if (!isDragging) {
       let computedTiltX = 0, computedTiltY = 0;
@@ -63,6 +61,15 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
       rawRotateY.set(computedTiltY);
     }
   }, [activeSide, lockedSide, isDragging, isExpanded, isFloating, isFlipped, rawRotateX, rawRotateY]);
+
+  // UseEffect para reiniciar la rotación al salir del modo expandido
+  useEffect(() => {
+    if (!isExpanded) {
+      // Resetea la rotación para volver a la posición flotante
+      rawRotateX.set(0);
+      rawRotateY.set(0);
+    }
+  }, [isExpanded, rawRotateX, rawRotateY]);
 
   // Manejo del movimiento del mouse
   const handleMouseMove = (e) => {
@@ -88,7 +95,7 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
     if (!isExpanded && !isDragging) setActiveSide(null);
   };
 
-  // Manejo de clic: activa el estado flotante y bloquea el lado según interacción
+  // Manejo del clic: activa el estado flotante y bloquea el lado según interacción
   const handleCardClick = (e) => {
     if (!isFloating) {
       setIsFloating(true);
@@ -127,6 +134,7 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
     setIsFloating(false);
   };
 
+  // Función para colapsar (volver a estado normal) que reutiliza el doble clic
   const handleCollapse = (e) => {
     handleDoubleClick(e);
   };
@@ -235,30 +243,25 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
   }
   
   /* --- Configuración del flip --- */
-  // El flip se aplica al contenedor que agrupa front, edge y back.
+  // La rotación de flip se aplica al contenedor que agrupa front, edge y back.
   const flipRotation = isFlipped && isExpanded ? 180 : 0;
   
   let expansionStyle = {};
+  // En modo expandido, se define un estilo inline (modificado para responsividad)
   if (isExpanded) {
     expansionStyle = {
-      width: "90vw",
-      height: "90vh",
+      width: "calc(100vw - 40px)",  // ancho responsive
+      height: "calc(100vh - 40px)",   // alto responsive
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
       position: "absolute",
+      margin: "20px"
     };
   }
   
   const showLabel = lockedSide !== null;
   
-  // Cálculo del reflejo (se mantiene el factor)
-  const currentRotateXVal = rawRotateX.get();
-  const currentRotateYVal = rawRotateY.get();
-  const reflectionFactor = 2;
-  const reflectionX = 50 - (currentRotateXVal * reflectionFactor);
-  const reflectionY = 50 - (currentRotateYVal * reflectionFactor);
-
   return (
     <div
       className="card-container"
@@ -306,6 +309,7 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
         onDragStart={handleDragStart}
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}
+        // Animación inicial de la tarjeta (no afecta el flip)
         initial={{ y: '-100vh', rotateZ: -15, scale: 1 }}
         animate={{
           y: 0,
@@ -401,24 +405,32 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
           </motion.div>
         )}
 
-        {/* Contenido para el modo "cv" (expandido) */}
+        {/* Modo "cv" expandido: Se muestra el CV y se agrega opción de descarga */}
         {isExpanded && mode === "cv" && (
           <motion.div
             className="expanded-cv"
             style={{
               position: 'absolute',
-              width: '95vw',
-              height: '95vh',
+              width: 'calc(100vw - 40px)',    // ancho responsive con márgenes
+              height: 'calc(100vh - 40px)',     // alto responsive con márgenes
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              zIndex: 100
+              zIndex: 100,
+              margin: '20px'
             }}
             transition={{ type: 'spring', stiffness: 70, damping: 15 }}
           >
             <div
               className="cv-content"
-              style={{ overflowY: 'auto', padding: '20px', boxSizing: 'border-box', height: '100%' }}
+              style={{
+                overflowY: 'auto',
+                padding: '20px',
+                boxSizing: 'border-box',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
             >
               <div style={{ textAlign: 'center' }}>
                 <h2 className="card-name">Laureano Diez</h2>
@@ -430,21 +442,27 @@ const ContactCard = ({ onSelectSection, isFloating, setIsFloating, cardStyle, ha
                   Soy Técnico en Informática Profesional y Personal y estudiante universitario de
                   tecnicatura en Inteligencia Artificial, en busca de empleo de medio tiempo para
                   continuar desarrollándome y creciendo permanentemente. Tengo conocimientos académicos 
-                  (grado técnico) y autodidactas de desarrollo de software, soporte de hardware, networking, 
-                  data management (Microsoft Office y similares), diseño de páginas web (full-stack) y 
-                  desarrollos creativos varios. Soy eficaz para adaptarme y aprender. Tengo experiencia 
-                  liderando proyectos y habilidades de comunicación para mantener buenas relaciones 
-                  de equipo y sociales.
+                  (grado técnico) y autodidactas en desarrollo de software...
                 </p>
               </div>
-              <div className="cv-container" style={{ marginTop: '10px' }}>
+              <div className="cv-container" style={{ marginTop: '10px', flexGrow: 1 }}>
                 <iframe
                   src={`${process.env.PUBLIC_URL}/cv-espeng.pdf`}
                   title="CV"
                   frameBorder="0"
                   className="cv-viewer"
-                  style={{ width: '100%', height: '400px' }}
+                  style={{ width: '100%', height: 'calc(100% - 50px)' }}  // Se ajusta la altura para usar el espacio disponible
                 ></iframe>
+              </div>
+              {/* Botón para descargar el CV */}
+              <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                <a
+                  href={`${process.env.PUBLIC_URL}/cv-espeng.pdf`}
+                  download
+                  style={{ textDecoration: 'none', color: '#007bff', fontWeight: 'bold' }}
+                >
+                  Descargar CV
+                </a>
               </div>
             </div>
           </motion.div>

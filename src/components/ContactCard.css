@@ -2,19 +2,19 @@
 
 /* Contenedor principal con perspectiva 3D */
 .card-container {
-  position: relative; /* Posicionamiento relativo para contener elementos posicionados internamente */
-  display: inline-block; /* Se muestra en línea */
-  overflow: visible; /* Permite que los elementos internos se desborden si es necesario */
-  perspective: 1000px; /* Define la distancia para efectos 3D */
+  position: relative; 
+  display: inline-block; 
+  overflow: visible; 
+  perspective: 1000px;
 }
 
 /* Tarjeta básica: tamaño de tarjeta de negocio */
 .contact-card {
   position: relative;
-  width: 40vw;               /* Ancho relativo al viewport */
-  max-width: 400px;          /* Tamaño máximo para pantallas grandes */
-  min-width: 250px;          /* Tamaño mínimo para pantallas pequeñas */
-  aspect-ratio: 300 / 180;    /* Mantiene la proporción original (puedes ajustar según convenga) */
+  width: 40vw;
+  max-width: 400px;
+  min-width: 250px;
+  aspect-ratio: 300 / 180;
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -27,342 +27,102 @@
 /* =========================
    NUEVAS REGLAS PARA LABEL Y EXPANSIÓN
    ========================= */
-
-/* Estilo para el label que aparece al hacer click en el costado */
 .section-label {
-  position: absolute; /* Posicionamiento absoluto respecto a su contenedor */
-  z-index: 10; /* Se sitúa por encima de otros elementos */
-  cursor: pointer; /* Indica que es interactivo */
-  background: transparent; /* Fondo transparente */
-  padding: 4px 8px; /* Espaciado interno */
-  font-weight: bold; /* Texto en negrita */
-  font-size: larger; /* Tamaño de fuente mayor */
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Transiciones suaves para opacidad y posición */
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  background: transparent;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-size: larger;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
-/* Para el lado superior: centrado horizontalmente */
 .section-label.top {
-  top: -30%; /* Posición superior negativa para salir del contenedor */
-  left: 50%; /* Centrado horizontal aproximadamente */
-  transform: translateX(-50%) !important; /* Ajusta para centrar */
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%) !important;
 }
 
-/* Para el lado inferior: centrado horizontalmente y rotado 180° */
 .section-label.bottom {
-  bottom: -30%; /* Posición inferior negativa */
-  left: 50%; /* Aproximadamente centrado */
-  transform: translateX(-50%) !important; /* Centrado y rotado */
+  bottom: -30%;
+  left: 50%;
+  transform: translateX(-50%) !important;
 }
 
-/* Para el lado derecho: el texto se muestra en vertical (de arriba hacia abajo) */
 .section-label.right {
-  right: -32%; /* Posición a la derecha fuera del contenedor */
-  top: 47%; /* Centrado verticalmente */
-  transform: translateY(-50%) !important; /* Ajusta para centrar */
-  writing-mode: vertical-lr; /* Muestra el texto de forma vertical */
+  right: -32%;
+  top: 47%;
+  transform: translateY(-50%) !important;
+  writing-mode: vertical-lr;
 }
 
-/* Para el lado izquierdo: el texto se muestra en vertical (de abajo hacia arriba) */
 .section-label.left {
-  left: -25%; /* Posición a la izquierda fuera del contenedor */
-  top: 50%; /* Ajuste vertical */
-  transform: translate(-50%, -50%) rotate(-90deg) !important;  /* Rota el texto para que se lea verticalmente de derecha a izquierda */
+  left: -25%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg) !important;
 }
 
-/* La tarjeta expandida se centra en la pantalla */
+/* Tarjeta expandida: se centra y usa dimensiones completas con márgenes */
 .contact-card.expanded {
-  position: absolute;              /* Posicionamiento absoluto */
-  width: 95vw;                    /* Ancho casi completo */
-  height: 95vh;                   /* Alto casi completo */
-  top: 50%;                      /* Centrado vertical */
-  left: 50%;                     /* Centrado horizontal */
-  transform: translate(-50%, -50%); /* Ajuste para centrar */
-  border-radius: 10px;           /* Bordes redondeados */
-  transition: all 0.5s ease-out; /* Transición suave */
+  position: absolute;
+  border-radius: 10px;
+  transition: all 0.5s ease-out;
 }
 
-/* Contenido de sección en modo "section" (nuevo contenido) */
+/* Contenido de sección en modo "section" */
 .section-content {
-  width: 100%; /* Ocupa todo el ancho */
-  height: 100%; /* Ocupa todo el alto */
-  overflow-y: auto; /* Permite scroll vertical */
-  padding: 20px; /* Espaciado interno */
-  box-sizing: border-box; /* Incluye padding en el tamaño total */
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
-
 
 /* Responsive: en pantallas pequeñas */
 @media (max-width: 480px) {
   .contact-card {
-    width: 95vw;   /* Ocupa casi todo el ancho de la pantalla */
-    height: auto;  /* La altura se ajusta manteniendo el aspect ratio */
-    margin: 20px auto; /* Centrado con márgenes */
+    width: 95vw;
+    height: auto;
+    margin: 20px auto;
   }
 }
 
-
-/* Nuevo bloque: Forzar visibilidad en orientación vertical (portrait) en móviles */
+/* Ajuste para orientación portrait en móviles */
 @media (orientation: portrait) and (max-width: 480px) {
   .contact-card {
-    width: auto;                    /* Aumenta el ancho para aprovechar el viewport */
-    height: auto;                  /* Altura automática para ajustar el contenido */
-    margin: 20px auto;             /* Centrado con márgenes para visibilidad */
-    /* transform: none !important; */ /* Se comenta para permitir las animaciones de la tarjeta */
+    width: auto;
+    height: auto;
+    margin: 20px auto;
   }
 }
-
-
 
 /* Contenedor interno para el flip */
 .flip-container {
-  position: relative; /* Posicionamiento relativo */
-  width: 100%; /* Ocupa todo el ancho del contenedor padre */
-  height: 100%; /* Ocupa todo el alto */
-  transform-style: preserve-3d; /* Permite transformaciones 3D a sus hijos */
-}
-
-/* Contenedor del flip */
-.flip-card {
-  position: relative; /* Posicionamiento relativo */
-  width: 100%; /* Ancho completo */
-  height: 100%; /* Alto completo */
-  transform-style: preserve-3d; /* Permite transformaciones 3D */
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 
 /* Caras de la tarjeta */
 .card-face {
-  position: absolute; /* Posicionamiento absoluto para solapamiento */
-  width: 100%; /* Ancho completo */
-  height: 100%; /* Alto completo */
-  backface-visibility: hidden; /* Oculta la cara trasera cuando se voltea */
-  border-radius: inherit; /* Hereda el borde redondeado */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: inherit;
 }
 
 /* Cara frontal */
 .card-front {
-  background: inherit; /* Usa el fondo heredado */
+  background: inherit;
 }
 
-/* Cara trasera: inicialmente oculta (rotada 180° en Y) */
+/* Cara trasera: se rota para estar oculta inicialmente */
 .card-back {
-  background: inherit; /* Usa el fondo heredado */
-  transform: rotateY(180deg); /* Rotación para ocultarla inicialmente */
-}
-
-/* Contenido interno */
-.card-content {
-  display: flex; /* Uso de Flexbox para organización */
-  flex-direction: column; /* Organiza los elementos en columna */
-  align-items: center; /* Centrado horizontal */
-  padding: 10px 8px; /* Espaciado interno */
-  height: 100%; /* Ocupa todo el alto */
-  box-sizing: border-box; /* Incluye padding en el tamaño */
-  position: relative; /* Posicionamiento relativo para elementos internos */
-}
-
-/* Área scrollable en caso de exceso de contenido */
-.scrollable {
-  overflow-y: auto; /* Permite scroll vertical */
-  width: 100%; /* Ancho completo */
-  height: 100%; /* Alto completo */
-}
-
-/* Botón para colapsar (volver a estado normal) */
-.collapse-btn {
-  position: absolute; /* Posicionamiento absoluto */
-  top: 5px; /* Separación superior */
-  right: 5px; /* Separación a la derecha */
-  background: rgba(0,0,0,0.5); /* Fondo semitransparente */
-  color: #fff; /* Color de texto blanco */
-  border: none; /* Sin borde */
-  border-radius: 5px; /* Bordes redondeados */
-  padding: 3px 6px; /* Espaciado interno */
-  cursor: pointer; /* Cursor pointer */
-  z-index: 10; /* Se muestra por encima de otros elementos */
-}
-
-/* Estilos para el visor del PDF */
-.cv-container {
-  width: 100% !important; /* Ancho completo */
-  height: calc(100% - 100px); /* Alto ajustado para dejar espacio */
-  margin-top: 10px; /* Separación superior */
-}
-
-.cv-viewer {
-  width: 100%; /* Ancho completo */
-  height: 100%; /* Alto completo */
-}
-
-/* Estilos de textos e imágenes */
-.card-header {
-  width: 100%; /* Ancho completo */
-  text-align: center; /* Centrado del texto */
-  margin-bottom: 8px; /* Espacio inferior */
-}
-
-.card-photo {
-  width: 60px; /* Ancho fijo */
-  height: 60px; /* Alto fijo */
-  border-radius: 50%; /* Imagen circular */
-  border: 2px solid #C8102E; /* Borde con color definido */
-  object-fit: cover; /* Ajusta la imagen para cubrir el área */
-}
-
-.card-body {
-  text-align: center; /* Centrado del contenido */
-}
-
-.card-name {
-  font-family: 'Train One', serif; /* Fuente específica */
-  font-size: 20px; /* Tamaño de fuente */
-  margin: 3px 0; /* Margen vertical */
-}
-
-.card-title {
-  font-family: 'Times New Roman', serif; /* Fuente clásica */
-  font-size: 16px; /* Tamaño de fuente */
-  margin: 3px 0; /* Margen vertical */
-}
-
-.card-summary {
-  font-size: 4vh; /* Tamaño pequeño para resúmenes */
-  margin: 3px 0; /* Margen vertical */
-  margin-bottom: 30px;
-  margin-top: 30px;
-}
-
-/* Grupo de botones de acción */
-.btn-group {
-  margin-top: 10px; /* Separación superior */
-  display: flex; /* Uso de Flexbox */
-  justify-content: center; /* Centrado horizontal */
-  gap: 10px; /* Espacio entre botones */
-}
-
-.action-btn {
-  padding: 6px 12px; /* Espaciado interno */
-  border: none; /* Sin borde */
-  border-radius: 5px; /* Bordes redondeados */
-  background: #007bff; /* Color de fondo */
-  color: #fff; /* Color del texto */
-  cursor: pointer; /* Cursor pointer */
-}
-
-/* Estilos de tarjeta elegantes */
-
-/* Minimalista */
-.minimalista {
-  background: #ffffff; /* Fondo blanco */
-  border: 1px solid #ddd; /* Borde claro */
-  color: #333; /* Color del texto oscuro */
-}
-
-/* Cyberpunk */
-.cyberpunk {
-  background: #1a1a1a; /* Fondo oscuro */
-  border: 2px solid #0ff; /* Borde cian */
-  color: #0ff; /* Texto en cian */
-  box-shadow: 0 0 10px #0ff; /* Sombra luminosa */
-}
-
-/* Clásico Elegante */
-.clasico-elegante {
-  background: url('./textured_background.jpg') center/cover; /* Fondo con textura */
-  border: 1px solid gold; /* Borde dorado */
-  color: #333; /* Texto oscuro */
-}
-
-/* Futurista Transparente */
-.futurista-transparente {
-  background: rgba(255, 255, 255, 0.2); /* Fondo semitransparente */
-  backdrop-filter: blur(10px); /* Efecto de desenfoque en el fondo */
-  border: 1px solid rgba(255, 255, 255, 0.5); /* Borde semitransparente */
-  color: #fff; /* Texto blanco */
-}
-
-/* Oscuro Premium */
-.oscuro-premium {
-  background: #000; /* Fondo negro */
-  border: 1px solid #aaa; /* Borde gris claro */
-  color: #eee; /* Texto claro */
-}
-
-/*
-  Código comentado y deshabilitado para efectos de neón (se conserva sin cambios)
-*/
-
-/* ======= Pantalla de carga ======= */
-.loading-screen {
-  position: fixed; /* Posicionamiento fijo para cubrir la pantalla */
-  top: 0; /* Al inicio de la página */
-  left: 0; /* Al inicio de la página */
-  width: 100vw; /* Ancho de la ventana */
-  height: 100vh; /* Alto de la ventana */
-  background: black; /* Fondo negro */
-  color: white; /* Texto blanco */
-  display: flex; /* Uso de Flexbox para centrar */
-  flex-direction: column; /* Organización vertical */
-  justify-content: center; /* Centrado vertical */
-  align-items: center; /* Centrado horizontal */
-  font-size: 18px; /* Tamaño de fuente */
-  z-index: 1000; /* Se muestra por encima de otros elementos */
-}
-
-/* ======= Pentágono girando ======= */
-.pentagon-loader {
-  width: 50px; /* Ancho fijo */
-  height: 50px; /* Alto fijo */
-  position: relative; /* Posicionamiento relativo */
-  animation: rotatePentagon 2s linear infinite; /* Animación de rotación infinita */
-}
-
-.pentagon-loader::before {
-  content: ""; /* Contenido vacío para el pseudo-elemento */
-  position: absolute; /* Posicionamiento absoluto */
-  width: 50px; /* Ancho fijo */
-  height: 50px; /* Alto fijo */
-  background: white; /* Fondo blanco */
-  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); /* Forma de pentágono */
-}
-
-/* Animación para rotar el pentágono */
-@keyframes rotatePentagon {
-  0% {
-    transform: rotate(0deg); /* Rotación inicial */
-  }
-  100% {
-    transform: rotate(360deg); /* Rotación completa */
-  }
-}
-
-/* ======= Texto debajo del pentágono ======= */
-.loading-text {
-  margin-top: 10px; /* Separación superior */
-  font-size: 14px; /* Tamaño de fuente */
-  opacity: 0.8; /* Transparencia para suavizar el texto */
-}
-
-
-/* NUEVO: Ajuste para el logo pentágono para que se centre y tenga tamaño mayor */
-.pentagon-logo {
-  display: block;       /* Permite centrar */
-  margin: 0 auto;       /* Centrado horizontal */
-}
-
-/* NUEVO: Regla para la cara frontal y trasera del flip */
-/* Se asegura que ambas caras tengan backface-visibility oculta */
-.flip-card .card-face {
-  backface-visibility: hidden;  
-  -webkit-backface-visibility: hidden;
-}
-
-/* NUEVO: La cara trasera se rota 180° en Y para funcionar como reverso */
-.flip-card .card-back {
+  background: inherit;
   transform: rotateY(180deg);
-}
-
-/* NUEVO: Para la cara trasera, centramos el contenido */
-.card-back {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -370,41 +130,213 @@
   text-align: center;
 }
 
-/* NUEVO: Estilo para el efecto de reflejo dinámico; la regla base se usa si no se calcula inline */
-.card-reflection {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* Contenido interno */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Área scrollable */
+.scrollable {
+  overflow-y: auto;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  transform: translateZ(1px);
-  /* Esta regla de background se sobreescribe inline en el JSX para efecto dinámico */
 }
 
-/* NUEVO: Color del pentágono según el estilo de la tarjeta */
+/* Botón para colapsar */
+.collapse-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 6px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Estilos para el visor del PDF */
+.cv-container {
+  width: 100% !important;
+  height: calc(100% - 100px);
+  margin-top: 10px;
+}
+
+.cv-viewer {
+  width: 100%;
+  height: 100%;
+}
+
+/* Estilos de textos e imágenes */
+.card-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.card-photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #C8102E;
+  object-fit: cover;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.card-name {
+  font-family: 'Train One', serif;
+  font-size: 20px;
+  margin: 3px 0;
+}
+
+.card-title {
+  font-family: 'Times New Roman', serif;
+  font-size: 16px;
+  margin: 3px 0;
+}
+
+.card-summary {
+  font-size: 4vh;
+  margin: 3px 0;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+/* Grupo de botones de acción */
+.btn-group {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Estilos de tarjeta elegantes */
+.minimalista {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.cyberpunk {
+  background: #1a1a1a;
+  border: 2px solid #0ff;
+  color: #0ff;
+  box-shadow: 0 0 10px #0ff;
+}
+
+.clasico-elegante {
+  background: url('./textured_background.jpg') center/cover;
+  border: 1px solid gold;
+  color: #333;
+}
+
+.futurista-transparente {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+.oscuro-premium {
+  background: #000;
+  border: 1px solid #aaa;
+  color: #eee;
+}
+
+/* Pentágono giratorio (loading) */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  z-index: 1000;
+}
+
+.pentagon-loader {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  animation: rotatePentagon 2s linear infinite;
+}
+
+.pentagon-loader::before {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: white;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+@keyframes rotatePentagon {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Estilos para el logo pentágono según el estilo de la tarjeta */
 .minimalista .pentagon-logo {
-  background: #000000;  /* Fondo blanco para minimalista */
+  background: #000000;
 }
 .cyberpunk .pentagon-logo {
-  background: #0ff;     /* Fondo cian para cyberpunk */
+  background: #0ff;
 }
 .clasico-elegante .pentagon-logo {
-  background: gold;     /* Fondo dorado para clásico elegante */
+  background: gold;
 }
 .futurista-transparente .pentagon-logo {
-  background: rgba(255, 153, 0, 0.482); /* Fondo semitransparente */
+  background: rgba(255, 153, 0, 0.482);
 }
 .oscuro-premium .pentagon-logo {
-  background: #aaa;     /* Fondo gris claro para oscuro premium */
+  background: #aaa;
 }
 
-
-
-
-/* NUEVO: Estilo base para el contenido del CV */
+/* Estilo base para el contenido del CV */
 .cv-content {
-  border-radius: 10px;  /* Bordes redondeados para mantener consistencia */
+  border-radius: 10px;
 }
 
-
+/* (Opcional) Estilo para el botón de descarga del CV */
+.download-cv-btn {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
