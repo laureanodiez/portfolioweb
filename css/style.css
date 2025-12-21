@@ -1,0 +1,663 @@
+/* — Reset global — */
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:hidden; }
+
+/* — 3D container — */
+#threeContainer {
+  display: none;               /* oculto hasta pulsar tarjeta */
+  position: absolute; inset:0;
+  z-index: 5;                  /* por encima del mainContent */
+}
+
+/* — SPLASH SCREEN — */
+#splash {
+  position:absolute; inset:0; overflow:hidden; z-index:10;
+}
+#splashContent {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  z-index:11; /* sobre paneles */
+}
+#splashName {
+  color:#fff; font-size:2.5rem; margin-bottom:1rem; text-align:center;
+}
+#pentagon {
+  width:100px; height:100px; margin-bottom:1rem;
+  background:#fff;
+  clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);
+  animation:spin 2s linear infinite;
+}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+#splashVersion {
+  color:#fff; font-size:0.8rem; text-align:center;
+}
+.panel {
+  position:absolute; left:0; width:100%; height:50%; background:#000;
+  z-index:10; transform:translateY(0);
+}
+.panel.top    { top:0; }
+.panel.bottom { bottom:0; }
+.splash-end .panel.top    { animation:slideUp   .8s forwards; }
+.splash-end .panel.bottom { animation:slideDown .8s forwards; }
+@keyframes slideUp  { to{transform:translateY(-100%);} }
+@keyframes slideDown{ to{transform:translateY(100%);} }
+
+/* — Test message (puede conservarse o eliminarse) — */
+#testMessage {
+  position:absolute; top:1rem; left:1rem;
+  background:rgba(255,255,255,0.8); padding:.5rem 1rem; border-radius:4px;
+}
+
+/* — Tarjeta y menús — */
+#card {
+  position:absolute; width:80vw; max-width:300px; aspect-ratio:8/5;
+  background:#fff; box-shadow:0 4px 8px rgba(0,0,0,0.3);
+  top:-100vh; left:0; transform-origin:center center;
+  transition:all .5s ease;
+  cursor:pointer; /* añadido para indicar interactividad */
+}
+#menuTop,#menuBottom {
+  position:absolute; inset-inline:0; height:60px;
+  display:flex; justify-content:center; align-items:center;
+  opacity:0; transition:opacity .5s ease;
+}
+#menuTop    { top:0; }
+#menuBottom { bottom:0; gap:1rem; }
+#menuPentagon {
+  width:30px; height:30px; background:#fff;
+  clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);
+}
+#menuBottom button {
+  padding:.5rem 1rem; border:none; border-radius:4px;
+  background:rgba(255,255,255,.8); font-family:'Geo',sans-serif;
+}
+
+
+/* — CONTENT SCROLLABLE — */
+#mainContent {
+  display: none;
+  position: relative;
+  inset:0;
+  overflow-y: auto;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a, #000000, #2d2d2d);
+}
+
+/* — CCTV‑style mini‑screen — */
+#screenWrapper {
+  display: none;                /* oculto por defecto */
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  top: -220px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  border: 6px solid #222;
+  border-radius: 40px 40px 100px 100px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+  transition: top 1s ease;
+  z-index: 10;
+}
+#screenWrapper.visible {
+  display: block;
+  top: 50px; /* posición final al bajar */
+}
+#closeScanner {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 6;
+}
+
+/* — BANNER FIJO (aparece solo al hacer scroll) — */
+#stickyBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(10px);
+  padding: 1rem 0;
+  text-align: center;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.5s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+#stickyBanner.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  display: block !important;
+}
+
+#bannerTitle {
+  color: #fff;
+  font-size: 1.5rem;
+  margin: 0;
+  font-family: 'Geo', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+#bannerSubtitle {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin: 0.3rem 0 0 0;
+  font-family: 'Geo', sans-serif;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* — MENÚS — */
+#menuSection {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3rem;
+  z-index: 50;
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+#menuSection.visible {
+  opacity: 1;
+}
+
+/* Menús descienden con el scroll y quedan debajo del banner */
+#menuSection.scrolled {
+  top: 5rem; /* Debajo del banner fijo */
+  bottom: auto;
+  transform: translateX(-50%) scale(0.9);
+}
+
+.menu-title {
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: 'Geo', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  margin: 0;
+}
+
+/* Efectos neón específicos para cada menú */
+.menu-title[data-section="desarrollo"]:hover {
+  color: #00ff00;
+  text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
+  transform: scale(1.2);
+}
+
+.menu-title[data-section="musica"]:hover {
+  color: #ff6600;
+  text-shadow: 0 0 20px #ff6600, 0 0 30px #ff6600, 0 0 40px #ff6600;
+  transform: scale(1.2);
+}
+
+.menu-title[data-section="videojuegos"]:hover {
+  color: #0066ff;
+  text-shadow: 0 0 20px #0066ff, 0 0 30px #0066ff, 0 0 40px #0066ff;
+  transform: scale(1.2);
+}
+
+.menu-title[data-section="diseno"]:hover {
+  color: #ffff00;
+  text-shadow: 0 0 20px #ffff00, 0 0 30px #ffff00, 0 0 40px #ffff00;
+  transform: scale(1.2);
+}
+
+/* — FLECHA VOLVER ARRIBA — */
+#backToTop {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(100px);
+  transition: all 0.3s ease;
+}
+
+#backToTop.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  display: flex !important;
+}
+
+#backToTop:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-5px);
+}
+
+#arrowUp {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* — CONTENIDO SCROLLABLE — */
+.pageContent {
+  margin-top: 100vh; /* Empieza después de la vista inicial */
+  padding: 2rem;
+  min-height: 100vh;
+  transition: padding-top 0.5s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Habilitar contenido cuando la carta está flotando */
+body.scroll-enabled .pageContent {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Ajustar padding cuando el banner está visible */
+body.banner-visible .pageContent {
+  padding-top: 6rem; /* Espacio para el banner fijo */
+}
+
+/* Deshabilitar scroll cuando la carta no está elevada */
+body.scroll-disabled {
+  overflow: hidden;
+}
+
+body.scroll-enabled {
+  overflow-y: auto;
+}
+
+/* Ocultar completamente contenido cuando no flota */
+body.scroll-disabled .pageContent { display: none; }
+
+/* Utilidad para ocultar elementos */
+.hidden { display: none !important; }
+
+.content-section {
+  margin-bottom: 4rem;
+  padding: 2rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease;
+}
+
+.content-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content-section h3 {
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-family: 'Geo', sans-serif;
+}
+
+.content-section p {
+  color: #ccc;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+
+
+/* ——— CRT / MONITOR EFFECT ——— */
+
+/* 1. Contenedor principal: define la forma de la pantalla */
+.crt-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999; /* Por encima de TODO */
+  pointer-events: none; /* Permite clicks a través de la capa */
+  overflow: hidden;
+  
+  /* La curvatura de la pantalla física */
+  background: transparent;
+  box-shadow: 
+    inset 0 0 3rem rgba(0,0,0,0.7), 
+    inset 0 0 8rem rgba(0,0,0,0.4),
+    inset 0 0 2px rgba(20, 20, 20, 0.5); /* Borde sutil */
+}
+
+/* 2. Scanlines: Las líneas horizontales típicas */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.2)
+  );
+  background-size: 100% 4px; /* Grosor de línea */
+  animation: scrollScanlines 10s linear infinite; /* Movimiento lento */
+  opacity: 0.6;
+}
+
+/* 3. Glow/Parpadeo y Curvatura óptica */
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(18, 16, 16, 0) 50%, rgba(0,0,0,0.9) 100%);
+  animation: flicker 0.15s infinite;
+}
+
+/* Opcional: Esto añade un brillo verde/fósforo a tus textos existentes */
+body {
+  text-shadow: 0 0 2px rgba(200, 255, 200, 0.3), 0 0 5px rgba(200, 255, 200, 0.1);
+}
+
+/* — ANIMACIONES — */
+
+/* Simula el barrido vertical */
+@keyframes scrollScanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* El parpadeo sutil de los 60Hz */
+@keyframes flicker {
+  0% { opacity: 0.02; }
+  5% { opacity: 0.05; }
+  10% { opacity: 0.02; }
+  15% { opacity: 0.06; }
+  20% { opacity: 0.02; }
+  50% { opacity: 0.02; }
+  55% { opacity: 0.05; }
+  60% { opacity: 0.02; }
+  100% { opacity: 0.02; }
+}
+
+/* — TRUCO DE CURVATURA EXTRA (Opcional) — */
+/* Si quieres que los bordes se vean realmente redondos como una TV vieja */
+.crt-container::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+
+
+/* ——— NUEVOS ESTILOS PARA LA SECUENCIA ——— */
+
+/* Agregamos profundidad al escenario principal */
+#mainContent {
+  perspective: 1200px; /* Mientras menor el número, más dramático el 3D */
+  overflow: hidden;    /* Para que nada se salga de la pantalla */
+}
+
+
+/* ESTILO DEL BOTÓN CONECTAR */
+#connect-btn {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  /* Estética Terminal */
+  font-family: 'Geo', sans-serif;
+  color: #0f0;                /* Texto verde */
+  background: rgba(0,0,0,0.9);
+  border: 1px solid #0f0;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 100;               /* Por encima del pentágono */
+  
+  /* Inicialmente invisible */
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect del botón */
+#connect-btn:hover {
+  background: #0f0;
+  color: #000;
+  box-shadow: 0 0 15px #0f0;
+}
+
+/* ESTADO 1: FLOTANDO (Cuando la tarjeta sube) */
+/* Activaremos esta clase con JS */
+#card.floating {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Sombra más fuerte al volar */
+}
+
+/* Cuando flota, mostramos el botón */
+#card.floating #connect-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ESTADO 2: DOCKED (Conectada al sistema) */
+#card.docked {
+  /* Forzamos la posición abajo al centro */
+  top: auto !important;
+  bottom: -40px !important;   /* Se hunde un poco en el borde */
+  left: 50% !important;
+  
+  /* LA MAGIA 3D: La acostamos 70 grados */
+  transform: translateX(-50%) rotateX(60deg) scale(0.7) !important;
+  
+  /* Feedback visual de conexión */
+  border: 2px solid #0f0;
+  box-shadow: 0 -20px 40px rgba(0, 255, 0, 0.4); /* Luz verde hacia arriba */
+  z-index: 200; /* Siempre encima */
+  transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Ocultar el botón cuando ya está conectada */
+#card.docked #connect-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ——— EL HOLOGRAMA (PANTALLA) ——— */
+.hologram-screen {
+  width: 100%;
+  height: 100%;
+  
+  /* Estilo visual */
+  background: rgba(0, 15, 0, 0.95);
+  border: 1px solid rgba(0, 255, 0, 0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2), inset 0 0 50px rgba(0,20,0,0.8);
+  
+  /* Alineación */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  /* ESTADO INICIAL (APAGADO) */
+  /* Importante: Origen en el centro para que crezca hacia los lados */
+  transform-origin: center center; 
+  transform: scale(0, 0.05); /* Empieza como una línea horizontal fina en el centro */
+  opacity: 0;
+  
+  /* Animación de apertura suave */
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+
+/* ESTADO ACTIVO (ENCENDIDO) */
+#hologram-deck.active .hologram-screen {
+  transform: scale(1, 1); /* Se expande a tamaño completo */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#hologram-deck {
+  position: absolute;
+  
+  /* COORDENADAS PARA CENTRARLO */
+  top: 15vh;    /* 15% de margen superior (aire arriba) */
+  bottom: 25vh; /* 25% de margen inferior (espacio para la tarjeta) */
+  left: 5vw;    /* 5% margen izquierdo */
+  right: 5vw;   /* 5% margen derecho */
+  
+  /* Opcional: Ancho máximo para que no se estire infinito en PC */
+  max-width: 900px;
+  margin: 0 auto; /* Centra el bloque si alcanza el max-width */
+  
+  pointer-events: none; /* El contenedor es invisible al mouse */
+  z-index: 50;
+  
+  /* Aseguramos que el contenido interno (la pantalla verde) ocupe todo este espacio */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* — ESTILOS DEL CONTENIDO INTERNO — */
+.holo-header {
+  color: #0f0;
+  font-family: 'Geo';
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px #0f0;
+}
+
+.holo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 columnas */
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.holo-item {
+  border: 1px solid #0f0;
+  color: #fff;
+  padding: 1.5rem;
+  text-align: center;
+  font-family: 'Geo';
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.3s;
+  background: rgba(0,0,0,0.5);
+}
+
+.holo-item:hover {
+  background: #0f0;
+  color: #000;
+  box-shadow: 0 0 20px #0f0;
+  transform: scale(1.05);
+}
+
+.holo-footer {
+  margin-top: 3rem;
+}
+
+#disconnect-btn {
+  background: transparent;
+  border: 1px solid #ff0055;
+  color: #ff0055;
+  padding: 5px 15px;
+  font-family: 'Geo';
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#disconnect-btn:hover {
+  background: #ff0055;
+  color: #fff;
+}
+
+/* CLASE UTILITARIA PARA OCULTAR COSAS VIEJAS SI MOLESTAN */
+.hidden { display: none !important; }
+
+
+
+/* ——— TÍTULOS (ESTADO FLOTANTE) ——— */
+#bigTitle {
+  position: absolute;
+  top: 3rem; /* Mucho más arriba (antes era 15%) */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 5;
+  transition: all 0.5s ease;
+  width: 100%; /* Asegura que se centre bien */
+  pointer-events: none; /* Para que no moleste a clicks en esa zona */
+}
+
+#bigTitle.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+#bigTitle.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  pointer-events: none;
+}
+
+#mainTitle {
+  color: #fff;
+  font-size: 3.5rem; /* Grande e impactante */
+  margin: 0;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+#subtitle {
+  color: #0f0; /* Verde terminal */
+  font-size: 1.2rem;
+  letter-spacing: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* ——— ANIMACIÓN DE APAGADO (TV OFF) ——— */
+
+@keyframes tvOff {
+  0% {
+    transform: scale(1, 1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1, 0.005); /* Se aplasta verticalmente (línea horizontal) */
+    opacity: 0.8;
+    filter: brightness(2); /* Flash de luz al comprimirse */
+  }
+  100% {
+    transform: scale(0, 0); /* Se comprime horizontalmente hasta desaparecer */
+    opacity: 0;
+  }
+}
+
+.tv-closing {
+  /* Forzamos que la animación tenga prioridad sobre la transición normal */
+  animation: tvOff 0.5s forwards ease-in-out !important; 
+}

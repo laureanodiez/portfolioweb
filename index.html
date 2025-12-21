@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laureano Diez:</title>
+  <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- UMD Three.js r147 y GLTFLoader -->
+  <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@v0.163.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@v0.163.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <div id="splashContent">
+      <div id="splashName">Laureano Diez</div>
+      <div id="pentagon"></div>
+      <div id="splashVersion">Todos los datos reservados – v1.0</div>
+    </div>
+    <div class="panel top"></div>
+    <div class="panel bottom"></div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent">
+  
+    <div id="card">
+        <div id="connect-btn">
+            [ INICIAR ENLACE ]
+        </div>
+    </div>
+
+
+    <div id="bigTitle" class="hidden">
+      <h1 id="mainTitle">Laureano Diez</h1>
+      <h2 id="subtitle">PORTFOLIO</h2>
+    </div>
+
+
+    <div id="hologram-deck" class="hidden">
+        <div class="hologram-screen">
+            <h2 class="holo-header">Laureano Diez - SISTEMA EN LÍNEA</h2>
+            
+            <div class="holo-grid">
+                <div class="holo-item" data-target="desarrollo">DESARROLLO</div>
+                <div class="holo-item" data-target="musica">MÚSICA</div>
+                <div class="holo-item" data-target="videojuegos">VIDEOJUEGOS</div>
+                <div class="holo-item" data-target="diseno">DISEÑO</div>
+            </div>
+            
+            <div class="holo-footer">
+                <button id="disconnect-btn">DESCONECTAR</button>
+            </div>
+        </div>
+    </div>
+
+
+  </div>
+
+
+  <!-- Sonidos -->
+  <audio id="slideSound" src="assets/sounds/slide.mp3"></audio>
+  <audio id="liftSound" src="assets/sounds/lift.mp3"></audio>
+
+  <script src="js/main.js"></script>
+
+  <div class="crt-container">
+    <div class="scanlines"></div>
+    <div class="glow"></div>
+  </div>
+
+</body>
+</html>
