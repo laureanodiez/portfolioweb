@@ -47,22 +47,113 @@
 
 
     <div id="hologram-deck" class="hidden">
-        <div class="hologram-screen">
-            <h2 class="holo-header">Laureano Diez - SISTEMA EN LÍNEA</h2>
-            
-            <div class="holo-grid">
-                <div class="holo-item" data-target="desarrollo">DESARROLLO</div>
-                <div class="holo-item" data-target="musica">MÚSICA</div>
-                <div class="holo-item" data-target="videojuegos">VIDEOJUEGOS</div>
-                <div class="holo-item" data-target="diseno">DISEÑO</div>
-            </div>
-            
-            <div class="holo-footer">
-                <button id="disconnect-btn">DESCONECTAR</button>
-            </div>
+      <div class="hologram-screen">
+        
+        <div class="holo-header-bar">
+          <span id="system-status">SYSTEM READY // USER: GUEST</span>
+          <button id="disconnect-btn">X</button>
         </div>
-    </div>
 
+        <div class="holo-body">
+          
+          <nav class="holo-sidebar">
+            <button class="nav-btn active" data-target="home" data-theme="">
+              <span class="icon">⌂</span> <span class="label">MAIN</span>
+            </button>
+            
+            <button class="nav-btn" data-target="dev" data-theme="theme-dev">
+              <span class="icon">⚡</span>
+              <span class="label">DEV</span>
+            </button>
+            
+            <button class="nav-btn" data-target="games" data-theme="theme-games">
+              <span class="icon">🎮</span>
+              <span class="label">GAME</span>
+            </button>
+            
+            <button class="nav-btn" data-target="music" data-theme="theme-music">
+              <span class="icon">♫</span>
+              <span class="label">AUDIO</span>
+            </button>
+          </nav>
+
+          <main class="holo-content-area">
+            
+            <section id="view-home" class="holo-view active">
+              
+              <div class="home-grid">
+                
+                <div class="profile-card">
+                  <div class="avatar-frame">
+                    <img src="assets/img/profile.jpeg" alt="Profile" class="avatar-img">
+                    <div class="scanner-line"></div> </div>
+                  <div class="id-badge">
+                    ID: 948-221-X<br>
+                    STATUS: ONLINE
+                  </div>
+                </div>
+
+                <div class="bio-panel">
+                  <h2 class="section-title">PERFIL DE USUARIO</h2>
+                  
+                  <div class="stats-box">
+                    <div class="stat-row">
+                      <span class="label">ROL:</span>
+                      <span class="value">FULL STACK DEV</span>
+                    </div>
+                    <div class="stat-row">
+                      <span class="label">NIVEL:</span>
+                      <span class="value">JR ADVANCED</span>
+                    </div>
+                    <div class="stat-row">
+                      <span class="label">UBICACIÓN:</span>
+                      <span class="value">ARGENTINA</span>
+                    </div>
+                    <div class="stat-row">
+                      <span class="label">ESPECIALIDAD:</span>
+                      <span class="value">IA / GAMEDEV / WEB</span>
+                    </div>
+                  </div>
+
+                  <div class="bio-text">
+                    <p>Estudiante técnico en Inteligencia Artificial y desarrollador apasionado por la fusión entre lo retro y lo moderno. </p>
+                    <p>Actualmente construyendo experiencias web inmersivas y videojuegos 2D.</p>
+                  </div>
+                </div>
+              
+              </div>
+
+              <div class="activity-log">
+                <div class="log-title">> RECENT_LOGS:</div>
+                <ul class="log-list">
+                  <li>[2025-10-31] Iniciado protocolo GDD para proyecto "1976"</li>
+                  <li>[2025-12-19] Examen final "Programación 3" completado [SUCCESS]</li>
+                  <li>[2025-12-21] Sistema de portfolio actualizado a v2.0</li>
+                </ul>
+              </div>
+
+            </section>
+
+            <section id="view-dev" class="holo-view hidden">
+              <h2 class="section-title">MÓDULO DE DESARROLLO</h2>
+              <p>> Cargando repositorios...</p>
+              <p>> Analizando stack tecnológico...</p>
+            </section>
+
+            <section id="view-games" class="holo-view hidden">
+              <h2 class="section-title">SIMULACIONES LÚDICAS</h2>
+              <p>Librería de juegos pixel art inicializada.</p>
+            </section>
+
+            <section id="view-music" class="holo-view hidden">
+              <h2 class="section-title">FRECUENCIAS DE AUDIO</h2>
+              <p>Sintetizadores en línea. Reproduciendo...</p>
+            </section>
+            
+          </main>
+        </div>
+      </div>
+    </div>
 
   </div>
 

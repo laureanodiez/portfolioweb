@@ -15,6 +15,82 @@ const disconnectBtn = document.getElementById('disconnect-btn');
 const bigTitle = document.getElementById('bigTitle');
 const hologramScreen = document.querySelector('.hologram-screen'); // Para animar la pantalla específica
 
+
+const navBtns = document.querySelectorAll('.nav-btn');
+const views = document.querySelectorAll('.holo-view');
+//const hologramScreen = document.querySelector('.hologram-screen'); // Para cambiarle la clase
+
+
+
+/* ——— EFECTO TEXT SCRAMBLE / DECODER ——— */
+class TextScramble {
+  constructor(el) {
+    this.el = el;
+    this.chars = '!<>-_\\/[]{}—=+*^?#________'; // Caracteres "basura"
+    this.update = this.update.bind(this);
+  }
+  
+  setText(newText) {
+    const oldText = this.el.innerText;
+    const length = Math.max(oldText.length, newText.length);
+    const promise = new Promise((resolve) => this.resolve = resolve);
+    
+    this.queue = [];
+    for (let i = 0; i < length; i++) {
+      const from = oldText[i] || '';
+      const to = newText[i] || '';
+      const start = Math.floor(Math.random() * 40); // Velocidad de inicio
+      const end = start + Math.floor(Math.random() * 40); // Duración
+      this.queue.push({ from, to, start, end });
+    }
+    
+    cancelAnimationFrame(this.frameRequest);
+    this.frame = 0;
+    this.update();
+    return promise;
+  }
+  
+  update() {
+    let output = '';
+    let complete = 0;
+    
+    for (let i = 0, n = this.queue.length; i < n; i++) {
+      let { from, to, start, end, char } = this.queue[i];
+      
+      if (this.frame >= end) {
+        complete++;
+        output += to;
+      } else if (this.frame >= start) {
+        if (!char || Math.random() < 0.28) {
+          char = this.randomChar();
+          this.queue[i].char = char;
+        }
+        // Envolvemos el caracter random en un span para darle color verde matrix si queremos
+        output += `<span class="dud">${char}</span>`; 
+      } else {
+        output += from;
+      }
+    }
+    
+    this.el.innerHTML = output;
+    
+    if (complete === this.queue.length) {
+      this.resolve();
+    } else {
+      this.frameRequest = requestAnimationFrame(this.update);
+      this.frame++;
+    }
+  }
+  
+  randomChar() {
+    return this.chars[Math.floor(Math.random() * this.chars.length)];
+  }
+}
+
+
+
+
+
 // ——— LÓGICA DE ESTADOS ———
 // 0: Mesa (Tirada) | 1: Flotando (Esperando) | 2: Conectada (Holograma)
 let currentState = 0;
@@ -62,7 +138,7 @@ cardEl.addEventListener('click', () => {
     cardEl.style.transition = 'all .5s ease-out';
     cardEl.style.left = cx + 'px';
     cardEl.style.top = cy + 'px';
-    cardEl.style.transform = 'rotate(0deg) scale(1.2)';
+    cardEl.style.transform = 'rotate(0deg) scale(1.3)';
     
     cardEl.classList.add('floating');
     
@@ -102,16 +178,18 @@ connectBtn.addEventListener('click', (e) => {
   e.stopPropagation(); 
   
   if (currentState === 1) {
+    // 1. Físicas
+    cardEl.style.transform = '';
     cardEl.classList.remove('floating');
     cardEl.classList.add('docked');
     
-    // OCULTAR TÍTULO (Para limpiar la vista del holograma)
+    // 2. Ocultar título grande
     bigTitle.classList.remove('visible');
     bigTitle.classList.add('hidden');
     
-    // Mostrar Holograma
+    // 3. Mostrar Holograma
     hologramDeck.classList.remove('hidden');
-    hologramScreen.classList.remove('tv-closing'); // Asegurarnos que no tenga la animación de cierre
+    hologramScreen.classList.remove('tv-closing');
     
     setTimeout(() => {
         hologramDeck.classList.add('active');
@@ -119,6 +197,34 @@ connectBtn.addEventListener('click', (e) => {
     
     currentState = 2;
     if(slideSnd) { slideSnd.currentTime=0; slideSnd.play().catch(e => {}); }
+
+    // 4. Efecto de texto del header
+    // Asegúrate de que 'fx' esté definido arriba en tu código como vimos antes
+    if(typeof fx !== 'undefined') {
+        fx.setText('LAUREANO DIEZ // SYSTEM');
+    }
+
+    // ——— RESET MANUAL (A PRUEBA DE FALLOS) ———
+    
+    // A. Visual de Botones: Apagar todos, prender Home
+    navBtns.forEach(btn => btn.classList.remove('active'));
+    const homeBtnRef = document.querySelector('.nav-btn[data-target="home"]');
+    if(homeBtnRef) homeBtnRef.classList.add('active');
+
+    // B. Vistas: Ocultar todas, mostrar Home
+    views.forEach(v => {
+        v.classList.add('hidden');
+        v.classList.remove('active');
+    });
+    const homeView = document.getElementById('view-home');
+    if(homeView) {
+        homeView.classList.remove('hidden');
+        // Pequeño timeout para permitir que el navegador procese el cambio de display antes de la opacidad
+        setTimeout(() => homeView.classList.add('active'), 50);
+    }
+
+    // C. Tema de Color: Limpiar clases para volver al verde default (:root)
+    hologramScreen.classList.remove('theme-dev', 'theme-games', 'theme-music');
   }
 });
 
@@ -175,4 +281,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Estado inicial: sin scroll y sin contenido bajo
   document.body.classList.add('scroll-disabled');
+});
+
+
+document.addEventListener('mousemove', (e) => {
+  // Solo si está flotando
+  if (currentState === 1) {
+    const x = e.clientX;
+    const y = e.clientY;
+    
+    // Centro de la pantalla
+    const midX = window.innerWidth / 2;
+    const midY = window.innerHeight / 2;
+    
+    // Calcular distancia del mouse al centro (valores pequeños, ej: -15 a +15 grados)
+    const rotateY = ((x - midX) / midX) * 20; // Rota en eje Y según posición X
+    const rotateX = ((y - midY) / midY) * -20; // Rota en eje X inverso
+    
+    // Aplicar transformación SUAVE
+    // Nota: Mantenemos el scale(1.2) que ya tenía al flotar
+    cardEl.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.3)`;
+  }
+});
+
+
+
+
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // 1. Manejo visual de botones (Active state)
+    navBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // 2. Mostrar la vista correspondiente
+    const targetId = btn.dataset.target; // "dev", "games", etc.
+    
+    views.forEach(view => {
+      view.classList.add('hidden');
+      view.classList.remove('active');
+    });
+    
+    const targetView = document.getElementById(`view-${targetId}`);
+    if(targetView) {
+      targetView.classList.remove('hidden');
+      targetView.classList.add('active');
+    }
+    
+    // 3. CAMBIO DE TEMA DE COLOR (La magia)
+    // Primero borramos cualquier tema anterior
+    hologramScreen.classList.remove('theme-dev', 'theme-games', 'theme-music');
+    
+    // Si el botón tiene un tema definido, lo agregamos
+    const themeClass = btn.dataset.theme;
+    if (themeClass) {
+      hologramScreen.classList.add(themeClass);
+    }
+    
+    // Opcional: Sonido de "click" de interfaz
+    // playUiClick();
+  });
 });

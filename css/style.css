@@ -1,3 +1,30 @@
+:root {
+  /* COLOR BASE (Verde Terminal) */
+  /* Guardamos los canales RGB separados para poder usar transparencia después */
+  --holo-rgb: 0, 255, 0; 
+  
+  /* Color del texto cuando un botón está ACTIVO (Verde muy oscuro, no negro) */
+  --holo-dark-text: #002b00; 
+}
+
+/* TEMA: DESARROLLO (Morado) */
+.theme-dev {
+  --holo-rgb: 189, 0, 255;
+  --holo-dark-text: #2a0038; /* Morado muy oscuro */
+}
+
+/* TEMA: VIDEOJUEGOS (Cyan/Azul Futuro) */
+.theme-games {
+  --holo-rgb: 0, 234, 255;
+  --holo-dark-text: #00353b; /* Azul muy oscuro */
+}
+
+/* TEMA: MÚSICA (Ámbar/Naranja Retro) */
+.theme-music {
+  --holo-rgb: 255, 174, 0;
+  --holo-dark-text: #3d2a00; /* Marrón/Naranja oscuro */
+}
+
 /* — Reset global — */
 * { box-sizing:border-box; margin:0; padding:0; }
 html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:hidden; }
@@ -49,14 +76,68 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
   background:rgba(255,255,255,0.8); padding:.5rem 1rem; border-radius:4px;
 }
 
+
 /* — Tarjeta y menús — */
 #card {
-  position:absolute; width:80vw; max-width:300px; aspect-ratio:8/5;
-  background:#fff; box-shadow:0 4px 8px rgba(0,0,0,0.3);
-  top:-100vh; left:0; transform-origin:center center;
-  transition:all .5s ease;
-  cursor:pointer; /* añadido para indicar interactividad */
+  /* ——— DIMENSIONES RESPONSIVE ——— */
+  /* Ocupa el 85% del ancho de pantalla, pero nunca más de 500px */
+  width: 85vw;
+  max-width: 300px; 
+  
+  /* La magia matemática: 3024 / 1890 = 1.6 (o 8/5) */
+  /* Esto obliga al navegador a calcular la altura automáticamente */
+  aspect-ratio: 1.6; 
+  
+  /* ——— POSICIONAMIENTO INICIAL ——— */
+  position: absolute;
+  top: -100vh; /* Fuera de pantalla al inicio */
+  left: 0; 
+  
+  /* ——— IMAGEN DE FONDO ——— */
+  background-color: transparent; /* Quitamos el blanco */
+  background-image: url('../assets/img/card-front.png'); /* <--- Asegúrate de la ruta */
+  background-size: cover;  /* Cubre todo el div sin deformarse */
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* ——— ESTÉTICA 3D & ACABADOS ——— */
+  /*border-radius: 16px; /* Ajusta esto según qué tan redondas son las esquinas de tu diseño */
+  
+  /* Sombra de "objeto apoyado": Pequeña y oscura */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5); 
+  
+  /*transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
+  
+  /* Quitamos bordes si la imagen ya tiene el diseño completo */
+  border: none; 
+  
+  /* Configuraciones de interacción */
+  cursor: pointer;
+  z-index: 20;
+  transform-style: preserve-3d; /* Vital para el paralaje */
+  
+  /* Transiciones suaves para movimientos */
+  transition: top 0.5s, left 0.5s, box-shadow 0.3s; 
 }
+
+/* Opcional: Capa de brillo sutil (Gloss) que reacciona al mover la tarjeta */
+#card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg, 
+    rgba(255,255,255,0.4) 0%, 
+    rgba(255,255,255,0.1) 20%, 
+    transparent 50%, 
+    transparent 100%
+  );
+  /*border-radius: 16px; /* Debe coincidir con el del padre */
+  pointer-events: none;
+  mix-blend-mode: overlay; /* Mezcla el brillo con tu diseño */
+}
+
+
 #menuTop,#menuBottom {
   position:absolute; inset-inline:0; height:60px;
   display:flex; justify-content:center; align-items:center;
@@ -423,7 +504,7 @@ body {
   position: absolute;
   bottom: 20%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(30px);
   
   /* Estética Terminal */
   font-family: 'Geo', sans-serif;
@@ -489,10 +570,29 @@ body {
   width: 100%;
   height: 100%;
   
-  /* Estilo visual */
-  background: rgba(0, 15, 0, 0.95);
-  border: 1px solid rgba(0, 255, 0, 0.5);
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2), inset 0 0 50px rgba(0,20,0,0.8);
+  /* ——— FONDO CON TEXTURA Y TEMA DINÁMICO ——— */
+  background: 
+    /* 1. Viñeta central oscura (fija, siempre verdosa/oscura para legibilidad) */
+    radial-gradient(circle, rgba(0, 20, 0, 0.4) 0%, rgba(0, 10, 0, 0.95) 100%),
+    
+    /* 2. Scanlines sutiles (usan el color del tema muy suave) */
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(var(--holo-rgb), 0.05) 3px
+    );
+    
+  /* Borde brillante pulsante usando el color del tema */
+  border: 1px solid rgba(var(--holo-rgb), 0.5);
+  
+  /* Brillo interno y externo */
+  box-shadow: 
+    0 0 30px rgba(var(--holo-rgb), 0.15), 
+    inset 0 0 50px rgba(0, 20, 0, 0.8);
+  
+  /* Color de texto base */
+  color: rgb(var(--holo-rgb));
   
   /* Alineación */
   display: flex;
@@ -500,14 +600,11 @@ body {
   justify-content: center;
   align-items: center;
   
-  /* ESTADO INICIAL (APAGADO) */
-  /* Importante: Origen en el centro para que crezca hacia los lados */
+  /* Animaciones */
   transform-origin: center center; 
-  transform: scale(0, 0.05); /* Empieza como una línea horizontal fina en el centro */
+  transform: scale(0, 0.05);
   opacity: 0;
-  
-  /* Animación de apertura suave */
-  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+  transition: all 0.5s ease;
 }
 
 /* ESTADO ACTIVO (ENCENDIDO) */
@@ -541,7 +638,7 @@ body {
 
 /* — ESTILOS DEL CONTENIDO INTERNO — */
 .holo-header {
-  color: #0f0;
+  color: var(--holo-color);
   font-family: 'Geo';
   font-size: 2rem;
   margin-bottom: 2rem;
@@ -557,7 +654,7 @@ body {
 }
 
 .holo-item {
-  border: 1px solid #0f0;
+  border: 1px solid var(--holo-color);
   color: #fff;
   padding: 1.5rem;
   text-align: center;
@@ -660,4 +757,251 @@ body {
 .tv-closing {
   /* Forzamos que la animación tenga prioridad sobre la transición normal */
   animation: tvOff 0.5s forwards ease-in-out !important; 
+}
+
+
+/* Color de los caracteres random mientras se decodifican */
+.dud {
+  color: #5f5; /* Verde más brillante o diferente al texto final */
+  opacity: 0.7;
+}
+
+
+
+
+/* LAYOUT INTERNO */
+.holo-header-bar {
+  width: 100%;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(var(--holo-rgb), 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Geo';
+  font-size: 1.2rem;
+}
+
+#disconnect-btn {
+  border: 1px solid var(--holo-color);
+  color: var(--holo-color);
+  background: transparent;
+  padding: 0.2rem 0.8rem;
+  cursor: pointer;
+}
+
+.holo-body {
+  flex: 1; /* Ocupa el resto de la altura */
+  display: flex; /* Sidebar a la izq, contenido a la der */
+  width: 100%;
+  overflow: hidden;
+}
+
+/* BARRA LATERAL (Contenedor Elástico) */
+.holo-sidebar {
+  width: 80px;
+  border-right: 1px solid rgba(var(--holo-rgb), 0.3);
+  
+  /* FLEXBOX VERTICAL */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ocupa toda la altura disponible */
+  
+  /* Si la pantalla es RIDÍCULAMENTE pequeña (tipo reloj), permitimos scroll */
+  overflow-y: auto; 
+  /* Ocultar barra de scroll fea en navegadores webkit */
+  scrollbar-width: none; 
+}
+.holo-sidebar::-webkit-scrollbar { display: none; }
+
+/* BOTONES (Items Elásticos) */
+.nav-btn {
+  /* LA CLAVE: flex: 1 hace que todos crezcan o se encojan para llenar el espacio */
+  flex: 1; 
+  
+  /* Límites para que no se vean ni gigantes ni microscópicos */
+  max-height: 100px; /* En pantallas altas, no crecen más de esto */
+  min-height: 60px;  /* En pantallas bajas, fuerzan scroll si es necesario */
+  
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(var(--holo-rgb), 0.1);
+  color: rgba(var(--holo-rgb), 0.6);
+  
+  /* Alineación interna */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrado vertical automático */
+  align-items: center;     /* Centrado horizontal automático */
+  gap: 8px;                /* Espacio entre icono y texto */
+  
+  /* Padding lateral solo por seguridad, el vertical lo maneja Flexbox */
+  padding: 0 5px; 
+  
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover {
+  background: rgba(var(--holo-rgb), 0.1); /* Brillo suave */
+  color: rgb(var(--holo-rgb)); /* Texto full color */
+  text-shadow: 0 0 8px rgba(var(--holo-rgb), 0.6);
+}
+
+/* ESTADO ACTIVO (Botón seleccionado) */
+.nav-btn.active {
+  /* Fondo iluminado suavemente */
+  background: rgba(var(--holo-rgb), 0.15);
+  
+  /* Texto full color y brillante */
+  color: rgb(var(--holo-rgb));
+  text-shadow: 0 0 8px rgba(var(--holo-rgb), 0.6);
+  
+  /* INDICADOR VISUAL CLAVE: Borde grueso a la derecha */
+  border-right: 4px solid rgb(var(--holo-rgb));
+  
+  /* Quitamos opacidad para que se vea sólido */
+  opacity: 1;
+  
+  /* Sombra interna para profundidad */
+  box-shadow: inset 0 0 15px rgba(var(--holo-rgb), 0.1);
+}
+
+.nav-btn .icon { font-size: 1.5rem; }
+.nav-btn .label { font-size: 0.7rem; font-family: 'Geo'; }
+
+/* AREA DE CONTENIDO */
+.holo-content-area {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto; /* Scroll si el texto es largo */
+  position: relative;
+}
+
+.holo-view {
+  /* Animación de entrada de secciones */
+  animation: fadeInView 0.5s ease-out;
+}
+.holo-view.hidden { display: none; }
+.holo-view.active { display: block; }
+
+.section-title {
+  font-size: 2rem;
+  border-bottom: 2px dashed var(--holo-color);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+@keyframes fadeInView {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+/* ——— ESTILOS VIEW: HOME ——— */
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Izquierda pequeña, derecha ancha */
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* En móvil, una sola columna */
+@media (max-width: 768px) {
+  .home-grid { grid-template-columns: 1fr; }
+}
+
+/* AVATAR CON ESCÁNER */
+.avatar-frame {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border: 2px solid rgba(var(--holo-rgb), 0.5);
+  position: relative;
+  overflow: hidden;
+  background: rgba(0,0,0,0.3);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) sepia(20%) hue-rotate(90deg); /* Filtro verdoso */
+  opacity: 0.8;
+}
+
+/* Línea de escaneo animada */
+.scanner-line {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgb(var(--holo-rgb));
+  box-shadow: 0 0 10px rgb(var(--holo-rgb));
+  animation: scanAvatar 3s ease-in-out infinite;
+}
+
+@keyframes scanAvatar {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.id-badge {
+  margin-top: 0.5rem;
+  font-family: 'Geo';
+  font-size: 0.9rem;
+  text-align: center;
+  background: rgba(var(--holo-rgb), 0.1);
+  padding: 0.5rem;
+  border: 1px solid rgba(var(--holo-rgb), 0.3);
+}
+
+/* STATS */
+.stats-box {
+  background: rgba(var(--holo-rgb), 0.05);
+  padding: 1rem;
+  border-left: 3px solid rgb(var(--holo-rgb));
+  margin-bottom: 1rem;
+  font-family: 'Geo';
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px dashed rgba(var(--holo-rgb), 0.2);
+}
+
+.stat-row .label { opacity: 0.7; }
+.stat-row .value { font-weight: bold; }
+
+.bio-text p {
+  margin-bottom: 0.8rem;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+/* LOGS */
+.activity-log {
+  border-top: 1px solid rgba(var(--holo-rgb), 0.3);
+  padding-top: 1rem;
+  font-family: 'Geo';
+  font-size: 0.9rem;
+}
+
+.log-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.log-list li {
+  margin-bottom: 0.3rem;
+  opacity: 0.7;
+}
+.log-list li::before {
+  content: "> ";
+  color: rgb(var(--holo-rgb));
 }
