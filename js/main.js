@@ -224,7 +224,7 @@ connectBtn.addEventListener('click', (e) => {
     }
 
     // C. Tema de Color: Limpiar clases para volver al verde default (:root)
-    hologramScreen.classList.remove('theme-dev', 'theme-games', 'theme-music');
+    hologramScreen.classList.remove('theme-dev', 'theme-games', 'theme-music', 'theme-design');
   }
 });
 
@@ -330,7 +330,7 @@ navBtns.forEach(btn => {
     
     // 3. CAMBIO DE TEMA DE COLOR (La magia)
     // Primero borramos cualquier tema anterior
-    hologramScreen.classList.remove('theme-dev', 'theme-games', 'theme-music');
+    hologramScreen.classList.remove('theme-dev', 'theme-games', 'theme-music', 'theme-design');
     
     // Si el botón tiene un tema definido, lo agregamos
     const themeClass = btn.dataset.theme;
@@ -342,3 +342,57 @@ navBtns.forEach(btn => {
     // playUiClick();
   });
 });
+
+
+// Activar barras de skill al entrar
+function animateSkills() {
+  document.querySelectorAll('.ascii-bar').forEach(bar => {
+    const width = bar.dataset.width;
+    bar.style.setProperty('--w', width);
+  });
+}
+
+// Llamar a esta función cuando se haga click en el botón DEV
+document.querySelector('.nav-btn[data-target="dev"]').addEventListener('click', animateSkills);
+
+
+
+
+// ——— CARRUSEL 3D (DISEÑO) ———
+const carousel = document.getElementById('design-carousel');
+const cells = document.querySelectorAll('.carousel-cell');
+const cellCount = cells.length;
+let selectedIndex = 0;
+
+function rotateCarousel() {
+  // Calculamos el ángulo: 360 grados / cantidad de items
+  const angle = 360 / cellCount;
+  // Calculamos la distancia Z (Radio) para que no se amontonen
+  // Formula: radio = (ancho / 2) / tan(angulo / 2)
+  const radius = Math.round( (210 / 2) / Math.tan( Math.PI / cellCount ) );
+  
+  // 1. Posicionar las celdas en círculo (solo se hace una vez o al redimensionar)
+  cells.forEach((cell, i) => {
+    cell.style.transform = `rotateY(${i * angle}deg) translateZ(${radius}px)`;
+  });
+
+  // 2. Rotar el contenedor principal
+  // Multiplicamos el índice actual por el ángulo negativo para girar
+  const currentAngle = selectedIndex * -angle;
+  carousel.style.transform = `translateZ(-${radius}px) rotateY(${currentAngle}deg)`;
+}
+
+// Botones
+document.getElementById('prev-btn').addEventListener('click', () => {
+  selectedIndex--;
+  rotateCarousel();
+});
+
+document.getElementById('next-btn').addEventListener('click', () => {
+  selectedIndex++;
+  rotateCarousel();
+});
+
+// Inicializar al cargar
+// (Opcional: llamar a esto también cuando se abre la sección Diseño)
+rotateCarousel();

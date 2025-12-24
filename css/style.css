@@ -25,6 +25,443 @@
   --holo-dark-text: #3d2a00; /* Marrón/Naranja oscuro */
 }
 
+/* TEMA: DISEÑO (Amarillo Eléctrico) */
+.theme-design {
+  --holo-rgb: 255, 0, 0; /* Gold */
+  --holo-dark-text: #3b0000;
+}
+
+
+
+/* LAYOUT DEV */
+.dev-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+@media(max-width: 700px) { .dev-container { grid-template-columns: 1fr; } }
+
+/* CAJA TERMINAL (Skills) */
+.terminal-box {
+  background: rgba(0,0,0,0.3);
+  border: 1px dashed rgba(var(--holo-rgb), 0.4);
+  padding: 1rem;
+  font-family: 'Courier New', monospace; /* Fuente monoespaciada obligatoria */
+}
+
+.term-header {
+  border-bottom: 1px solid rgba(var(--holo-rgb), 0.3);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.skill-item { margin-bottom: 1rem; }
+
+.ascii-bar {
+  height: 10px;
+  background: rgba(var(--holo-rgb), 0.1);
+  margin-top: 5px;
+  position: relative;
+  overflow: hidden;
+}
+/* La barra de llenado */
+.ascii-bar::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: var(--w, 0%); /* Variable CSS que setearemos con JS */
+  background: repeating-linear-gradient(
+    90deg,
+    rgb(var(--holo-rgb)),
+    rgb(var(--holo-rgb)) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  animation: loadBar 2s ease-out forwards;
+}
+
+@keyframes loadBar { from { width: 0; } }
+
+/* TARJETAS DE PROYECTO */
+.repo-card {
+  display: block;
+  text-decoration: none;
+  background: rgba(var(--holo-rgb), 0.05);
+  border-left: 3px solid rgba(var(--holo-rgb), 0.3);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s;
+  color: inherit; /* Hereda el color del tema */
+}
+
+.repo-card:hover {
+  background: rgba(var(--holo-rgb), 0.15);
+  border-left-color: rgb(var(--holo-rgb));
+  transform: translateX(5px);
+}
+
+.repo-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Geo';
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.repo-status.success { color: #0f0; text-shadow: none; } /* Siempre verde si es éxito */
+.repo-status.warning { color: #ff0; text-shadow: none; } 
+
+.repo-desc { font-size: 0.9rem; opacity: 0.8; margin-bottom: 0.8rem; }
+
+.repo-tags span {
+  font-size: 0.7rem;
+  background: rgba(var(--holo-rgb), 0.1);
+  padding: 2px 6px;
+  margin-right: 5px;
+  border: 1px solid rgba(var(--holo-rgb), 0.2);
+}
+
+
+
+/* GRID DE JUEGOS */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  padding-top: 1rem;
+}
+
+.game-cartridge {
+  border: 2px solid rgba(var(--holo-rgb), 0.4);
+  background: rgba(0,0,0,0.5);
+  transition: 0.3s;
+}
+
+.game-cartridge:hover {
+  border-color: rgb(var(--holo-rgb));
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(var(--holo-rgb), 0.2);
+}
+
+.cart-img-container {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(var(--holo-rgb), 0.2);
+}
+
+.cart-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated; /* CLAVE para pixel art */
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.play-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.7);
+  color: rgb(var(--holo-rgb));
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.game-cartridge:hover .play-overlay { opacity: 1; }
+.game-cartridge:hover .cart-img { opacity: 0.4; }
+
+.cart-info { padding: 1rem; text-align: center; }
+
+.cart-title {
+  font-family: 'Geo'; font-size: 1.3rem; margin-bottom: 0.5rem;
+  color: rgb(var(--holo-rgb));
+}
+
+.cart-meta {
+  font-size: 0.8rem; opacity: 0.7; margin-bottom: 1rem;
+}
+
+.cart-btn {
+  display: block;
+  border: 1px solid rgb(var(--holo-rgb));
+  color: rgb(var(--holo-rgb));
+  text-decoration: none;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  transition: 0.2s;
+}
+.cart-btn:hover {
+  background: rgb(var(--holo-rgb));
+  color: var(--holo-dark-text);
+}
+
+
+
+/* ESCENARIO */
+.carousel-scene {
+  margin: 40px auto;
+  position: relative;
+  width: 210px; /* Ancho de la carta individual */
+  height: 140px; /* Alto de la carta */
+  perspective: 1000px;
+}
+
+/* ANILLO GIRATORIO */
+.carousel {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translateZ(-288px); /* Empujamos el centro hacia atrás */
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1); /* Giro suave */
+}
+
+/* CELDAS INDIVIDUALES */
+.carousel-cell {
+  position: absolute;
+  width: 200px;
+  height: 140px;
+  left: 10px;
+  top: 10px;
+  
+  /* Borde brillante */
+  border: 1px solid rgba(var(--holo-rgb), 0.6);
+  background: rgba(var(--holo-rgb), 0.1);
+  box-shadow: 0 0 15px rgba(var(--holo-rgb), 0.2);
+  
+  /* Layout interno */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* Truco: un poco de opacidad si está atrás se maneja solo por la superposición, 
+     pero podemos agregar backface-visibility si queremos ocultar la espalda */
+  /* backface-visibility: hidden; */ 
+}
+
+.bp-card {
+  width: 100%; height: 100%;
+  padding: 5px;
+}
+
+.bp-img {
+  width: 100%; height: 80%;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%); /* B/N por defecto */
+  border-bottom: 1px solid rgba(var(--holo-rgb), 0.5);
+}
+
+.bp-info {
+  height: 20%;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Geo';
+  background: rgba(0,0,0,0.5);
+  color: rgb(var(--holo-rgb));
+}
+
+/* CONTROLES */
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between; /* Uno a cada extremo */
+  pointer-events: none; /* Permite hacer clic en el centro a través del contenedor */
+  margin-top: 0; /* Reseteamos el margen */
+  padding: 0 10px; /* Un poco de margen lateral */
+  z-index: 100;
+}
+
+.c-btn {
+  pointer-events: auto; /* Reactivamos clicks en los botones */
+  background: rgba(0,0,0,0.8); /* Fondo oscuro para que se lea sobre las cartas de atrás */
+  border: 1px solid rgb(var(--holo-rgb));
+  color: rgb(var(--holo-rgb));
+  padding: 5px 20px;
+  cursor: pointer;
+  font-family: 'Geo';
+  font-size: 1.2rem;
+  transition: 0.3s;
+}
+
+.c-btn:hover {
+  background: rgb(var(--holo-rgb));
+  color: var(--holo-dark-text);
+  box-shadow: 0 0 15px rgb(var(--holo-rgb));
+}
+
+
+/* LAYOUT MUSICA */
+.music-player-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+@media(max-width: 700px) { .music-player-container { flex-direction: column; } }
+
+/* LADO IZQUIERDO: VINILO */
+.album-art-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.vinyl-wrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 4px solid rgba(var(--holo-rgb), 0.5);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(var(--holo-rgb), 0.2);
+  margin-bottom: 1.5rem;
+  /* Animación de giro lento constante */
+  animation: spinVinyl 10s linear infinite; 
+}
+
+.vinyl-cover {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  filter: sepia(50%) hue-rotate(-30deg); /* Tono retro */
+}
+
+@keyframes spinVinyl { from {transform: rotate(0deg);} to {transform: rotate(360deg);} }
+
+.now-playing-info h3 { font-size: 1.2rem; color: rgb(var(--holo-rgb)); }
+.now-playing-info p { font-size: 0.8rem; opacity: 0.7; margin-bottom: 10px; }
+
+/* VISUALIZADOR FALSO */
+.fake-visualizer {
+  display: flex; gap: 3px; justify-content: center; height: 20px; align-items: flex-end;
+}
+.bar {
+  width: 5px; background: rgb(var(--holo-rgb));
+  animation: equalize 0.5s infinite alternate;
+}
+.bar:nth-child(1) { height: 10px; animation-delay: 0.1s; }
+.bar:nth-child(2) { height: 18px; animation-delay: 0.3s; }
+.bar:nth-child(3) { height: 8px; animation-delay: 0.0s; }
+.bar:nth-child(4) { height: 15px; animation-delay: 0.2s; }
+
+@keyframes equalize { from { height: 5px; opacity: 0.5; } to { height: 20px; opacity: 1; } }
+
+/* LADO DERECHO: PLAYLIST */
+.playlist-panel {
+  flex: 1.5;
+  width: 100%;
+  border-left: 1px solid rgba(var(--holo-rgb), 0.2);
+  padding-left: 2rem;
+}
+
+.track-list { list-style: none; padding: 0; }
+
+.track-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px dashed rgba(var(--holo-rgb), 0.2);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.track-item:hover { background: rgba(var(--holo-rgb), 0.05); padding-left: 10px; }
+
+.track-item.active {
+  color: rgb(var(--holo-rgb));
+  text-shadow: 0 0 5px rgba(var(--holo-rgb), 0.5);
+}
+.track-item.active .track-num::before { content: "► "; }
+
+.track-num { width: 30px; font-weight: bold; opacity: 0.5; }
+.track-details { flex: 1; display: flex; flex-direction: column; }
+.track-name { font-size: 1rem; }
+.track-time { font-size: 0.7rem; opacity: 0.7; }
+
+.play-mini-btn {
+  background: transparent; border: 1px solid rgb(var(--holo-rgb));
+  color: rgb(var(--holo-rgb));
+  border-radius: 50%;
+  width: 30px; height: 30px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: 0.2s;
+}
+.play-mini-btn:hover { background: rgb(var(--holo-rgb)); color: #000; }
+
+
+
+/* COMMS PANEL (Redes Sociales) */
+.comms-panel {
+  border: 1px solid rgba(var(--holo-rgb), 0.3);
+  background: rgba(var(--holo-rgb), 0.05);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.comms-label {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-bottom: 0.8rem;
+  font-family: 'Geo';
+}
+
+.social-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-chip {
+  flex: 1; /* Todos del mismo ancho */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1/1; /* Cuadrados perfectos */
+  max-width: 80px;   /* Que no sean gigantes */
+  
+  border: 1px solid rgba(var(--holo-rgb), 0.5);
+  text-decoration: none;
+  color: rgb(var(--holo-rgb));
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  background: rgba(0,0,0,0.3);
+}
+
+.chip-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.chip-label {
+  font-size: 0.7rem;
+  font-family: 'Geo';
+  opacity: 0.8;
+}
+
+/* Hover Effect: "Activación" */
+.social-chip:hover {
+  background: rgba(var(--holo-rgb), 0.8);
+  color: var(--holo-dark-text); /* Texto oscuro para contraste */
+  box-shadow: 0 0 15px rgba(var(--holo-rgb), 0.5);
+  transform: translateY(-5px);
+}
+
+
+
+
 /* — Reset global — */
 * { box-sizing:border-box; margin:0; padding:0; }
 html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:hidden; }
@@ -81,7 +518,7 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
 #card {
   /* ——— DIMENSIONES RESPONSIVE ——— */
   /* Ocupa el 85% del ancho de pantalla, pero nunca más de 500px */
-  width: 85vw;
+  width: 75vw;
   max-width: 300px; 
   
   /* La magia matemática: 3024 / 1890 = 1.6 (o 8/5) */
@@ -618,13 +1055,13 @@ body {
   position: absolute;
   
   /* COORDENADAS PARA CENTRARLO */
-  top: 15vh;    /* 15% de margen superior (aire arriba) */
+  top: 5vh;    /* 15% de margen superior (aire arriba) */
   bottom: 25vh; /* 25% de margen inferior (espacio para la tarjeta) */
   left: 5vw;    /* 5% margen izquierdo */
   right: 5vw;   /* 5% margen derecho */
   
   /* Opcional: Ancho máximo para que no se estire infinito en PC */
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto; /* Centra el bloque si alcanza el max-width */
   
   pointer-events: none; /* El contenedor es invisible al mouse */
@@ -812,6 +1249,35 @@ body {
   scrollbar-width: none; 
 }
 .holo-sidebar::-webkit-scrollbar { display: none; }
+
+
+/* FOOTER SOCIAL EN SIDEBAR */
+.sidebar-footer {
+  margin-top: auto; /* Empuja todo hacia abajo */
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  border-top: 1px solid rgba(var(--holo-rgb), 0.3);
+}
+
+.social-link {
+  color: rgba(var(--holo-rgb), 0.7);
+  font-family: 'Geo';
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.social-link:hover {
+  color: rgb(var(--holo-rgb));
+  text-shadow: 0 0 8px rgb(var(--holo-rgb));
+  transform: scale(1.2);
+}
+
+
 
 /* BOTONES (Items Elásticos) */
 .nav-btn {

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Laureano Diez:</title>
+  <title>Laureano Diez</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <!-- UMD Three.js r147 y GLTFLoader -->
@@ -24,7 +25,7 @@
     <div id="splashContent">
       <div id="splashName">Laureano Diez</div>
       <div id="pentagon"></div>
-      <div id="splashVersion">Todos los datos reservados – v1.0</div>
+      <div id="splashVersion">Todos los datos reservados – v2.0</div>
     </div>
     <div class="panel top"></div>
     <div class="panel bottom"></div>
@@ -62,12 +63,14 @@
             </button>
             
             <button class="nav-btn" data-target="dev" data-theme="theme-dev">
-              <span class="icon">⚡</span>
+              <span class="icon">{}</span>
               <span class="label">DEV</span>
             </button>
             
             <button class="nav-btn" data-target="games" data-theme="theme-games">
-              <span class="icon">🎮</span>
+              <svg class="icon svg-icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M21,10h-6V4c0-1.1-0.9-2-2-2h-2c-1.1,0-2,0.9-2,2v6H3c-1.1,0-2,0.9-2,2v2c0,1.1,0.9,2,2,2h6v6c0,1.1,0.9,2,2,2h2 c1.1,0,2-0.9,2-2v-6h6c1.1,0,2-0.9,2-2v-2C23,10.9,22.1,10,21,10z"/>
+              </svg>
               <span class="label">GAME</span>
             </button>
             
@@ -75,6 +78,13 @@
               <span class="icon">♫</span>
               <span class="label">AUDIO</span>
             </button>
+
+            <button class="nav-btn" data-target="design" data-theme="theme-design">
+              <span class="icon">🌐︎</span>
+              <span class="label">DSGN</span>
+            </button>
+
+
           </nav>
 
           <main class="holo-content-area">
@@ -94,6 +104,23 @@
                 </div>
 
                 <div class="bio-panel">
+                  <div class="comms-panel">
+                    <div class="comms-label">>> ESTABLECER ENLACE:</div>
+                    <div class="social-row">
+                      <a href="https://linkedin.com/in/laureanodiez" target="_blank" class="social-chip" title="LINKEDIN">
+                        <span class="chip-icon">IN</span>
+                        <span class="chip-label">PROFILE</span>
+                      </a>
+                      <a href="https://github.com/laureanodiez" target="_blank" class="social-chip" title="GITHUB">
+                        <span class="chip-icon">GH</span>
+                        <span class="chip-label">REPOS</span>
+                      </a>
+                      <a href="mailto:contactolaureanodiez@gmail.com" class="social-chip" title="EMAIL">
+                        <span class="chip-icon">@</span>
+                        <span class="chip-label">MAIL</span>
+                      </a>
+                    </div>
+                  </div>
                   <h2 class="section-title">PERFIL DE USUARIO</h2>
                   
                   <div class="stats-box">
@@ -116,7 +143,7 @@
                   </div>
 
                   <div class="bio-text">
-                    <p>Estudiante técnico en Inteligencia Artificial y desarrollador apasionado por la fusión entre lo retro y lo moderno. </p>
+                    <p>Técnico en Informática Personal y Profesional - Estudiante de Inteligencia Artificial en UNR</p>
                     <p>Actualmente construyendo experiencias web inmersivas y videojuegos 2D.</p>
                   </div>
                 </div>
@@ -126,8 +153,14 @@
               <div class="activity-log">
                 <div class="log-title">> RECENT_LOGS:</div>
                 <ul class="log-list">
-                  <li>[2025-10-31] Iniciado protocolo GDD para proyecto "1976"</li>
-                  <li>[2025-12-19] Examen final "Programación 3" completado [SUCCESS]</li>
+                  <li>[2022-04-28] Técnico en Informática Personal y Profesional</li>
+                  <li>[2022-08-01] Inicio de estudios de Tecnicatura en Programación de Videojuegos UNAHUR</li>
+                  <li>[2024-03-03] Inicio de estudios de Tecnicatura en Inteligencia Artificial UNR</li>
+                  <li>[2024-09-20] Desarrollo de página web interactiva para #XperienciaUNR</li>
+                  <li>[2025-02-03] Alpha Version - Portfolio Web</li>
+                  <li>[2025-07-10] Inicio de desarrollo de "Vigilia"</li>
+                  <li>[2025-06-16] Puesto de Coordinador de Desarrollo para #Xperiencia25 con el departamento de Ciencias UNR</li>
+                  <li>[2025-10-01] Comienzo de UNR GameLab</li>
                   <li>[2025-12-21] Sistema de portfolio actualizado a v2.0</li>
                 </ul>
               </div>
@@ -135,19 +168,204 @@
             </section>
 
             <section id="view-dev" class="holo-view hidden">
-              <h2 class="section-title">MÓDULO DE DESARROLLO</h2>
-              <p>> Cargando repositorios...</p>
-              <p>> Analizando stack tecnológico...</p>
+              <h2 class="section-title">CONSOLE_LOGS // DEV</h2>
+              
+              <div class="dev-container">
+                
+                <div class="terminal-box">
+                  <div class="term-header">>> SKILL_CHECK --VERBOSE</div>
+                  <div class="skill-list">
+                    <div class="skill-item">
+                      <span class="skill-name">C# / .NET</span>
+                      <div class="ascii-bar" data-width="90%"></div>
+                    </div>
+                    <div class="skill-item">
+                      <span class="skill-name">UNITY 3D</span>
+                      <div class="ascii-bar" data-width="85%"></div>
+                    </div>
+                    <div class="skill-item">
+                      <span class="skill-name">JAVASCRIPT</span>
+                      <div class="ascii-bar" data-width="70%"></div>
+                    </div>
+                    <div class="skill-item">
+                      <span class="skill-name">CSS / 3D</span>
+                      <div class="ascii-bar" data-width="80%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="projects-grid">
+                  
+                  <a href="#" target="_blank" class="repo-card">
+                    <div class="repo-header">
+                      <span class="repo-name">PROJECT_TITAN</span>
+                      <span class="repo-status success">● LIVE</span>
+                    </div>
+                    <p class="repo-desc">Videojuego 2D de plataformas con IA enemiga adaptativa.</p>
+                    <div class="repo-tags">
+                      <span>#UNITY</span> <span>#C#</span>
+                    </div>
+                  </a>
+
+                  <a href="#" target="_blank" class="repo-card">
+                    <div class="repo-header">
+                      <span class="repo-name">HOLODECK_PF</span>
+                      <span class="repo-status warning">● DEV</span>
+                    </div>
+                    <p class="repo-desc">Portfolio interactivo con Three.js y CSS 3D avanzado.</p>
+                    <div class="repo-tags">
+                      <span>#JS</span> <span>#CSS</span>
+                    </div>
+                  </a>
+
+                </div>
+              </div>
             </section>
 
             <section id="view-games" class="holo-view hidden">
-              <h2 class="section-title">SIMULACIONES LÚDICAS</h2>
-              <p>Librería de juegos pixel art inicializada.</p>
+              <h2 class="section-title">SIMULACIONES // LIBRERÍA</h2>
+              
+              <div class="games-grid">
+                
+                <div class="game-cartridge">
+                  <div class="cart-img-container">
+                    <img src="assets/img/game1.gif" alt="Game 1" class="cart-img">
+                    <div class="play-overlay">PLAY ►</div>
+                  </div>
+                  <div class="cart-info">
+                    <div class="cart-title">NEON_RUNNER</div>
+                    <div class="cart-meta">
+                      <span>UNITY 2D</span>
+                      <span>•</span>
+                      <span>2024</span>
+                    </div>
+                    <a href="#" target="_blank" class="cart-btn">EJECUTAR .EXE</a>
+                  </div>
+                </div>
+
+                <div class="game-cartridge">
+                  <div class="cart-img-container">
+                    <img src="assets/img/game2.gif" alt="Game 2" class="cart-img">
+                    <div class="play-overlay">PLAY ►</div>
+                  </div>
+                  <div class="cart-info">
+                    <div class="cart-title">SPACE_VOID</div>
+                    <div class="cart-meta">
+                      <span>GODOT</span>
+                      <span>•</span>
+                      <span>2023</span>
+                    </div>
+                    <a href="#" target="_blank" class="cart-btn">EJECUTAR .EXE</a>
+                  </div>
+                </div>
+                
+              </div>
             </section>
 
             <section id="view-music" class="holo-view hidden">
-              <h2 class="section-title">FRECUENCIAS DE AUDIO</h2>
-              <p>Sintetizadores en línea. Reproduciendo...</p>
+              <h2 class="section-title">AUDIO_LINK // ARTIST_DATA</h2>
+              
+              <div class="music-player-container">
+                
+                <div class="album-art-panel">
+                  <div class="vinyl-wrapper">
+                    <img src="assets/img/tu-foto-musica.jpg" alt="Artist" class="vinyl-cover">
+                    <div class="vinyl-grooves"></div> 
+                  </div>
+                  <div class="now-playing-info">
+                    <h3>LAUREANO_DIEZ</h3>
+                    <p>TRACK: 01 // "CYBER_DREAM"</p>
+                    <div class="fake-visualizer">
+                      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="playlist-panel">
+                  <div class="playlist-header">>> TRACKLIST</div>
+                  <ul class="track-list">
+                    
+                    <li class="track-item active">
+                      <span class="track-num">01</span>
+                      <div class="track-details">
+                        <span class="track-name">Midnight Protocol</span>
+                        <span class="track-time">03:45</span>
+                      </div>
+                      <button class="play-mini-btn">▶</button>
+                    </li>
+
+                    <li class="track-item">
+                      <span class="track-num">02</span>
+                      <div class="track-details">
+                        <span class="track-name">Neon Rain</span>
+                        <span class="track-time">02:20</span>
+                      </div>
+                      <button class="play-mini-btn">▶</button>
+                    </li>
+                    
+                    <li class="track-item">
+                      <span class="track-num">03</span>
+                      <div class="track-details">
+                        <span class="track-name">System Failure (Demo)</span>
+                        <span class="track-time">04:12</span>
+                      </div>
+                      <button class="play-mini-btn">▶</button>
+                    </li>
+
+                  </ul>
+                </div>
+
+              </div>
+            </section>
+
+            <section id="view-design" class="holo-view hidden">
+              <h2 class="section-title">BLUEPRINTS // WEB_ARCH</h2>
+              
+              <div class="carousel-scene">
+                <div class="carousel" id="design-carousel">
+                  
+                  <div class="carousel-cell">
+                    <div class="bp-card">
+                      <div class="bp-img" style="background-image: url('assets/img/web1.jpg')"></div>
+                      <div class="bp-info">ECOMMERCE_UI</div>
+                    </div>
+                  </div>
+
+                  <div class="carousel-cell">
+                    <div class="bp-card">
+                      <div class="bp-img" style="background-image: url('assets/img/web2.jpg')"></div>
+                      <div class="bp-info">PORTFOLIO_V1</div>
+                    </div>
+                  </div>
+
+                  <div class="carousel-cell">
+                    <div class="bp-card">
+                      <div class="bp-img" style="background-image: url('assets/img/web3.jpg')"></div>
+                      <div class="bp-info">LANDING_APP</div>
+                    </div>
+                  </div>
+
+                  <div class="carousel-cell">
+                    <div class="bp-card">
+                      <div class="bp-img" style="background-image: url('assets/img/web4.jpg')"></div>
+                      <div class="bp-info">DASHBOARD_UX</div>
+                    </div>
+                  </div>
+
+                  <div class="carousel-cell">
+                    <div class="bp-card">
+                      <div class="bp-img" style="background-image: url('assets/img/web5.jpg')"></div>
+                      <div class="bp-info">MOBILE_WIRE</div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="carousel-controls">
+                <button class="c-btn" id="prev-btn">◄ PREV</button>
+                <button class="c-btn" id="next-btn">NEXT ►</button>
+              </div>
             </section>
             
           </main>
