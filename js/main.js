@@ -21,6 +21,9 @@ const views = document.querySelectorAll('.holo-view');
 //const hologramScreen = document.querySelector('.hologram-screen'); // Para cambiarle la clase
 
 
+const videoLayer = document.getElementById('video-layer');
+const transVideo = document.getElementById('transition-video');
+
 
 /* ——— EFECTO TEXT SCRAMBLE / DECODER ——— */
 class TextScramble {
@@ -97,6 +100,8 @@ let currentState = 0;
 
 // 0. Carga rápida - solo esperar el tiempo mínimo
 function quickLoad() {
+  transVideo.preload = "auto";
+  transVideo.load(); // Fuerza al navegador a empezar a bajarlo ya
   return new Promise(r => setTimeout(r, 2000)); // exactamente 2 segundos
 }
 
@@ -178,22 +183,36 @@ connectBtn.addEventListener('click', (e) => {
   e.stopPropagation(); 
   
   if (currentState === 1) {
-    // 1. Físicas
-    cardEl.style.transform = '';
-    cardEl.classList.remove('floating');
-    cardEl.classList.add('docked');
-    
-    // 2. Ocultar título grande
+    // 1. OCULTAR TODO LO INTERACTIVO INMEDIATAMENTE
+    // Ocultamos la tarjeta CSS para que no se vea doble (la del video toma el control)
+    cardEl.style.display = 'none'; 
     bigTitle.classList.remove('visible');
     bigTitle.classList.add('hidden');
     
-    // 3. Mostrar Holograma
-    hologramDeck.classList.remove('hidden');
-    hologramScreen.classList.remove('tv-closing');
+    // 2. MOSTRAR Y REPRODUCIR VIDEO
+    videoLayer.classList.remove('hidden');
+    transVideo.currentTime = 0;
+    transVideo.volume = 1.0; // Asegurar volumen
+    transVideo.play().catch(e => console.error("Error al reproducir video:", e));
     
-    setTimeout(() => {
+    transVideo.onended = () => {
+        // Ocultar video
+        videoLayer.classList.add('hidden');
+
+
+    // 1. Físicas
+        cardEl.style.transform = '';
+        cardEl.classList.remove('floating');
+        cardEl.classList.add('docked');
+    
+    // 3. Mostrar Holograma
+        hologramDeck.classList.remove('hidden');
+        hologramScreen.classList.remove('tv-closing');
         hologramDeck.classList.add('active');
-    }, 10);
+    //setTimeout(() => {
+    //    hologramDeck.classList.add('active');
+    //}, 10);
+    };
     
     currentState = 2;
     if(slideSnd) { slideSnd.currentTime=0; slideSnd.play().catch(e => {}); }
@@ -242,6 +261,7 @@ disconnectBtn.addEventListener('click', (e) => {
     hologramDeck.classList.add('hidden'); 
     
     // C. Retorno de la Tarjeta al ESTADO FLOTANTE (Centro)
+    cardEl.style.display = 'block';
     cardEl.classList.remove('docked');
     cardEl.classList.add('floating'); // Esto reactiva el botón "Connect" y la sombra
     
