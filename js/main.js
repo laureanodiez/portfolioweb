@@ -25,6 +25,49 @@ const videoLayer = document.getElementById('video-layer');
 const transVideo = document.getElementById('transition-video');
 
 
+// ——— LÓGICA DE INTRODUCCIÓN (Intro -> Portfolio) ———
+
+const introLayer = document.getElementById('intro-layer');
+const startVirtualBtn = document.getElementById('start-virtual-btn');
+const splashScreen = document.getElementById('splash-screen'); // Tu pantalla negra actual
+const crtLayer = document.querySelector('.crt-container');
+
+
+// AL CARGAR LA PÁGINA
+// Aseguramos que el Splash y el Portfolio estén ocultos visualmente (o detrás)
+// Nota: Si usas z-index 9999 en el intro, ya los tapa, pero esto es por seguridad.
+if(splashScreen) splashScreen.style.display = 'none';
+
+startVirtualBtn.addEventListener('click', () => {
+    // 1. Animación salida Intro
+    startVirtualBtn.textContent = "INICIANDO...";
+    introLayer.style.opacity = '0';
+
+    setTimeout(() => {
+        // 2. Ocultar Intro
+        introLayer.style.display = 'none';
+        
+        // 3. Mostrar Splash Screen
+        if(splashScreen) {
+            splashScreen.style.display = 'flex';
+            
+            // 4. ENCENDER EL EFECTO CRT (Aquí está la magia)
+            if(crtLayer) crtLayer.style.display = 'block'; 
+
+            setTimeout(() => {
+                splashScreen.style.opacity = '1';
+            }, 50);
+        }
+        iniciarSistema();
+    }, 800); // Tiempo de la transición
+});
+
+
+
+
+
+
+
 /* ——— EFECTO TEXT SCRAMBLE / DECODER ——— */
 class TextScramble {
   constructor(el) {
@@ -106,14 +149,23 @@ function quickLoad() {
 }
 
 // 1. Splash -> main
-quickLoad().then(()=>{
-  splash.classList.add('splash-end');
-  setTimeout(()=>{
-    splash.style.display='none';
-    main.style.display='block';
-    showCard();
-  },800);
-});
+// 1. DEFINIR LA FUNCIÓN DE INICIO (No ejecutarla aún)
+function iniciarSistema() {
+  quickLoad().then(()=>{
+    // Ahora sí, arrancamos el splash
+    splash.classList.add('splash-end');
+
+    setTimeout(()=>{
+      splash.style.display='none';
+      main.style.display='block';
+
+      // Encendemos el efecto CRT si existe
+      if(crtLayer) crtLayer.style.display = 'block'; 
+
+      showCard(); // Tiramos la tarjeta
+    },800);
+  });
+}
 
 // 2. showCard anima tarjeta
 function showCard(){
@@ -416,3 +468,38 @@ document.getElementById('next-btn').addEventListener('click', () => {
 // Inicializar al cargar
 // (Opcional: llamar a esto también cuando se abre la sección Diseño)
 rotateCarousel();
+
+
+
+
+// ——— ANIMACIÓN SCROLL DE LA TARJETA ———
+
+// 1. Configuramos el vigilante
+const observerOptions = {
+    root: null, // viewport
+    threshold: 0.3, // Dispara cuando el 30% del elemento es visible
+    rootMargin: "0px"
+};
+
+const heavenObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Cuando la sección entra en pantalla:
+            const card = entry.target.querySelector('.hidden-card');
+            if(card) card.classList.add('reveal');
+            
+            // Opcional: Dejar de observar una vez que ya salió (para que no se repita)
+            // observer.unobserve(entry.target); 
+        } else {
+            // Opcional: Si quieres que se esconda de nuevo al subir (efecto yo-yo)
+            const card = entry.target.querySelector('.hidden-card');
+            if(card) card.classList.remove('reveal');
+        }
+    });
+}, observerOptions);
+
+// 2. Le decimos qué vigilar
+const heavenSection = document.querySelector('#heaven-trigger');
+if(heavenSection) {
+    heavenObserver.observe(heavenSection);
+}

@@ -1,0 +1,451 @@
+/* css/style-intro.css - V2: GEOCITIES CHAOS */
+
+/* EL FONDO (Padre) */
+/* CONFIG GENERAL */
+#intro-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 9999;
+    background-color: #ff6600; /* Fondo naranja infinito */
+    overflow-y: auto;
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+}
+
+
+/* LA CAJA DE CONTENIDO (Hijo) */
+/* CONTENEDOR DE LAYOUT (Solo alinea al centro) */
+.intro-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* MARQUEE SUPERIOR (Estilo Noticia Urgente) */
+.marquee-box {
+    background: #0000ff;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    border: 2px inset #fff;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+/* HEADER DEL SITIO */
+.site-header {
+    text-align: center;
+    border-bottom: 4px double #000;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+.site-header h1 {
+    background: black;
+    color: #00ff00; /* Verde terminal */
+    display: inline-block;
+    padding: 5px 15px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: -2px;
+}
+.site-header p {
+    font-style: italic;
+    background: #000;
+    color: #0f0; /* Verde hacker */
+    display: inline-block;
+    padding: 2px 5px;
+}
+
+/* ESTILO "CAJA DE TEXTO" PARA LA BIO */
+.blog-entry {
+    border: 2px outset #fff; /* Efecto botón salido */
+    background: #c0c0c0; /* Gris clásico */
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+.blog-title {
+    background: linear-gradient(to right, #000080, #1084d0); /* Azul Windows title bar */
+    color: white;
+    padding: 2px 5px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.raw-content {
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+.highlight { background: #ffff00; color: red; } /* Resaltador */
+
+/* TABLAS FEAS (Para datos) */
+.ugly-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #000;
+    margin-top: 10px;
+    background: #fff;
+}
+.ugly-table td {
+    border: 1px solid #000;
+    padding: 5px;
+    font-family: 'Courier New', monospace;
+}
+
+/* SECCIÓN PRODUCTOS (Estilo Catálogo de Papel) */
+.catalog-section {
+    border: 3px dashed red;
+    padding: 15px;
+    background: #fff;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.catalog-title {
+    font-size: 2rem;
+    background: red;
+    color: yellow;
+    display: inline-block;
+    padding: 5px 20px;
+    transform: rotate(-2deg);
+    margin-bottom: 20px;
+    border: 2px solid black;
+}
+
+/* LA SOULCARD (Manteniendo tu interacción pero marco feo) */
+.soulcard-frame {
+    display: inline-block;
+    border: 10px ridge #c0c0c0; /* Marco estilo cuadro viejo */
+    background: #000;
+    padding: 5px;
+    margin: 20px 0;
+}
+/* Reusamos .soulcard-wrapper y sus clases internas del código anterior aquí dentro */
+
+/* BOTÓN DE COMPRA / PRUEBA */
+#start-virtual-btn {
+    background: #c0c0c0;
+    border: 4px outset #fff;
+    color: #000;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 15px 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+#start-virtual-btn:active { border-style: inset; }
+#start-virtual-btn:hover { background: #dcdcdc; }
+
+/* WEB RING / FOOTER */
+.web-ring {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 2px solid #000;
+    padding-top: 10px;
+}
+.pixel-icon { width: 30px; vertical-align: middle; }
+
+/* CONTENEDOR CENTRAL (La "Hoja" del blog) */
+/* Lo hacemos más estrecho y centrado para dar efecto "Web 1.0" */
+/* LAS CAJAS AMARILLAS (Windows 95 style) */
+.intro-content-wrapper {
+    width: 100%;
+    max-width: 800px;
+    background: #ffffcc; /* Amarillo Post-it */
+    border: 3px solid black;
+    box-shadow: 10px 10px 0px blue; /* Sombra dura */
+    padding: 20px;
+    margin-bottom: 0; /* Se pegará a la nube o tendrá margen según quieras */
+    position: relative;
+    z-index: 10;
+    border-bottom: none;
+}
+
+
+
+/* El botón de iniciar prueba más bruto */
+#start-virtual-btn {
+    background: #c0c0c0; /* Gris Windows 95 */
+    border: 4px outset white;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 15px;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 5px 5px 0px black;
+}
+#start-virtual-btn:active {
+    border-style: inset;
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0px black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ——— SECCIÓN CELESTIAL (Nube) ——— */
+.heavenly-section {
+    position: relative;
+    z-index: 5; /* DETRÁS de los contenedores de texto, pero visible en el hueco */
+    text-align: center;
+    padding: 120px 0;
+    
+    /* MÁRGENES NEGATIVOS: Esto acerca los bloques amarillo para que se toquen */
+    margin-top: -90px;
+    margin-bottom: -90px;
+    
+    /* Fondo opcional para unir visualmente si hay huecos */
+    /* background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); */
+}
+
+/* DECORACIÓN DE BORDES DE NUBE (Opcional si usas mask-image) */
+/* Si tienes imágenes de bordes de nube, úsalas aquí con position absolute */
+.cloud-border-bottom, .cloud-border-top {
+    position: absolute;
+    left: 0; width: 100%; height: 50px;
+    background-size: cover;
+    pointer-events: none;
+}
+.cloud-border-bottom { bottom: -20px; background-image: url('../assets/img/cloud\ base\ 2.png'); /* Rotar o usar otra */ }
+.cloud-border-top { top: -20px; background-image: url('../assets/img/cloud\ base\ 3.png'); transform: scaleY(-1); }
+
+/* ——— NUBES FLOTANTES (Tapan los bordes) ——— */
+.cloud-floating {
+    position: absolute;
+    z-index: 20; /* Tapa los contenedores amarillos */
+    pointer-events: none;
+    
+    /* CENTRADO PERFECTO */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* ASEGURAR COBERTURA */
+    min-width: 100%; /* Que nunca sea más chica que la pantalla */
+    object-fit: cover; /* Para que no se deforme feo */
+}
+
+.cloud-top {
+    top: -170px; /* Sube lo suficiente para morder la Bio */
+    width: 220%; /* Ancho generoso */
+    max-width: 1400px; /* Límite para pantallas gigantes */
+    z-index: 10;
+    
+    /* Opcional: Invertirla verticalmente para variar la forma respecto a la de abajo */
+    transform: translateX(-50%) scaleY(-1); 
+}
+
+.cloud-bottom {
+    bottom: -150px; 
+    width: 250%; 
+    max-width: 1600px; 
+    z-index: 10;
+}
+
+.cloud-halo {
+    position: absolute;
+    
+    /* Centrado absoluto en el escenario */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* Tamaño: Un poco más grande que la tarjeta para que asome por los bordes */
+    width: 250%; 
+    max-width: 1600;
+    
+    /* CAPAS (La clave) */
+    z-index: 1; /* Fondo del escenario */
+    opacity: 0.8; /* Sutil transparencia */
+    
+    /* Opcional: Animación de respiración lenta */
+    animation: pulseCloud 6s infinite alternate ease-in-out;
+}
+
+@keyframes pulseCloud {
+    from { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    to { transform: translate(-50%, -50%) scale(1.05); opacity: 0.9; }
+}
+
+/* Animación suave de movimiento */
+@keyframes drift {
+    from { transform: translateX(0px); }
+    to { transform: translateX(20px); }
+}
+
+.mystic-title {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 3px 3px 0px #000;
+    margin-bottom: 20px;
+    z-index: 30;
+}
+
+.mystic-title, 
+.card-story-box,
+.cloud-stage {
+    position: relative;
+    z-index: 30; /* PRIORIDAD TOTAL: Encima de nubes (20) y cajas (10) */
+}
+
+
+
+/* PEDESTAL DE NUBE */
+.cloud-pedestal {
+    position: relative;
+    width: 300px;
+    height: 250px;
+    margin: 0 auto 30px auto;
+}
+
+.cloud-base {
+    position: relative;
+    /*bottom: 0;
+    left: 50%;
+    transform: translateX(-50%); */
+    width: 100%;
+    z-index: 2;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+}
+
+/* El bloque de arriba */
+.top-block {
+    border-bottom: none;
+    padding-bottom: 60px; /* Espacio para que la nube muerda */
+    /* Hacemos que el borde inferior sea invisible o se funda */
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+/* El bloque de abajo */
+.bottom-block {
+    border-top: none;
+    padding-top: 60px;
+    margin-top: 0;
+    mask-image: linear-gradient(to top, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%);
+}
+
+
+/* ——— ESCENARIO CENTRAL ——— */
+.cloud-stage {
+    position: relative;
+    width: 100%;
+    height: 400px; /* Altura suficiente para la animación */
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Alineamos todo abajo */
+    z-index: 30;
+}
+
+/* LA TARJETA (El Actor Principal) */
+.hidden-card {
+    width: 320px;
+    max-width: 90vw;
+    position: absolute;
+    bottom: 50px; /* Posición inicial baja */
+    z-index: 5; /* DETRÁS de la nube base */
+    
+    /* ESTADO INICIAL (Escondida/Hundida) */
+    transform: translateY(150px) scale(0.8) rotate(-5deg);
+    opacity: 0;
+    transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
+}
+
+/* CLASE ACTIVA (Cuando scrolleas) */
+.hidden-card.reveal {
+    transform: translateY(0px) scale(1) rotate(0deg); /* Sube y se endereza */
+    opacity: 1;
+    z-index: 3; /* Opcional: Si quieres que termine DELANTE de la nube, cambia esto con delay */
+    animation: floatingIdle 3s ease-in-out infinite alternate 1.5s; /* 1.5s delay para esperar que suba */
+}
+
+@keyframes floatingIdle {
+from { transform: translateY(0px) rotate(0deg); }
+    to { transform: translateY(-20px) rotate(2deg); }
+}
+
+/*.floating-card-img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px; /* Ajusta según tu PNG 
+    z-index: 2;
+    animation: floatCard 4s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+    0%, 100% { transform: translate(-50%, 0px) rotate(0deg); }
+    50% { transform: translate(-50%, -15px) rotate(3deg); }
+} */
+
+/* HISTORIA DE LA TARJETA */
+/* ESTILOS DE TEXTO */
+.card-story-box {
+    position: relative;
+    z-index: 30;
+    background: #fff;
+    border: 2px dashed #000;
+    padding: 15px;
+    max-width: 500px;
+    margin: 20px auto;
+    transform: rotate(1deg);
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+}
+
+.story-lead { font-size: 1.2rem; font-style: italic; margin-bottom: 10px; }
+.specs-grid { font-weight: bold; font-family: 'Courier New', monospace; font-size: 1.1rem; color: blue; }
+.story-small { font-size: 0.9rem; margin-top: 10px; opacity: 0.7; }
+
+
+/* ——— ESTILOS DE TIENDA (Bloque 3) ——— */
+.shop-wrapper {
+    border-top: 5px double black; /* Diferenciarlo un poco */
+}
+
+.offer-layout {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    background: #eee;
+    padding: 10px;
+    border: 1px solid #999;
+}
+
+.out-of-stock-box {
+    border: 2px solid red;
+    padding: 5px;
+    background: #ffdddd;
+    text-align: center;
+    transform: rotate(-2deg);
+}
+
+.blink-red { color: red; font-weight: bold; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
