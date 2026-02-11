@@ -64,7 +64,22 @@ startVirtualBtn.addEventListener('click', () => {
 
 
 
+function toggleFavorites() {
+    const favBtn = document.getElementById('fav-toggle-btn');
+    const favContent = document.getElementById('fav-content');
 
+    if (!favBtn || !favContent) return;
+
+    favContent.classList.toggle('open');
+    
+    favBtn.classList.toggle('active');
+
+    if (favContent.classList.contains('open')) {
+        favBtn.innerHTML = '<span class="folder-icon">📂</span> [ CERRAR CARPETA ]';
+    } else {
+        favBtn.innerHTML = '<span class="folder-icon">📁</span> [ CLICK PARA VER MIS FAVORITOS ]';
+    }
+}
 
 
 
@@ -503,3 +518,60 @@ const heavenSection = document.querySelector('#heaven-trigger');
 if(heavenSection) {
     heavenObserver.observe(heavenSection);
 }
+
+
+// Configuración: Rutas a tus imágenes
+    const cursorImages = {
+        default: 'assets/img/cursors/Normal\ Select.cur',
+        pointer: 'assets/img/cursors/Link\ Select.cur',
+        text:    'assets/img/cursors/Text\ Select.cur'
+    };
+
+    let throttleTimer = false;
+
+    document.addEventListener('mousemove', (e) => {
+        if(throttleTimer) return;
+        throttleTimer = true;
+        setTimeout(() => throttleTimer = false, 25); // 25ms = rastro suave
+
+        // 1. Detectar qué hay debajo del mouse para elegir la imagen
+        const hoveredElement = e.target;
+        
+        // Lógica de detección automática
+        let currentCursor = cursorImages.default; // Por defecto flecha
+
+        // Si es un elemento interactivo (Links, Botones, Carpeta) -> Manito
+        if (hoveredElement.matches('a, button, .folder-trigger, .nav-btn, .social-sidebar a') || 
+            hoveredElement.closest('a') || 
+            hoveredElement.closest('button')) {
+            currentCursor = cursorImages.pointer;
+        } 
+        // Si es texto seleccionable -> Texto
+        else if (hoveredElement.matches('input, textarea, p, span')) {
+             // Opcional: solo si quieres rastro de texto en párrafos
+             currentCursor = cursorImages.text; 
+        }
+
+        // 2. Crear el fantasma
+        const trail = document.createElement('div');
+        trail.className = 'mouse-trail';
+        
+        // Aplicar la imagen correcta
+        trail.style.backgroundImage = `url('${currentCursor}')`;
+        
+        // Posicionar (ajusta los restas -px para centrar la punta del cursor)
+        trail.style.left = (e.pageX - 2) + 'px';
+        trail.style.top = (e.pageY - 2) + 'px';
+
+        document.body.appendChild(trail);
+
+        // 3. Animación de salida (El efecto Echo)
+        // Hacemos que dure un poco más para que se note la "cola"
+        setTimeout(() => {
+            trail.classList.add('fade-out');
+        }, 20);
+
+        setTimeout(() => {
+            trail.remove();
+        }, 600); 
+    });

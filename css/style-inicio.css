@@ -13,6 +13,31 @@
     color: black;
 }
 
+@media (max-width: 768px) {
+
+    .intro-shell {
+        /* 1. EL ZOOM OUT: */
+        /* Escala todo el elemento al 85% de su tamaño original. 
+           Baja este número (ej: 0.8) si quieres que sea aún más chico. */
+        transform: scale(0.85);
+        
+        /* 2. PUNTO DE ORIGEN: */
+        /* Importante: Define que se achique desde el centro superior */
+        transform-origin: top center;
+        
+        /* 3. AJUSTE DE POSICIÓN LATERAL: */
+        /* Como tienes la sidebar a la derecha, movemos todo el bloque 
+           un poco a la izquierda (negativo) para equilibrar visualmente */
+        position: relative;
+        left: -20px; 
+        
+        /* 4. MÁRGENES: */
+        /* Aseguramos que esté centrado y con aire */
+        margin: 0 auto;
+        width: 100%; /* Mantenemos el ancho base, el scale se encarga del resto */
+    }
+}
+
 
 /* LA CAJA DE CONTENIDO (Hijo) */
 /* CONTENEDOR DE LAYOUT (Solo alinea al centro) */
@@ -22,7 +47,18 @@
     flex-direction: column;
     align-items: center;
     padding: 40px 20px;
+    overflow-x: hidden;
 }
+
+
+.intro-shell {
+    position: relative; /* Referencia para la sidebar */
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto; /* Centrado */
+    z-index: 15; /* Por encima de nubes de fondo, debajo de flotantes */
+}
+
 
 /* MARQUEE SUPERIOR (Estilo Noticia Urgente) */
 .marquee-box {
@@ -81,6 +117,7 @@
 .raw-content {
     font-size: 1.1rem;
     line-height: 1.4;
+    overflow-x:initial;
 }
 .highlight { background: #ffff00; color: red; } /* Resaltador */
 
@@ -91,12 +128,77 @@
     border: 2px solid #000;
     margin-top: 10px;
     background: #fff;
+    table-layout: fixed;
 }
 .ugly-table td {
     border: 1px solid #000;
     padding: 5px;
     font-family: 'Courier New', monospace;
+    text-align: center;
 }
+
+
+.folder-trigger {
+    width: 100%;
+    background: #000080;
+    color: white;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    padding: 10px;
+    border: 2px outset #fff;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s ease; /* Suavizamos el cambio */
+}
+.folder-trigger:hover {
+    background: #1084d0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 #000;
+}
+.folder-trigger.active {
+    background: #000; 
+    color: #ffff00;  
+    border-style: inset; 
+}
+
+.folder-trigger.active:hover {
+    background: #333; 
+    color: #fff;    
+    cursor: alias;   
+}
+
+.hidden-folder-content {
+    display: none; /* Oculto por defecto */
+    background: #e0e0e0;
+    border: 2px solid black;
+    border-top: none;
+    padding: 10px;
+    animation: slideDownFolder 0.3s ease-out;
+}
+
+.hidden-folder-content.open {
+    display: block;
+    animation: openFolder 0.3s ease-out;
+}
+
+@keyframes slideDownFolder {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- ESTILOS DEL NUEVO TEXTO --- */
+.text-block-extra {
+    margin-top: 30px;
+    font-family: 'Times New Roman', serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #000;
+    background: rgba(255,255,255,0.4); /* Un poco de contraste sobre el amarillo */
+    padding: 15px;
+    border: 1px dotted black;
+}
+
+
 
 /* SECCIÓN PRODUCTOS (Estilo Catálogo de Papel) */
 .catalog-section {
@@ -167,8 +269,64 @@
     position: relative;
     z-index: 10;
     border-bottom: none;
+    overflow: visible !important;
 }
 
+
+.social-sidebar {
+    position: absolute;
+    top: 205px;
+    right: -70px; 
+    width: 80px;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    background-color: #ffffcc; 
+    border: 3px solid black;
+    border-left: none;
+    
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    
+    padding: 15px 5px; 
+    
+    box-shadow: 5px 5px 0px blue;
+    
+    z-index: 0;
+}
+
+.social-sidebar a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: #c0c0c0; /* Fondo gris botón */
+    border: 2px outset #fff; /* Borde 3D */
+    box-shadow: 3px 3px 0 #000; /* Sombra dura */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    margin: 0 auto;
+}
+
+.social-sidebar a:hover {
+    transform: translate(-2px, -2px);
+    background: #fff;
+    cursor: pointer;
+}
+
+.social-sidebar a:active {
+    border-style: inset;
+    transform: translate(2px, 2px);
+}
+
+.social-sidebar img {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated; /* Para que se vean retro */
+}
 
 
 /* El botón de iniciar prueba más bruto */
@@ -333,10 +491,10 @@
 /* El bloque de arriba */
 .top-block {
     border-bottom: none;
-    padding-bottom: 60px; /* Espacio para que la nube muerda */
+    padding-bottom: 150px; /* Espacio para que la nube muerda */
     /* Hacemos que el borde inferior sea invisible o se funda */
-    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
 
 /* El bloque de abajo */
@@ -449,3 +607,64 @@ from { transform: translateY(0px) rotate(0deg); }
 .blink-red { color: red; font-weight: bold; animation: blink 1s infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
+
+
+/*SCROLLBAR*/
+::-webkit-scrollbar {
+    width: 16px; /* Ancho clásico grueso */
+    height: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: #e0e0e0; /* Gris claro */
+    border-left: 1px solid #fff; /* Brillo */
+    border-right: 1px solid #808080; /* Sombra */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0; /* El gris clásico de Windows */
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #808080;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #dcdcdc;
+}
+
+body, html {
+    cursor: url('../assets/img/cursors/Normal\ Select.cur'), default; 
+}
+
+a, button, .folder-trigger, .nav-btn, .social-sidebar a {
+    cursor: url('../assets/img/cursors/Link\ Select.cur'), pointer; 
+}
+
+input, textarea, .raw-content {
+    cursor: url('../assets/img/cursors/Text\ Select.cur'), text;
+}
+
+
+.mouse-trail {
+    position: absolute;
+    width: 12px;  /* Tamaño del puntero fantasma */
+    height: 19px;
+    pointer-events: none; /* CRÍTICO: Para que no interfiera con los clicks */
+    z-index: 9999;
+    
+    /* DIBUJAMOS UN MOUSE CON CSS (Para no cargar imágenes) */
+    /* Esto crea un triangulo que parece un cursor */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='19' viewBox='0 0 12 19'%3E%3Cpath fill='black' stroke='white' stroke-width='1' d='M1,1 L1,17 L5,13 L8,18 L10,17 L7,12 L11,12 Z' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    
+    /* Animación para que desaparezca */
+    opacity: 0.8;
+    transition: transform 0.1s, opacity 0.5s;
+}
+
+.mouse-trail.fade-out {
+    opacity: 0;
+    transform: scale(0.5); /* Se achica mientras desaparece */
+}
