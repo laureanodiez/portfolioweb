@@ -575,3 +575,420 @@ if(heavenSection) {
             trail.remove();
         }, 600); 
     });
+
+
+
+    // --- SISTEMA DE CLIMA Y HORA ---
+document.addEventListener('DOMContentLoaded', () => {
+    updateTime();
+    setInterval(updateTime, 1000);
+    
+    // Iniciamos el sistema
+    initWeatherSystem();
+});
+
+function updateTime() {
+    const now = new Date();
+    const timeSpan = document.getElementById('live-time');
+    
+    if(timeSpan) {
+        timeSpan.innerText = now.toLocaleTimeString('es-AR', { hour12: false });
+    }
+    
+    const dateSpan = document.getElementById('live-date');
+    if(dateSpan) {
+        dateSpan.innerText = now.toLocaleDateString('es-AR');
+    }
+}
+
+async function initWeatherSystem() {
+    const citySpan = document.getElementById('weather-city');
+    
+    try {
+        // 1. Usamos geojs.io (Menos probable que sea bloqueado por AdBlockers)
+        const locationData = await getLocationFromIP();
+        console.log("Ubicación detectada:", locationData.city);
+        
+        // Actualizamos nombre de ciudad
+        if(citySpan) citySpan.innerText = locationData.city.toUpperCase();
+        
+        // Pedimos clima
+        fetchWeather(locationData.latitude, locationData.longitude);
+        
+    } catch (error) {
+        console.warn("Falló la geolocalización, usando default (Rosario).", error);
+        
+        // FALLBACK: Si falla, ponemos Rosario manual
+        if(citySpan) citySpan.innerText = "ROSARIO";
+        fetchWeather(-32.94, -60.63);
+    }
+}
+
+async function getLocationFromIP() {
+    // API alternativa mucho más amigable con bloqueadores
+    const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
+    if (!response.ok) throw new Error('Error al obtener IP');
+    return await response.json();
+}
+
+async function fetchWeather(lat, lon) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=sunrise,sunset&timezone=auto`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const weather = data.current_weather;
+        
+        // ELEMENTOS
+        const tempEl = document.getElementById('weather-temp');
+        const iconEl = document.getElementById('weather-icon');
+        const widget = document.getElementById('aero-widget'); // El widget flotante
+
+        if (!tempEl || !iconEl || !widget) return;
+
+        // 1. Temperatura
+        tempEl.innerText = `${Math.round(weather.temperature)}°C`;
+        
+        // 2. Estado del Clima
+        const code = weather.weathercode;
+        const isDay = weather.is_day; 
+        
+        let condition = "";
+        let weatherClass = "";
+
+        // Mapeo WMO
+        if (code <= 3) {
+            condition = isDay ? "☀️" : "🌙"; // Icono más minimalista si pones la ciudad
+            weatherClass = isDay ? "weather-sunny" : "weather-night";
+        } else if (code >= 51 && code <= 99) {
+            condition = "🌧️";
+            weatherClass = "weather-rainy";
+        } else if (code >= 45 && code <= 48) {
+             condition = "🌫️";
+             weatherClass = "weather-rainy"; 
+        } else {
+            condition = "☁️";
+            weatherClass = ""; 
+        }
+
+        iconEl.innerText = condition;
+
+        // 3. Efectos Visuales (Aura)
+        widget.classList.remove('weather-sunny', 'weather-rainy', 'weather-night');
+        if(weatherClass) {
+            widget.classList.add(weatherClass);
+        }
+
+    } catch (error) {
+        console.error("Error clima:", error);
+    }
+}
+
+
+
+const chaosContent = [
+    // --- JUEGOS CLÁSICOS (DOS & PS1) ---
+    {
+        type: 'game',
+        title: 'DOOM (Dos.Zone)',
+        platform: 'all',
+        src: 'https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Foriginal%2F2022%2F10%2F12%2Fdoom.jsdos' 
+    },
+    {
+        type: 'game',
+        title: 'WOLFENSTEIN 3D',
+        src: 'https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Foriginal%2F2022%2F10%2F12%2Fwolfenstein-3d.jsdos',
+        platform: 'all'
+    },
+    {
+        type: 'game',
+        title: 'RESIDENT EVIL 2 (1996), LEON DISC',
+        platform: 'desktop',
+        src: 'https://www.retrogames.cc/embed/42943-resident-evil-2-dual-shock-ver-disc-1-leon.html' 
+    },
+    {
+        type: 'game',
+        title: 'SILENT HILL (PS1)',
+        platform: 'desktop',
+        src: 'https://www.retrogames.cc/embed/41684-silent-hill.html'
+    },
+    {
+        type: 'game',
+        title: 'PRINCE OF PERSIA',
+        platform: 'desktop',
+        src: 'https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Foriginal%2F2022%2F10%2F12%2Fprince-of-persia.jsdos'
+    },
+    {
+        type: 'game',
+        title: 'CRASH BANDICOOT',
+        platform: 'desktop',
+        src: 'https://www.retrogames.cc/embed/40784-crash-bandicoot.html'
+    },
+    {
+        type: 'game',
+        title: 'SONIC THE HEDGEHOG',
+        platform: 'desktop',
+        src: 'https://www.retrogames.cc/embed/30899-sonic-the-hedgehog-usa-europe.html'
+    },
+    
+    {
+        type: 'game',
+        title: '2048 CLASSIC',
+        src: 'https://play2048.co/',
+        platform: 'mobile' // SOLO MÓVIL
+    },
+    {
+        type: 'game',
+        title: 'HEXTRIS',
+        src: 'https://hextris.io/', 
+        platform: 'mobile'
+    },
+    {
+        type: 'game',
+        title: 'CHROME DINO',
+        src: 'https://chromedino.com/',
+        platform: 'mobile'
+    },
+    {
+        type: 'game',
+        title: 'FLAPPY BIRD',
+        src: 'https://flappy-bird.io/',
+        platform: 'mobile'
+    },
+    {
+        type: 'game',
+        title: 'COOKIE CLICKER',
+        src: 'https://orteil.dashnet.org/cookieclicker/',
+        platform: 'mobile' 
+    },
+    {
+        type: 'game',
+        title: 'LITTLE ALCHEMY 2',
+        src: 'https://littlealchemy2.com/', 
+        platform: 'mobile'
+    },
+    {
+        type: 'game',
+        title: 'GEOMETRY DASH (Scratch)',
+        src: 'https://scratch.mit.edu/projects/105500895/embed',
+        platform: 'mobile'
+    },
+    {
+        type: 'game',
+        title: 'PAPI JUMP',
+        src: 'https://www.addictinggames.com/embed/html5-games/23635', 
+        platform: 'mobile'
+    },
+
+
+    // --- VIDEOS ---
+    {
+        type: 'video',
+        title: 'RICK ROLL',
+        src: 'https://www.youtube.com/embed/xvFZjo5PgG0',
+        platform: 'all' // AMBOS
+    },
+    {
+        type: 'video',
+        title: 'NYAN CAT',
+        src: 'https://www.youtube.com/embed/wZZ7oFKsKzY',
+        platform: 'all'
+    },
+    
+    // --- BROMAS ---
+    {
+        type: 'bsod', 
+        title: 'FATAL ERROR',
+        html: '',
+        platform: 'all'
+    },
+    {
+        type: 'image',
+        title: 'YOU ARE AN IDIOT',
+        html: '<div style="text-align:center;"><img src="https://media.tenor.com/262I3J7JAt0AAAAM/you-are-an-idiot-smile.gif" style="width:100%;"></div>',
+        platform: 'all'
+    },
+    {
+        type: 'game',
+        title: 'SYSTEM UPDATE...',
+
+        src: 'https://fakeupdate.net/win98/', 
+        platform: 'all'
+    },
+    {
+        type: 'image', 
+        title: 'FBI SEIZURE',
+        html: `
+            <div style="background:black; color:white; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; font-family:Arial, sans-serif;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Seal_of_the_Federal_Bureau_of_Investigation.png" style="width:150px; margin-bottom:20px;">
+                <h1 style="color:red; text-transform:uppercase; font-size:2rem;">This Domain Has Been Seized</h1>
+                <p style="max-width:80%; margin:20px auto;">by the Federal Bureau of Investigation pursuant to a seizure warrant issued by the United States District Court.</p>
+                <p style="color:gray; font-size:0.8rem;">IP LOGGED: 192.168.0.1 (Don't worry, it's a joke)</p>
+            </div>
+        `,
+        platform: 'all'
+    },
+    {
+        type: 'game',
+        title: 'THE MATRIX',
+        src: 'https://screensaver.online/matrix/',
+        platform: 'all'
+    },
+];
+
+let isCoolingDown = false;
+
+// --- FUNCIÓN PARA ABRIR ---
+function spinRoulette() {
+    if(isCoolingDown) return;
+
+    // 1. DETECTAR SI ES MÓVIL (Menos de 768px de ancho)
+    const isMobile = window.innerWidth <= 768;
+
+    // 2. FILTRAR LA LISTA SEGÚN EL DISPOSITIVO
+    const playableContent = chaosContent.filter(item => {
+        if (item.platform === 'all') return true;       // Sirve para todos
+        if (isMobile && item.platform === 'mobile') return true; // Solo móvil
+        if (!isMobile && item.platform === 'desktop') return true; // Solo PC
+        return false;
+    });
+
+    // Seguridad: Si por alguna razón la lista queda vacía (raro), usar la completa
+    const listToUse = playableContent.length > 0 ? playableContent : chaosContent;
+
+    // --- A PARTIR DE ACÁ ES IGUAL QUE ANTES ---
+    
+    const btn = document.getElementById('lucky-btn');
+    const status = document.getElementById('lucky-status');
+    
+    isCoolingDown = true;
+    btn.disabled = true;
+    if(status) status.innerText = "LOADING RANDOM ASSETS...";
+
+    // Elegir contenido aleatorio DE LA LISTA FILTRADA
+    const randomItem = listToUse[Math.floor(Math.random() * listToUse.length)];
+
+    // CASO BSOD
+    if (randomItem.type === 'bsod') {
+        triggerBSOD();
+        setTimeout(() => {
+            isCoolingDown = false;
+            btn.disabled = false;
+            if(status) status.innerText = "";
+        }, 1000);
+        return; 
+    }
+
+    // Modal
+    const modal = document.getElementById('chaos-modal');
+    const modalTitle = document.getElementById('chaos-title');
+    const modalBody = document.getElementById('chaos-content');
+    
+    modalTitle.innerText = randomItem.title;
+    modal.style.display = 'flex'; 
+
+    // Bloquear Scroll
+    document.documentElement.classList.add('no-scroll');
+    document.body.classList.add('no-scroll');
+
+    // Inyectar
+    setTimeout(() => {
+        if (randomItem.type === 'game' || randomItem.type === 'video') {
+            modalBody.innerHTML = `<iframe src="${randomItem.src}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" style="width:100%; height:100%;"></iframe>`;
+        } else {
+            modalBody.innerHTML = randomItem.html;
+        }
+        
+        setTimeout(() => {
+            isCoolingDown = false;
+            btn.disabled = false;
+            if(status) status.innerText = "";
+        }, 3000);
+    }, 100);
+}
+
+// --- FUNCIÓN PARA CERRAR (¡AQUÍ ESTÁ LA QUE FALTABA!) ---
+function closeChaos() {
+    console.log("Cerrando ventana del caos..."); // Debug
+    
+    const modal = document.getElementById('chaos-modal');
+    const modalBody = document.getElementById('chaos-content');
+    
+    // 1. Ocultar modal
+    modal.style.display = 'none';
+    
+    // 2. IMPORTANTE: Vaciar contenido para matar sonidos/juegos
+    modalBody.innerHTML = ''; 
+
+    // 3. --- NUEVO: DESBLOQUEAR SCROLL ---
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
+}
+
+// --- FUNCIÓN BSOD (PANTALLA AZUL) ---
+function triggerBSOD() {
+    document.documentElement.classList.add('no-scroll');
+    document.body.classList.add('no-scroll');
+
+    const bsod = document.createElement('div');
+    bsod.id = 'bsod-overlay';
+    bsod.innerHTML = `
+        <div class="bsod-text">
+            <p>A problem has been detected and windows has been shut down to prevent damage to your computer.</p>
+            <br>
+            <p>DRIVER_IRQL_NOT_LESS_OR_EQUAL</p>
+            <br>
+            <p>If this is the first time you've seen this stop error screen, restart your computer.</p>
+            <br>
+            <p>Technical information:</p>
+            <p>*** STOP: 0x000000D1 (DOOM_ERROR_404)</p>
+            <br>
+            <p class="blink">PRESS ANY KEY TO CONTINUE...</p>
+        </div>
+    `;
+    document.body.appendChild(bsod);
+
+    const killBSOD = () => {
+        bsod.remove();
+        document.documentElement.classList.remove('no-scroll');
+        document.body.classList.remove('no-scroll');
+        document.removeEventListener('keydown', killBSOD);
+        document.removeEventListener('click', killBSOD);
+    };
+
+    setTimeout(() => {
+        document.addEventListener('keydown', killBSOD);
+        document.addEventListener('click', killBSOD);
+    }, 500);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    initVisitorCounter();
+});
+
+function initVisitorCounter() {
+    const counterElement = document.getElementById('hit-counter');
+    if (!counterElement) return;
+
+    // 1. Verificar si ya tenemos un conteo guardado
+    let visits = localStorage.getItem('laureano_site_hits');
+
+    if (!visits) {
+        // Primera vez: Generar un número fake alto (entre 14000 y 50000)
+        visits = Math.floor(Math.random() * (5000000 - 14000 + 1) + 14000);
+    } else {
+        // Ya visitó: Convertir a número y sumar 1
+        visits = parseInt(visits) + 1;
+    }
+
+    // 2. Guardar el nuevo número
+    localStorage.setItem('laureano_site_hits', visits);
+
+    // 3. Formatear con ceros a la izquierda (Ej: 014832)
+    // padStart(6, '0') asegura que siempre tenga 6 dígitos
+    const formattedVisits = visits.toString().padStart(10, '0');
+
+    // 4. Mostrar en pantalla
+    counterElement.innerText = formattedVisits;
+}

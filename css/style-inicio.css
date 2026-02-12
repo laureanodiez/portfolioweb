@@ -15,26 +15,24 @@
 
 @media (max-width: 768px) {
 
-    .intro-shell {
-        /* 1. EL ZOOM OUT: */
-        /* Escala todo el elemento al 85% de su tamaño original. 
-           Baja este número (ej: 0.8) si quieres que sea aún más chico. */
+.intro-shell {
+        /* 1. ESCALA (Zoom Out) */
         transform: scale(0.85);
-        
-        /* 2. PUNTO DE ORIGEN: */
-        /* Importante: Define que se achique desde el centro superior */
         transform-origin: top center;
         
-        /* 3. AJUSTE DE POSICIÓN LATERAL: */
-        /* Como tienes la sidebar a la derecha, movemos todo el bloque 
-           un poco a la izquierda (negativo) para equilibrar visualmente */
-        position: relative;
-        left: -20px; 
+        /* 2. CENTRADO PERFECTO */
+        width: 85% !important; /* Define el ancho de la caja amarilla */
+        margin-left: auto;     /* Empuja desde la izquierda */
+        margin-right: auto;    /* Empuja desde la derecha */
         
-        /* 4. MÁRGENES: */
-        /* Aseguramos que esté centrado y con aire */
-        margin: 0 auto;
-        width: 100%; /* Mantenemos el ancho base, el scale se encarga del resto */
+        /* 3. POSICIONAMIENTO NEUTRO */
+        position: relative;
+        left: 0; /* IMPORTANTE: Quitamos el -20px anterior que causaba el desbalance */
+        
+        /* Opcional: Si sientes que la sidebar (que está a la derecha)
+           hace que se vea "pesado" visualmente hacia ese lado,
+           puedes empujar todo UN POQUITO a la izquierda compensando: */
+        /* left: -5px; */ 
     }
 }
 
@@ -187,15 +185,153 @@
 }
 
 /* --- ESTILOS DEL NUEVO TEXTO --- */
+/* --- CONTENEDOR PRINCIPAL EXTRA --- */
 .text-block-extra {
-    margin-top: 30px;
-    font-family: 'Times New Roman', serif;
-    font-size: 1.2rem;
-    line-height: 1.5;
-    color: #000;
-    background: rgba(255,255,255,0.4); /* Un poco de contraste sobre el amarillo */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Espacio entre el diario y el anuncio */
+    margin-top: 20px;
+}
+
+/* --- ESTILO 1: DIARIO / TERMINAL --- */
+.retro-diary-entry {
+    background-color: #000; /* Fondo negro terminal */
+    border: 2px inset #808080;
     padding: 15px;
-    border: 1px dotted black;
+    font-family: 'Courier New', monospace;
+    color: #00ff00; /* Verde fósforo */
+    font-size: 0.9rem;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+    position: relative;
+}
+
+/* Header falso de ventana de terminal */
+.diary-header {
+    background: #333;
+    color: #fff;
+    padding: 2px 5px;
+    font-size: 0.8rem;
+    margin: -15px -15px 15px -15px; /* Pegado a los bordes */
+    border-bottom: 1px solid #808080;
+}
+
+.comment-style {
+    color: #888; /* Gris para comentarios de código */
+    font-weight: bold;
+}
+
+.highlight-text {
+    background: #004400; /* Resaltado verde oscuro */
+    color: #fff;
+    padding: 0 4px;
+}
+
+.blink-cursor {
+    animation: blink 1s step-end infinite;
+}
+
+/* --- ESTILO 2: PRODUCTO / SOULCARD AD --- */
+.product-ad-container {
+    background-color: #e0e0e0; /* Gris claro estilo Windows/Papel */
+    border: 3px double #000; /* Doble borde elegante */
+    padding: 20px;
+    font-family: 'Arial', sans-serif; /* Fuente más limpia para "venta" */
+    color: #000;
+    position: relative;
+}
+
+/* Efecto de hoja doblada (opcional) */
+.product-ad-container::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    border-width: 0 20px 20px 0;
+    border-style: solid;
+    border-color: #fff #fff #aaa #aaa; 
+    box-shadow: -2px 2px 2px rgba(0,0,0,0.2);
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid #000;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.product-header h2 {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: -1px;
+    font-family: 'Impact', sans-serif; /* Fuente gruesa de título */
+    text-transform: uppercase;
+}
+
+.tm {
+    font-size: 0.8rem;
+    vertical-align: super;
+}
+
+.version-tag {
+    background: #000;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    font-family: 'Courier New', monospace;
+    transform: rotate(-5deg); /* Un poco chueco estilo sello */
+}
+
+.product-body p {
+    line-height: 1.4;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    text-align: justify;
+}
+
+/* --- EL SLOGAN (MÁS QUE UN PORTFOLIO) --- */
+.slogan-box {
+    margin: 25px 0;
+    border: 2px solid #000;
+    text-align: center;
+    background: #fff;
+    box-shadow: 5px 5px 0 #888;
+    padding: 10px;
+    transform: scale(1.02); /* Un pelín más grande para resaltar */
+}
+
+.slogan-top {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.slogan-main {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #000080; /* Azul fuerte */
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    border-top: 1px dashed #ccc;
+    border-bottom: 1px dashed #ccc;
+    padding: 5px 0;
+}
+
+.slogan-bottom {
+    font-size: 0.7rem;
+    margin-top: 5px;
+    color: #888;
+    letter-spacing: 1px;
+}
+
+/* Separador Glitch entre los dos bloques */
+.glitch-separator hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    margin: 0;
 }
 
 
@@ -268,7 +404,6 @@
     margin-bottom: 0; /* Se pegará a la nube o tendrá margen según quieras */
     position: relative;
     z-index: 10;
-    border-bottom: none;
     overflow: visible !important;
 }
 
@@ -415,7 +550,7 @@
 
 .cloud-bottom {
     bottom: -150px; 
-    width: 250%; 
+    width: 290%; 
     max-width: 1600px; 
     z-index: 10;
 }
@@ -493,8 +628,8 @@
     border-bottom: none;
     padding-bottom: 150px; /* Espacio para que la nube muerda */
     /* Hacemos que el borde inferior sea invisible o se funda */
-    mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
 }
 
 /* El bloque de abajo */
@@ -502,10 +637,13 @@
     border-top: none;
     padding-top: 60px;
     margin-top: 0;
-    mask-image: linear-gradient(to top, black 80%, transparent 100%);
+    mask-image: linear-gradient(to top, black 90%, transparent 100%);
     -webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%);
 }
 
+.footer-block {
+    margin-top: 60px;
+}
 
 /* ——— ESCENARIO CENTRAL ——— */
 .cloud-stage {
@@ -610,19 +748,19 @@ from { transform: translateY(0px) rotate(0deg); }
 
 
 /*SCROLLBAR*/
-::-webkit-scrollbar {
-    width: 16px; /* Ancho clásico grueso */
+#intro-layer::-webkit-scrollbar {
+    width: 16px; 
     height: 16px;
 }
 
-::-webkit-scrollbar-track {
-    background: #e0e0e0; /* Gris claro */
-    border-left: 1px solid #fff; /* Brillo */
-    border-right: 1px solid #808080; /* Sombra */
+#intro-layer::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #808080;
 }
 
-::-webkit-scrollbar-thumb {
-    background-color: #c0c0c0; /* El gris clásico de Windows */
+#intro-layer::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0;
     border-top: 2px solid #fff;
     border-left: 2px solid #fff;
     border-right: 2px solid #404040;
@@ -630,8 +768,13 @@ from { transform: translateY(0px) rotate(0deg); }
     box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #808080;
 }
 
-::-webkit-scrollbar-thumb:hover {
+#intro-layer::-webkit-scrollbar-thumb:hover {
     background-color: #dcdcdc;
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    width: auto; /* Oculta o usa default */
+    background: transparent;
 }
 
 body, html {
@@ -668,3 +811,400 @@ input, textarea, .raw-content {
     opacity: 0;
     transform: scale(0.5); /* Se achica mientras desaparece */
 }
+
+
+
+
+/* --- WIDGET DE ESTADO (CLIMA Y HORA) --- */
+.status-bar {
+    position: absolute;
+    /* Ajustamos el TOP para que monte sobre el borde de la caja amarilla */
+    /* Como es hijo del shell, 0 es el inicio. -20px lo sube un poco para el efecto "pestaña" */
+    top: -20px; 
+    
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    /* Sombra importante para que se destaque sobre el fondo naranja/nubes */
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+    
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 15px;
+    
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    
+    /* Z-INDEX SUPREMO: Para que nada lo tape (ni la máscara ni las nubes) */
+    z-index: 1000; 
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .status-bar {
+        font-size: 0.7rem; /* Texto más chico */
+        padding: 4px 8px;
+        width: 90%; /* Que no se salga de pantalla */
+        justify-content: center;
+    }
+}
+
+.status-separator { color: #808080; }
+
+/* --- EFECTOS ATMOSFÉRICOS (Se aplican con JS al contenedor principal) --- */
+/* Base del widget (aseguramos posición para que el aura se centre) */
+#aero-widget {
+    position: absolute;
+    /* Ajusta este top si sientes que flota muy arriba o abajo */
+    top: -25px; 
+    z-index: 1000;
+    transition: all 0.5s ease;
+    /* Importante: para que el aura salga desde atrás de ESTE elemento */
+    transform-style: preserve-3d; 
+}
+
+/* EL AURA (Pseudo-elemento común) */
+#aero-widget::before {
+    content: '';
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(-1px); /* Z-1 para ir atrás */
+    width: 120%;  /* Un poco más ancho que el widget */
+    height: 150%; /* Bastante más alto para que "brille" hacia arriba y abajo */
+    border-radius: 50%; /* Forma ovalada de luz */
+    opacity: 0;   /* Invisible por defecto */
+    transition: opacity 1s ease;
+    pointer-events: none; /* Que no moleste al click */
+    z-index: -1;
+}
+
+/* 1. SOL / DÍA: El "God Ray" (Rayo de Dios) */
+#aero-widget.weather-sunny {
+    background: rgb(255, 255, 240); /* El widget se pone clarito */
+    border-color: gold;
+    color: #554400; /* Texto dorado oscuro */
+    text-shadow: 0 0 2px white;
+}
+
+#aero-widget.weather-sunny::before {
+    opacity: 1;
+    /* Un gradiente radial que simula el sol pegando fuerte */
+    background: radial-gradient(
+        circle, 
+        rgba(255, 223, 0, 0.8) 0%, 
+        rgba(255, 140, 0, 0.4) 40%, 
+        transparent 70%
+    );
+    animation: sunBreathing 4s infinite alternate;
+}
+
+@keyframes sunBreathing {
+    from { transform: translate(-50%, -50%) translateZ(-1px) scale(0.9); opacity: 0.7; }
+    to { transform: translate(-50%, -50%) translateZ(-1px) scale(1.1); opacity: 1; }
+}
+
+/* 2. LLUVIA: Efecto Mojado */
+#aero-widget.weather-rainy {
+    background: rgb(200, 220, 255);
+    border-color: #4a90e2;
+    color: #002244;
+    border-style: double;
+}
+
+#aero-widget.weather-rainy::before {
+    opacity: 1;
+    width: 110%;
+    height: 100%;
+    border-radius: 10px;
+    /* Fondo azulado con "gotas" simuladas por gradientes radiales */
+    background-color: rgba(0, 100, 255, 0.1);
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0));
+    background-size: 200px 200px;
+    box-shadow: 0 0 20px rgba(0, 119, 255, 0.4);
+    animation: rainDropMove 20s linear infinite;
+}
+
+@keyframes rainDropMove {
+    from { background-position: 0 0; }
+    to { background-position: 0 200px; } /* Las gotas bajan lento */
+}
+
+/* 3. NOCHE: Glow Cyberpunk */
+#aero-widget.weather-night {
+    background: #000;
+    color: #0f0; /* Verde matrix */
+    border-color: #0f0;
+}
+
+#aero-widget.weather-night::before {
+    opacity: 1;
+    background: radial-gradient(
+        circle, 
+        rgba(0, 255, 0, 0.4) 0%, 
+        transparent 70%
+    );
+    box-shadow: 0 0 15px #0f0;
+}
+
+
+/* --- ESTILOS DEL GUESTBOOK --- */
+.guestbook-section {
+    margin-top: 40px;
+    border: 4px groove #c0c0c0;
+    background: #fff;
+}
+
+.guestbook-header {
+    background: #000080;
+    color: #fff;
+    padding: 5px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.guestbook-frame {
+    width: 100%;
+    min-height: 300px;
+    background: #e0e0e0;
+    border-top: 2px solid #000;
+}
+
+
+
+
+
+/* --- BOTÓN WIN95 GENÉRICO --- */
+.win95-btn {
+    background: #c0c0c0;
+    border: 2px solid #fff;
+    border-right-color: #404040;
+    border-bottom-color: #404040;
+    padding: 8px 16px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 #000;
+}
+.win95-btn:active {
+    border: 2px solid #404040;
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+.win95-btn:disabled {
+    color: #808080;
+    cursor: wait;
+}
+
+/* --- MODAL (OVERLAY) --- */
+.modal-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Fondo semi-oscuro */
+    z-index: 99999; /* POR ENCIMA DE TODO */
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- VENTANA FLOTANTE --- */
+.win95-window {
+    width: 90%;
+    max-width: 640px; /* Tamaño máximo para DOOM */
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    box-shadow: 10px 10px 0 #000;
+    display: flex;
+    flex-direction: column;
+}
+
+.window-header {
+    background: #000080; /* Azul clásico */
+    padding: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    font-family: sans-serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.close-btn {
+    background: #c0c0c0;
+    border: 1px outset #fff;
+    font-weight: bold;
+    cursor: pointer;
+    width: 25px;
+    height: 22px;
+    line-height: 18px;
+}
+
+.window-body {
+    padding: 10px;
+    text-align: center;
+    /* Para que el contenido (iframe/video) no se salga */
+    overflow: hidden; 
+}
+
+#chaos-content {
+    width: 100%;
+    /* Altura mínima para que Doom o YouTube entren bien */
+    height: 400px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: black; /* Fondo negro por si tarda en cargar */
+}
+
+/* El iframe debe llenar ese espacio */
+#chaos-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+#chaos-content img {
+    max-width: 100%;
+    border: 2px inset #fff;
+}
+
+
+html.no-scroll, body.no-scroll {
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
+    position: fixed !important; /* Esto congela la posición visual */
+    touch-action: none; /* Deshabilita gestos táctiles */
+}
+
+
+
+/* --- FOOTER DEL CAOS --- */
+.chaos-footer {
+    text-align: center;
+    padding: 20px;
+    background: #c0c0c0; /* Gris Windows */
+    border-top: 2px solid #fff;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    margin-top: 50px;
+}
+
+.retro-hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    margin-bottom: 20px;
+}
+
+/* --- BADGES (88x31) --- */
+.ring-container {
+    background: #000;
+    border: 3px inset #fff;
+    padding: 10px;
+    margin: 0 auto 20px auto;
+    max-width: 600px;
+    color: #0f0; /* Verde Matrix */
+}
+
+.ring-title {
+    margin-bottom: 10px;
+    text-shadow: 2px 2px #ff0000; /* Sombra roja vibrante */
+    animation: blinkTitle 1s infinite;
+}
+
+@keyframes blinkTitle {
+    50% { color: #fff; }
+}
+
+.badge-strip img {
+    margin: 0 5px;
+    vertical-align: middle;
+    border: 1px solid #fff;
+}
+
+.ring-nav {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.ring-nav a {
+    color: #00ffff; /* Cyan */
+    text-decoration: none;
+    margin: 0 5px;
+}
+.ring-nav a:hover {
+    background: #000080;
+    color: #fff;
+}
+
+/* --- CONTADOR DE VISITAS (ODÓMETRO) --- */
+.visitor-counter-wrapper {
+    background: #000; /* Fondo negro placa */
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px outset #808080;
+    color: #c0c0c0;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+}
+
+.odometer {
+    font-family: 'Courier New', monospace; /* O una fuente digital si tenés */
+    font-size: 2rem;
+    color: #ff0000; /* Rojo LED digital */
+    background: #200000; /* Rojo muy oscuro de fondo apagado */
+    border: 3px inset #500000;
+    padding: 5px 15px;
+    letter-spacing: 5px;
+    text-shadow: 0 0 5px #ff4444; /* Glow */
+    margin: 5px 0;
+}
+
+
+
+/* --- EFECTO TV APAGÁNDOSE (CRT OFF) --- */
+@keyframes turn-off {
+    0% {
+        transform: scale(1, 1.3) translate3d(0, 0, 0);
+        filter: brightness(1);
+        opacity: 1;
+    }
+    60% {
+        transform: scale(1, 0.001) translate3d(0, 0, 0);
+        filter: brightness(10);
+    }
+    100% {
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+        transform: scale(0, 0.001) translate3d(0, 0, 0);
+        opacity: 0;
+    }
+}
+
+.crt-shutdown-effect {
+    animation: turn-off 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+    animation-fill-mode: forwards;
+    pointer-events: none; /* Para que no puedan clickear nada mientras se apaga */
+}
+
+/* Aseguramos que el fondo detrás de la intro sea negro para que el apagado se vea real */
+body {
+    background-color: #000; 
+}
+
+
+
