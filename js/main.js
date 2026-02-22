@@ -271,21 +271,96 @@ function initPortfolioLogic() {
         });
     });
 
+    // --- LÓGICA DEL CARRUSEL 3D (Botones + Drag Táctil) ---
     const carousel = document.getElementById('design-carousel');
-    if (carousel) {
+    const scene = document.querySelector('.carousel-scene');
+    
+    if (carousel && scene) {
         const cells = document.querySelectorAll('.carousel-cell');
         let selectedIndex = 0;
         
         function rotateCarousel() {
             const angle = 360 / cells.length;
             const radius = Math.round( (210 / 2) / Math.tan( Math.PI / cells.length ) );
-            cells.forEach((cell, i) => { cell.style.transform = `rotateY(${i * angle}deg) translateZ(${radius}px)`; });
+            cells.forEach((cell, i) => { 
+                cell.style.transform = `rotateY(${i * angle}deg) translateZ(${radius}px)`; 
+            });
             carousel.style.transform = `translateZ(-${radius}px) rotateY(${selectedIndex * -angle}deg)`;
         }
         
-        document.getElementById('prev-btn').addEventListener('click', () => { selectedIndex--; rotateCarousel(); });
-        document.getElementById('next-btn').addEventListener('click', () => { selectedIndex++; rotateCarousel(); });
-        rotateCarousel();
+        // 1. Botones Clásicos
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        if(prevBtn) prevBtn.addEventListener('click', () => { selectedIndex--; rotateCarousel(); });
+        if(nextBtn) nextBtn.addEventListener('click', () => { selectedIndex++; rotateCarousel(); });
+        
+        rotateCarousel(); // Inicializar posiciones
+
+        // 2. Sistema de Arrastre (Drag / Swipe)
+        let startX = 0;
+        let isDragging = false;
+
+        // EVITAR COMPORTAMIENTO NATIVO (Texto seleccionado o "arrastrar imagen")
+        scene.addEventListener('dragstart', (e) => e.preventDefault());
+
+        // POINTERDOWN: Unifica "mousedown" (PC) y "touchstart" (Celular)
+        scene.addEventListener('pointerdown', (e) => {
+            isDragging = true;
+            startX = e.clientX; 
+            scene.style.cursor = 'grabbing';
+        });
+
+        // POINTERUP: Unifica "mouseup" y "touchend" en toda la ventana por si sacás el mouse de la caja
+        window.addEventListener('pointerup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            scene.style.cursor = 'grab';
+            
+            const diffX = e.clientX - startX;
+            
+            // Sensibilidad: Si moviste más de 40px, gira
+            if (diffX < -40) {
+                selectedIndex++; // Swipe a la izquierda -> Avanza
+                rotateCarousel();
+            } else if (diffX > 40) {
+                selectedIndex--; // Swipe a la derecha -> Retrocede
+                rotateCarousel();
+            }
+        });
+
+        // Cancelar si la ventana pierde el foco o el dedo se va
+        window.addEventListener('pointercancel', () => {
+            isDragging = false;
+            scene.style.cursor = 'grab';
+        });
+    }
+
+    
+
+
+    // --- LÓGICA DEL REPRODUCTOR DE MÚSICA ---
+    const trackItems = document.querySelectorAll('.track-item');
+    const vinylCover = document.querySelector('.vinyl-cover');
+
+    if (trackItems.length > 0 && vinylCover) {
+        trackItems.forEach(track => {
+            track.addEventListener('click', function() {
+                // 1. Quitar clase active de todas y ponérsela a la clickeada
+                trackItems.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 2. Cambiar la imagen del vinilo
+                const newCover = this.getAttribute('data-cover');
+                if (newCover) {
+                    // Pequeño efecto de parpadeo para que el cambio no sea tan brusco
+                    vinylCover.style.opacity = 0;
+                    setTimeout(() => {
+                        vinylCover.src = newCover;
+                        vinylCover.style.opacity = 0.8; // La opacidad que tenés en tu CSS
+                    }, 200);
+                }
+            });
+        });
     }
 }
 

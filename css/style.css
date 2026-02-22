@@ -208,6 +208,9 @@
   width: 210px; /* Ancho de la carta individual */
   height: 140px; /* Alto de la carta */
   perspective: 1000px;
+  user-select: none; 
+  touch-action: pan-y; 
+  cursor: grab; 
 }
 
 /* ANILLO GIRATORIO */
@@ -1054,8 +1057,8 @@ body {
   position: absolute;
   
   /* COORDENADAS PARA CENTRARLO */
-  top: 5vh;    /* 15% de margen superior (aire arriba) */
-  bottom: 25vh; /* 25% de margen inferior (espacio para la tarjeta) */
+  top: 15vh;    /* 15% de margen superior (aire arriba) */
+  bottom: 15vh; /* 25% de margen inferior (espacio para la tarjeta) */
   left: 5vw;    /* 5% margen izquierdo */
   right: 5vw;   /* 5% margen derecho */
   
