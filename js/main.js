@@ -29,37 +29,42 @@ const transVideo = document.getElementById('transition-video');
 
 const introLayer = document.getElementById('intro-layer');
 const startVirtualBtn = document.getElementById('start-virtual-btn');
-const splashScreen = document.getElementById('splash-screen'); // Tu pantalla negra actual
+const splashScreen = document.getElementById('splash'); // Tu pantalla negra actual
 const crtLayer = document.querySelector('.crt-container');
 
 
 // AL CARGAR LA PÁGINA
 // Aseguramos que el Splash y el Portfolio estén ocultos visualmente (o detrás)
 // Nota: Si usas z-index 9999 en el intro, ya los tapa, pero esto es por seguridad.
-if(splashScreen) splashScreen.style.display = 'none';
+if(splash) splash.style.display = 'none';
 
 startVirtualBtn.addEventListener('click', () => {
-    // 1. Animación salida Intro
+    // 1. Texto de cargando
     startVirtualBtn.textContent = "INICIANDO...";
-    introLayer.style.opacity = '0';
+    
+    // 2. APLICAR EFECTO DE TV APAGÁNDOSE
+    introLayer.classList.add('crt-shutdown-effect');
 
+    // 3. Esperar que termine la animación (550ms según tu CSS)
     setTimeout(() => {
-        // 2. Ocultar Intro
+        // Ocultar Intro
         introLayer.style.display = 'none';
         
-        // 3. Mostrar Splash Screen
-        if(splashScreen) {
-            splashScreen.style.display = 'flex';
+        // Mostrar Splash
+        if(splash) {
+            splash.style.display = 'flex';
             
-            // 4. ENCENDER EL EFECTO CRT (Aquí está la magia)
+            // ENCENDER EL EFECTO CRT GLOBAl (Líneas y Glow)
             if(crtLayer) crtLayer.style.display = 'block'; 
 
             setTimeout(() => {
-                splashScreen.style.opacity = '1';
+                splash.style.opacity = '1';
             }, 50);
         }
+        
+        // Iniciar el sistema 3D
         iniciarSistema();
-    }, 800); // Tiempo de la transición
+    }, 800); 
 });
 
 
@@ -992,3 +997,57 @@ function initVisitorCounter() {
     // 4. Mostrar en pantalla
     counterElement.innerText = formattedVisits;
 }
+
+
+
+
+// --- FUNCIONES DE VIEWPORT ---
+function forceDesktopView() {
+    // Fija el ancho virtual a 900px (o el ancho donde tu intro se vea perfecta en PC)
+    document.getElementById('myViewport').setAttribute('content', 'width=900');
+}
+
+function restoreMobileView() {
+    // Devuelve el comportamiento normal responsivo para el Portfolio
+    document.getElementById('myViewport').setAttribute('content', 'width=device-width, initial-scale=1.0');
+}
+
+
+
+
+// ——— SISTEMA DE ESCALADO MÓVIL (OPCIÓN 2: ZOOM) ———
+
+function applyDesktopZoom() {
+    const container = document.querySelector('.intro-container');
+    if (!container) return;
+
+    // Solo afectamos si la capa de intro está visible
+    if (document.getElementById('intro-layer').style.display === 'none') return;
+
+    const screenWidth = window.innerWidth;
+    const targetWidth = 850; // Ancho base ideal para tu diseño de PC
+
+    if (screenWidth < targetWidth) {
+        // En celular: Forzamos el ancho de PC y encogemos visualmente
+        const zoomFactor = screenWidth / targetWidth;
+        container.style.width = targetWidth + 'px';
+        container.style.zoom = zoomFactor;
+    } else {
+        // En PC: Restauramos la normalidad
+        container.style.width = '100%';
+        container.style.zoom = 1;
+    }
+}
+
+// Ejecutar cuando se redimensiona o gira la pantalla
+window.addEventListener('resize', applyDesktopZoom);
+
+// Agregar la llamada inicial dentro del DOMContentLoaded que ya tienes
+document.addEventListener('DOMContentLoaded', () => {
+    applyDesktopZoom(); // <-- Agrega esta línea en tu DOMContentLoaded principal
+    
+    initVisitorCounter();
+    updateTime();
+    setInterval(updateTime, 1000);
+    initWeatherSystem();
+});

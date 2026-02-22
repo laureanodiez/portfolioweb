@@ -13,30 +13,6 @@
     color: black;
 }
 
-@media (max-width: 768px) {
-
-.intro-shell {
-        /* 1. ESCALA (Zoom Out) */
-        transform: scale(0.85);
-        transform-origin: top center;
-        
-        /* 2. CENTRADO PERFECTO */
-        width: 85% !important; /* Define el ancho de la caja amarilla */
-        margin-left: auto;     /* Empuja desde la izquierda */
-        margin-right: auto;    /* Empuja desde la derecha */
-        
-        /* 3. POSICIONAMIENTO NEUTRO */
-        position: relative;
-        left: 0; /* IMPORTANTE: Quitamos el -20px anterior que causaba el desbalance */
-        
-        /* Opcional: Si sientes que la sidebar (que está a la derecha)
-           hace que se vea "pesado" visualmente hacia ese lado,
-           puedes empujar todo UN POQUITO a la izquierda compensando: */
-        /* left: -5px; */ 
-    }
-}
-
-
 /* LA CAJA DE CONTENIDO (Hijo) */
 /* CONTENEDOR DE LAYOUT (Solo alinea al centro) */
 .intro-container {
