@@ -202,6 +202,83 @@
 
 
 /* ESCENARIO */
+
+/* Estilo base de la celda 3D */
+.carousel-cell {
+  position: absolute;
+  width: 200px;
+  /* Altura automática para que pueda crecer */
+  height: auto; 
+  left: 5px;
+  top: 5px;
+  border: 1px solid rgba(var(--holo-rgb), 0.3);
+  background: rgba(0,0,0,0.8); /* Fondo oscuro para que se lea el texto */
+  transition: transform 1s, border-color 0.3s; /* Solo animamos la rotación y el borde aquí */
+  /* Importante: NO overflow:hidden aquí, o cortará el contenido 3D */
+}
+
+/* La portada clickeable */
+.design-card-trigger {
+  cursor: pointer;
+  padding: 5px;
+  /* Reutilizamos tu estilo bp-card pero le sacamos el borde que ya tiene la celda */
+  border: none !important; 
+  background: transparent !important;
+}
+
+.project-thumb {
+  width: 100%;
+  height: 120px; /* Altura fija para las portadas */
+  object-fit: cover;
+  border-bottom: 1px solid rgba(var(--holo-rgb), 0.2);
+  display: block;
+}
+
+/* El contenedor de detalles oculto (ACORDEÓN) */
+.design-cell-details {
+  max-height: 0; /* Cerrado por defecto */
+  overflow: hidden;
+  opacity: 0;
+  padding: 0 10px;
+  transition: all 0.4s ease-out; /* Animación suave */
+  font-family: 'Courier New', monospace;
+}
+
+.design-cell-details p {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin: 10px 0;
+}
+
+.cyber-link {
+  display: block;
+  color: rgb(var(--holo-rgb));
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  border: 1px solid currentColor;
+  padding: 2px 5px;
+  text-align: center;
+}
+
+/* --- ESTADO ACTIVO (Expandido) --- */
+.carousel-cell.active {
+  border-color: rgb(var(--holo-rgb));
+  background: rgba(0,0,0,0.95);
+  /* TRUCO CLAVE: Traer al frente brutalmente para que no se corte con las otras */
+  z-index: 9999 !important; 
+}
+
+.carousel-cell.active .design-cell-details {
+  max-height: 200px; /* Altura suficiente para el contenido */
+  opacity: 1;
+  padding-bottom: 10px;
+}
+
+
+
+
+
 .carousel-scene {
   margin: 40px auto;
   position: relative;
@@ -211,6 +288,12 @@
   user-select: none; 
   touch-action: pan-y; 
   cursor: grab; 
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-scene.shifted {
+  /* Subimos todo el bloque 60px (podés ajustar este número si querés más o menos espacio) */
+  transform: translateY(-60px); 
 }
 
 /* ANILLO GIRATORIO */
@@ -223,29 +306,7 @@
   transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1); /* Giro suave */
 }
 
-/* CELDAS INDIVIDUALES */
-.carousel-cell {
-  position: absolute;
-  width: 200px;
-  height: 140px;
-  left: 10px;
-  top: 10px;
-  
-  /* Borde brillante */
-  border: 1px solid rgba(var(--holo-rgb), 0.6);
-  background: rgba(var(--holo-rgb), 0.1);
-  box-shadow: 0 0 15px rgba(var(--holo-rgb), 0.2);
-  
-  /* Layout interno */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
-  /* Truco: un poco de opacidad si está atrás se maneja solo por la superposición, 
-     pero podemos agregar backface-visibility si queremos ocultar la espalda */
-  /* backface-visibility: hidden; */ 
-}
+
 
 .bp-card {
   width: 100%; height: 100%;
@@ -302,6 +363,55 @@
   color: var(--holo-dark-text);
   box-shadow: 0 0 15px rgb(var(--holo-rgb));
 }
+
+
+/* --- PANEL DINÁMICO DE DISEÑO --- */
+.design-info-panel {
+  margin-top: 2rem;
+  text-align: center;
+  border: 1px solid rgba(var(--holo-rgb), 0.3);
+  background: rgba(0,0,0,0.5);
+  padding: 1rem;
+  font-family: 'Geo';
+}
+
+.panel-header {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+#active-design-title {
+  color: rgb(var(--holo-rgb));
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+#active-design-desc {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.85rem;
+  color: #ccc;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.cyber-btn-small {
+  display: inline-block;
+  border: 1px solid rgb(var(--holo-rgb));
+  color: rgb(var(--holo-rgb));
+  text-decoration: none;
+  padding: 5px 20px;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+.cyber-btn-small:hover {
+  background: rgb(var(--holo-rgb));
+  color: var(--holo-dark-text);
+  box-shadow: 0 0 10px rgb(var(--holo-rgb));
+}
+
+
 
 
 /* LAYOUT MUSICA */
@@ -404,6 +514,61 @@
 }
 .play-mini-btn:hover { background: rgb(var(--holo-rgb)); color: #000; }
 
+
+/* --- ACORDEÓN DE MÚSICA --- */
+.track-item {
+  display: flex;
+  flex-direction: column; /* Cambiamos a columna para apilar el detalle abajo */
+  padding: 0; /* Quitamos padding viejo */
+  border-bottom: 1px dashed rgba(var(--holo-rgb), 0.2);
+}
+
+.track-main {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.8rem 0;
+  cursor: pointer;
+}
+
+.track-expanded {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  font-family: 'Courier New', monospace;
+}
+
+.track-expanded p {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+/* Cuando el track está activo, expandimos el acordeón */
+.track-item.active .track-expanded {
+  max-height: 150px; /* Suficiente para el texto y botones */
+  opacity: 1;
+  padding-bottom: 1rem;
+}
+
+.stream-links {
+  display: flex;
+  gap: 10px;
+}
+
+.stream-links a {
+  border: 1px solid rgba(var(--holo-rgb), 0.5);
+  color: rgb(var(--holo-rgb));
+  padding: 2px 8px;
+  text-decoration: none;
+  font-size: 0.7rem;
+  transition: 0.2s;
+}
+.stream-links a:hover {
+  background: rgb(var(--holo-rgb));
+  color: var(--holo-dark-text);
+}
 
 
 /* COMMS PANEL (Redes Sociales) */

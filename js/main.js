@@ -271,7 +271,7 @@ function initPortfolioLogic() {
         });
     });
 
-    // --- LÓGICA DEL CARRUSEL 3D (Botones + Drag Táctil) ---
+    // --- LÓGICA DEL CARRUSEL 3D (ACORDEÓN + DRAG) ---
     const carousel = document.getElementById('design-carousel');
     const scene = document.querySelector('.carousel-scene');
     
@@ -280,59 +280,64 @@ function initPortfolioLogic() {
         let selectedIndex = 0;
         
         function rotateCarousel() {
+            // 1. CERRAR ACORDEONES AL GIRAR
+            cells.forEach(c => c.classList.remove('active'));
+            
+            // NUEVO: BAJAR LA ESCENA AL GIRAR
+            scene.classList.remove('shifted'); 
+
+            // 2. Matemática de giro estándar
             const angle = 360 / cells.length;
             const radius = Math.round( (210 / 2) / Math.tan( Math.PI / cells.length ) );
             cells.forEach((cell, i) => { 
+                cell.style.zIndex = ''; 
                 cell.style.transform = `rotateY(${i * angle}deg) translateZ(${radius}px)`; 
             });
             carousel.style.transform = `translateZ(-${radius}px) rotateY(${selectedIndex * -angle}deg)`;
         }
         
-        // 1. Botones Clásicos
+        
+        // --- Lógica de Click para Acordeón ---
+        cells.forEach(cell => {
+            const trigger = cell.querySelector('.design-card-trigger');
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+
+                const isActive = cell.classList.contains('active');
+                
+                // Cerramos todas
+                cells.forEach(c => c.classList.remove('active'));
+
+                if (!isActive) {
+                   // Si estaba cerrada, la abrimos y SUBIMOS LA ESCENA
+                   cell.classList.add('active');
+                   scene.classList.add('shifted');
+                } else {
+                   // Si ya estaba abierta y la clickeamos, la cerramos y BAJAMOS LA ESCENA
+                   scene.classList.remove('shifted');
+                }
+            });
+        });
+
+        // --- Botones y Drag (Igual que antes) ---
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         if(prevBtn) prevBtn.addEventListener('click', () => { selectedIndex--; rotateCarousel(); });
         if(nextBtn) nextBtn.addEventListener('click', () => { selectedIndex++; rotateCarousel(); });
         
-        rotateCarousel(); // Inicializar posiciones
+        rotateCarousel(); // Inicializar
 
-        // 2. Sistema de Arrastre (Drag / Swipe)
-        let startX = 0;
-        let isDragging = false;
-
-        // EVITAR COMPORTAMIENTO NATIVO (Texto seleccionado o "arrastrar imagen")
+        let startX = 0; let isDragging = false;
         scene.addEventListener('dragstart', (e) => e.preventDefault());
-
-        // POINTERDOWN: Unifica "mousedown" (PC) y "touchstart" (Celular)
-        scene.addEventListener('pointerdown', (e) => {
-            isDragging = true;
-            startX = e.clientX; 
-            scene.style.cursor = 'grabbing';
-        });
-
-        // POINTERUP: Unifica "mouseup" y "touchend" en toda la ventana por si sacás el mouse de la caja
+        scene.addEventListener('pointerdown', (e) => { isDragging = true; startX = e.clientX; scene.style.cursor = 'grabbing'; });
         window.addEventListener('pointerup', (e) => {
             if (!isDragging) return;
-            isDragging = false;
-            scene.style.cursor = 'grab';
-            
+            isDragging = false; scene.style.cursor = 'grab';
             const diffX = e.clientX - startX;
-            
-            // Sensibilidad: Si moviste más de 40px, gira
-            if (diffX < -40) {
-                selectedIndex++; // Swipe a la izquierda -> Avanza
-                rotateCarousel();
-            } else if (diffX > 40) {
-                selectedIndex--; // Swipe a la derecha -> Retrocede
-                rotateCarousel();
-            }
+            if (diffX < -40) { selectedIndex++; rotateCarousel(); } 
+            else if (diffX > 40) { selectedIndex--; rotateCarousel(); }
         });
-
-        // Cancelar si la ventana pierde el foco o el dedo se va
-        window.addEventListener('pointercancel', () => {
-            isDragging = false;
-            scene.style.cursor = 'grab';
-        });
+        window.addEventListener('pointercancel', () => { isDragging = false; scene.style.cursor = 'grab'; });
     }
 
     
@@ -341,23 +346,53 @@ function initPortfolioLogic() {
     // --- LÓGICA DEL REPRODUCTOR DE MÚSICA ---
     const trackItems = document.querySelectorAll('.track-item');
     const vinylCover = document.querySelector('.vinyl-cover');
+    const nowPlayingText = document.querySelector('.now-playing-info p'); 
+    const audioPlayer = document.getElementById('holo-audio-player');
 
-    if (trackItems.length > 0 && vinylCover) {
+    if (trackItems.length > 0) {
         trackItems.forEach(track => {
-            track.addEventListener('click', function() {
-                // 1. Quitar clase active de todas y ponérsela a la clickeada
+            // 1. Click en la fila (Expande el acordeón)
+            const trackMain = track.querySelector('.track-main');
+            trackMain.addEventListener('click', function() {
                 trackItems.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+                track.classList.add('active');
                 
-                // 2. Cambiar la imagen del vinilo
-                const newCover = this.getAttribute('data-cover');
-                if (newCover) {
-                    // Pequeño efecto de parpadeo para que el cambio no sea tan brusco
+                const newCover = track.getAttribute('data-cover');
+                const trackNum = track.querySelector('.track-num').innerText;
+                const trackName = track.querySelector('.track-name').innerText;
+                
+                if(vinylCover && nowPlayingText) {
                     vinylCover.style.opacity = 0;
+                    nowPlayingText.style.opacity = 0;
                     setTimeout(() => {
-                        vinylCover.src = newCover;
-                        vinylCover.style.opacity = 0.8; // La opacidad que tenés en tu CSS
+                        if (newCover) vinylCover.src = newCover;
+                        nowPlayingText.innerText = `TRACK: ${trackNum} // "${trackName.toUpperCase()}"`;
+                        vinylCover.style.opacity = 0.8; 
+                        nowPlayingText.style.opacity = 0.7; 
                     }, 200);
+                }
+            });
+
+            // 2. Click en el botón de PLAY (Audio real)
+            const playBtn = track.querySelector('.play-mini-btn');
+            playBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Evita que el click abra/cierre el acordeón accidentalmente
+                
+                const audioSrc = this.getAttribute('data-audio');
+                if(!audioSrc || !audioPlayer) return;
+
+                // Resetear todos los íconos a Play
+                document.querySelectorAll('.play-mini-btn').forEach(btn => btn.innerText = '▶');
+
+                // Si es la misma canción que ya está sonando, pausarla
+                if (audioPlayer.src.includes(audioSrc) && !audioPlayer.paused) {
+                    audioPlayer.pause();
+                    this.innerText = '▶';
+                } else {
+                    // Si es una nueva o estaba en pausa, darle Play
+                    audioPlayer.src = audioSrc;
+                    audioPlayer.play();
+                    this.innerText = '⏸'; // Símbolo de Pausa
                 }
             });
         });
