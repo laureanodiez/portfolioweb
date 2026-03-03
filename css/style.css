@@ -1678,3 +1678,15 @@ body {
   /* Asegura que el recorte se haga siempre desde el centro hacia afuera */
   object-position: center center;
 }
+
+
+
+
+/* --- RESPONSIVE: Ocultar controles del carrusel en móviles --- */
+@media (max-width: 768px) {
+    #prev-btn, 
+    #next-btn, 
+    .carousel-controls {
+        display: none !important;
+    }
+}

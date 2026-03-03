@@ -22,29 +22,9 @@
 
   <link rel="stylesheet" href="css/style-inicio.css">
   <div id="intro-layer">
+    <div class="aero-glass-overlay"></div>
     <div class="intro-container">
       <div class="intro-shell">
-
-        <div class="social-sidebar">
-            <a href="https://www.instagram.com/laureano_diez/" target="_blank" title="Instagram">
-                <img src="assets/img/icons/ig.webp" alt="IG">
-            </a>
-            <a href="https://github.com/laureanodiez" target="_blank" title="GitHub">
-                <img src="assets/img/icons/gh.png" alt="GH">
-            </a>
-            <a href="https://www.linkedin.com/in/laureanodiez/" target="_blank" title="LinkedIn">
-                <img src="assets/img/icons/in.png" alt="IN">
-            </a>
-            <a href="https://letterboxd.com/lxx10/" target="_blank" title="Letterboxd">
-                <img src="assets/img/icons/bxd.webp" alt="LB">
-            </a>
-            <a href="https://open.spotify.com/user/laureanodiez" target="_blank" title="Spotify">
-                <img src="assets/img/icons/spotify.png" alt="SF">
-            </a>
-            <a href="https://www.duolingo.com/profile/LaureanoDiez" target="_blank" title="Duolingo">
-                <img src="assets/img/icons/duo.png" alt="DUO">
-            </a>
-        </div>
 
         <div id="aero-widget" class="status-bar">
             <div class="status-item">
@@ -71,13 +51,18 @@
             </div>
 
             <header class="site-header">
-                <div style="text-align: right; font-size: 0.8rem;">Last Updated: 11/2/2026</div>
-                <h1>Laureano Diez</h1>
-                <p>THE SOUL CARD™®© Creator</p>
+                <div style="text-align: right; font-size: 0.8rem;">Last Updated: 3/3/2026</div>
+                <h1 class="wordart-text">Laureano Diez</h1>
+                <p class="rainbow-text">THE SOUL CARD™®© Creator</p>
                 <br>
                 <img src="assets/img/gifs/uc-1.gif" alt="working" style=" margin-top: 10px;">
                 <img src="assets/img/gifs/uc-3.gif" alt="working">
             </header>
+
+            <div class="tab-navigation">
+                <button id="btn-soulpage" class="aero-btn active" onclick="switchTab('soulpage')">SOULPAGE BIO</button>
+                <button id="btn-soulcard" class="aero-btn" onclick="switchTab('soulcard')">SOULPAGE PORTFOLIO</button>
+            </div>
 
             <div class="blog-entry">
                 <div class="blog-title">
@@ -93,114 +78,152 @@
                     <p>Soy <strong>Laureano Diez</strong>. Soy de Rosario, Argentina y paso demasiado tiempo intentando traducir las ideas de mi cabeza a través del uso de las computadoras.</p>
                     <p>Me gusta la menta granizada, el pan de la gallega, el gatorade de uva (descontinuado) y programar cosas que no sirven para nada pero que se ven bien.</p>
                     <br>
-                    <p>Algunas de mis obras favoritas:</p>
-                    
-                    <button id="fav-toggle-btn" class="folder-trigger" type="button" onclick="toggleFavorites()">
-                        <span class="folder-icon">📁</span> [ CLICK PARA VER MIS FAVORITOS ]
-                    </button>
 
-                    <div id="fav-content" class="hidden-folder-content">
-                        <div class="table-container">
-                          <table class="ugly-table">
-                              <tr>
-                                  <td style="background: #e0e0e0;"><strong>Películas:</strong></td>
-                              </tr>
-                              <tr>
-                                  <td>
-                                      1. <a href="https://letterboxd.com/film/teen-beach-movie/" target="_blank">Teen Beach Movie</a><br>
-                                      2. <a href="https://letterboxd.com/film/almost-famous/" target="_blank">Almost Famous</a><br>
-                                      3. <a href="https://letterboxd.com/film/marty-supreme/" target="_blank">Marty Supreme</a>
-                                  </td>
-                              </tr>
-                              
-                              <tr>
-                                  <td style="background: #e0e0e0;"><strong>Álbumes:</strong></td>
-                              </tr>
-                              <tr>
-                                  <td>
-                                      >> <a href="https://www.youtube.com/watch?v=5QqXXjDKNP4&list=OLAK5uy_k1mcSWx0aLWGsylsyyXaprA2arXKF-o0I&index=1" target="_blank" rel="noopener noreferrer">Tranquility Base Hotel & Casino - Arctic Monkeys</a><br>
-                                      >> <a href="https://www.youtube.com/watch?v=jTrCFsjKix0&list=PLlrpE08Vg_Evmq41-WQNjnkt0YMoRl3cZ&index=1" target="_blank" rel="noopener noreferrer">Blue Album (1967-1970) - The Beatles</a><br>
-                                      >> <a href="https://www.youtube.com/watch?v=-LeE86jZEXo&list=PLrs2g03ILsleCw-Jnr_bdBoR_VD_ETkEb&index=1" target="_blank" rel="noopener noreferrer">Pet Sounds - The Beach Boys</a>
-                                  </td>
-                              </tr>
-                          </table>
+                    <div class="social-sidebar">
+                        <a href="https://www.instagram.com/laureano_diez/" target="_blank" title="Instagram">
+                            <img src="assets/img/icons/ig.webp" alt="IG">
+                        </a>
+                        <a href="https://github.com/laureanodiez" target="_blank" title="GitHub">
+                            <img src="assets/img/icons/gh.png" alt="GH">
+                        </a>
+                        <a href="https://www.linkedin.com/in/laureanodiez/" target="_blank" title="LinkedIn">
+                            <img src="assets/img/icons/in.png" alt="IN">
+                        </a>
+                        <a href="https://letterboxd.com/lxx10/" target="_blank" title="Letterboxd">
+                            <img src="assets/img/icons/bxd.webp" alt="LB">
+                        </a>
+                        <a href="https://open.spotify.com/user/laureanodiez" target="_blank" title="Spotify">
+                            <img src="assets/img/icons/spotify.png" alt="SF">
+                        </a>
+                        <a href="https://www.duolingo.com/profile/LaureanoDiez" target="_blank" title="Duolingo">
+                            <img src="assets/img/icons/duo.png" alt="DUO">
+                        </a>
+                    </div>
+
+                    <div class="soulpage-only">
+                        <p>Algunas de mis ~obras favoritas~:</p>
+                        
+                        <button id="fav-toggle-btn" class="folder-trigger" type="button" onclick="toggleFavorites()">
+                            <span class="folder-icon">📁</span> [ CLICK PARA VER ]
+                        </button>
+
+                        <div id="fav-content" class="hidden-folder-content">
+                            <div class="table-container">
+                                <table class="ugly-table">
+                                    <tr>
+                                        <td style="background: #e0e0e0;"><strong>Películas:</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            1. <a href="https://letterboxd.com/film/teen-beach-movie/" target="_blank">Teen Beach Movie</a><br>
+                                            2. <a href="https://letterboxd.com/film/almost-famous/" target="_blank">Almost Famous</a><br>
+                                            3. <a href="https://letterboxd.com/film/marty-supreme/" target="_blank">Marty Supreme</a>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td style="background: #e0e0e0;"><strong>Álbumes:</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            >> <a href="https://www.youtube.com/watch?v=5QqXXjDKNP4&list=OLAK5uy_k1mcSWx0aLWGsylsyyXaprA2arXKF-o0I&index=1" target="_blank" rel="noopener noreferrer">Tranquility Base Hotel & Casino - Arctic Monkeys</a><br>
+                                            >> <a href="https://www.youtube.com/watch?v=jTrCFsjKix0&list=PLlrpE08Vg_Evmq41-WQNjnkt0YMoRl3cZ&index=1" target="_blank" rel="noopener noreferrer">Blue Album (1967-1970) - The Beatles</a><br>
+                                            >> <a href="https://www.youtube.com/watch?v=-LeE86jZEXo&list=PLrs2g03ILsleCw-Jnr_bdBoR_VD_ETkEb&index=1" target="_blank" rel="noopener noreferrer">Pet Sounds - The Beach Boys</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: #e0e0e0;"><strong>Juegos:</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            >> <a href="https://store.steampowered.com/app/22380/Fallout_New_Vegas/" target="_blank" rel="noopener noreferrer">Fallout: New Vegas</a><br>
+                                            >> <a href="https://store.steampowered.com/app/632470/Disco_Elysium__The_Final_Cut/" target="_blank" rel="noopener noreferrer">Disco Elysium</a><br>
+                                            >> <a href="https://www.cpjourney.net/" target="_blank" rel="noopener noreferrer">Club Penguin</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
+                    
                     </div>
-                    </div>
+                </div>
             </div>
 
             <div class="text-block-extra">
-                <img src="assets/img/gifs/pyramid.gif" alt="pyramid" style="width: 200px; margin: auto;">
+                <div class="soulpage-only">
+                    <img src="assets/img/gifs/pyramid.gif" alt="pyramid" style="width: 200px; margin: auto;">
 
-                <div class="retro-diary-entry">
-                    <div class="diary-header">
-                        <span class="blink-cursor">_</span> SYSTEM_LOG: USER_THOUGHTS.TXT
-                    </div>
-                    <div class="diary-content">
-                        <p class="comment-style">// Proyectos y mi proceso creativo:</p>
-                        <p>
-                            Siempre he sentido una fascinación por cómo la tecnología puede actuar como un puente entre la imaginación abstracta y la realidad tangible. 
-                            Creo que encuentro en la acción de expresarme creativamente a aquello que la gente dice buscar toda su vida, especialmente a través de la música.
-                        </p>
-                        <p>
-                            Aplico mi punto de vista creativo a absolutamente todo lo que pueda tocar, lo que no significa que siempre salga bien! Pero el resultado siempre va a ser una expresión de mí.
-                            <br><br>
-                            <span class="highlight-text">Una no tangible, al menos.</span>
-                        </p>
-                        <p>
-                            Si bien muchos logros son materiales, físicos, palpables a través de productos finales, como lo puede ser un disco con su caja en el caso de la música, o una pintura o escultura en el caso del arte plástico, las expresiones artísticas digitales quedan, muchas veces, exentas de esta posibilidad de "tocar" una obra de la que estás ciertamente orgulloso. 
-                            En un mundo donde todo tiende a ser efímero y espontáneo, yo —y cada vez más gente que escapa del contenido generado por IA— prefiero más... <span style="text-decoration: underline;">lo físico</span>.
-                        </p>
+                    <div class="retro-diary-entry">
+                        <div class="diary-header">
+                            <span class="blink-cursor">_</span> SYSTEM_LOG: USER_THOUGHTS.TXT
+                        </div>
+                        <div class="diary-content">
+                            <p class="comment-style">// Proyectos y mi proceso creativo:</p>
+                            <p>
+                                Siempre he sentido una fascinación por cómo la tecnología puede actuar como un puente entre la imaginación abstracta y la realidad tangible. 
+                                Creo que encuentro en la acción de expresarme creativamente a aquello que la gente dice buscar toda su vida, especialmente a través de la música.
+                            </p>
+                            <p>
+                                Aplico mi punto de vista creativo a absolutamente todo lo que pueda tocar, lo que no significa que siempre salga bien! Pero el resultado siempre va a ser una expresión de mí.
+                                <br><br>
+                                <span class="highlight-text">Una no tangible, al menos.</span>
+                            </p>
+                            <p>
+                                Si bien muchos logros son materiales, físicos, palpables a través de productos finales, como lo puede ser un disco con su caja en el caso de la música, o una pintura o escultura en el caso del arte plástico, las expresiones artísticas digitales quedan, muchas veces, exentas de esta posibilidad de "tocar" una obra de la que estás ciertamente orgulloso. 
+                                En un mundo donde todo tiende a ser efímero y espontáneo, yo —y cada vez más gente que escapa del contenido generado por IA— prefiero más... <span style="text-decoration: underline;">lo físico</span>.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="glitch-separator">
-                    <hr>
-                </div>
-
-                <div class="product-ad-container">
-                    <div class="product-header">
-                        <h2>SOUL CARD<span class="tm">©</span></h2>
-                        <span class="version-tag">v1.0 (Physical Release)</span>
+                <div class="soulcard-only" style="display: none;">
+                    <div class="glitch-separator">
+                        <hr>
                     </div>
 
-                    <div class="product-body">
-                        <p>
-                            Uno al presentarse formalmente, estilaba usar una tarjeta de negocios. Elegante, empoderante, pero antiguo. 
-                            Es un producto que parecía haber muerto a manos de las redes sociales. Pero, <strong>como todo vuelve...</strong>
-                        </p>
-                        
-                        <p>
-                            Imaginate que el trabajo de toda tu vida sea accesible desde un mismo punto, con respaldo físico, uno que ya todos conocen, pero con una funcionalidad desconocida, desaprovechada.
-                            La <strong>"Soul Card™"</strong> es un artefacto digital diseñado para contener todas las facetas creativas de una persona en un solo objeto portable. 
-                            Es el intento definitivo de organizar el caos creativo en un formato de bolsillo.
-                        </p>
-
-                        <div class="slogan-box">
-                            <div class="slogan-top">FÁCIL. RÁPIDA. INTUITIVA. ATRACTIVA.</div>
-                            <div class="slogan-main">MÁS QUE UN PORTFOLIO</div>
-                            <div class="slogan-bottom">PERSONALIZABLE &bull; PORTABLE &bull; ETERNA</div>
+                    <div class="product-ad-container">
+                        <div class="product-header">
+                            <h2>SOUL CARD<span class="tm">©</span></h2>
+                            <span class="version-tag">v1.0 (Physical Release)</span>
                         </div>
 
-                        <p>
-                            Todo proyecto, cualquier desarrollo digital del que haya participado o liderado, en un sólo lugar.
-                            Transferís todos tus proyectos a tu <strong>SOULCARD©</strong> y podés comenzar a organizarlo y decorarlo a tu gusto, con infinitas opciones. 
-                        </p>
-                        <p style="text-align: center; font-style: italic; border-top: 1px solid #000; padding-top: 10px; margin-top: 10px;">
-                            "Al insertar tu SOULCARD al visor especial <strong>SOULVISION</strong> vas a poder experimentar cada proyecto en su integridad, como nunca antes. Tu creatividad es el límite."
-                        </p>
-                        
-                    </div>
-                    <img src="assets/img/gifs/cctv.gif" alt="cctv" style="display: block; margin: 0 auto;">  
-                </div>
+                        <div class="product-body">
+                            <p>
+                                Uno al presentarse formalmente, estilaba usar una tarjeta de negocios. Elegante, empoderante, pero antiguo. 
+                                Es un producto que parecía haber muerto a manos de las redes sociales. Pero, <strong>como todo vuelve...</strong>
+                            </p>
+                            
+                            <p>
+                                Imaginate que el trabajo de toda tu vida sea accesible desde un mismo punto, con respaldo físico, uno que ya todos conocen, pero con una funcionalidad desconocida, desaprovechada.
+                                La <strong>"Soul Card™"</strong> es un artefacto digital diseñado para contener todas las facetas creativas de una persona en un solo objeto portable. 
+                                Es el intento definitivo de organizar el caos creativo en un formato de bolsillo.
+                            </p>
 
+                            <div class="slogan-box">
+                                <div class="slogan-top">FÁCIL. RÁPIDA. INTUITIVA. ATRACTIVA.</div>
+                                <div class="slogan-main">MÁS QUE UN PORTFOLIO</div>
+                                <div class="slogan-bottom">PERSONALIZABLE &bull; PORTABLE &bull; ETERNA</div>
+                            </div>
+
+                            <p>
+                                Todo proyecto, cualquier desarrollo digital del que haya participado o liderado, en un sólo lugar.
+                                Transferís todos tus proyectos a tu <strong>SOULCARD©</strong> y podés comenzar a organizarlo y decorarlo a tu gusto, con infinitas opciones. 
+                            </p>
+                            <p style="text-align: center; font-style: italic; border-top: 1px solid #000; padding-top: 10px; margin-top: 10px;">
+                                "Al insertar tu SOULCARD al visor especial <strong>SOULVISION</strong> vas a poder experimentar cada proyecto en su integridad, como nunca antes. Tu creatividad es el límite."
+                            </p>
+                            
+                        </div>
+                        <img src="assets/img/gifs/cctv.gif" alt="cctv" style="display: block; margin: 0 auto;">  
+                    </div>
+                </div>
             </div>
 
         </div>
       </div>
 
 
-    <div class="heavenly-section" id="heaven-trigger">
+    <div class="heavenly-section soulcard-only" id="heaven-trigger" style="display: none;">
     
       <img src="assets/img/cloud base.png" class="cloud-floating cloud-top" alt="Nube Arriba">
       
@@ -230,7 +253,7 @@
       </div>
 
 
-      <div class="intro-content-wrapper shop-wrapper bottom-block">
+      <div class="intro-content-wrapper shop-wrapper bottom-block soulcard-only" style="display: none;">
         <div class="cloud-border-top"></div>
         <div class="catalog-section">
             <div class="catalog-title">★ OFERTA IMPERDIBLE ★</div>
@@ -348,6 +371,24 @@
         </div>
       </div>
       
+
+
+      <div id="aero-clock">
+            <div class="hand hour-hand" id="hour-hand"></div>
+            <div class="hand min-hand" id="min-hand"></div>
+            <div class="hand sec-hand" id="sec-hand"></div>
+            <div class="clock-center"></div>
+      </div>
+
+      <div id="mini-winamp">
+            <div class="winamp-title">▶ LAUREANO_AMP v1.0</div>
+            <button id="winamp-play" onclick="toggleBGM()">[ BGM PLAY / PAUSE ]</button>
+      </div>
+
+      <audio id="bgm-audio" src="assets/sounds/bgm.wav" loop></audio>
+      <audio id="hover-sfx" src="assets/sounds/hover-liquid.mp3"></audio>
+      <audio id="click-sfx" src="assets/sounds/click-glass.mp3"></audio>
+      <audio id="bubble-sfx" src="assets/sounds/bubble-pop.mp3"></audio>
 
     </div>
 </div>

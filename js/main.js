@@ -33,6 +33,8 @@ function initBioLogic() {
     const startVirtualBtn = document.getElementById('start-virtual-btn');
     const introLayer = document.getElementById('intro-layer');
 
+    initFrutigerAero();
+
     if (startVirtualBtn && introLayer) {
         startVirtualBtn.addEventListener('click', () => {
             startVirtualBtn.textContent = "INICIANDO...";
@@ -84,19 +86,28 @@ function initPortfolioLogic() {
     const bigTitle = document.getElementById('bigTitle');
     
     // --- 1. SECUENCIA DE ARRANQUE (Apertura de Splash) ---
+    const splashSfx = document.getElementById('splash-sfx');
+    const ambientFloat = document.getElementById('ambient-floating');
+    
     if (splash && main) {
-        // Aseguramos que el fondo y el monitor curvo estén listos detrás del splash
         main.style.display = 'block';
         if(crtLayer) crtLayer.style.display = 'block'; 
 
-        // Simular carga de sistema
         quickLoad().then(() => {
-            // AQUÍ ESTÁ EL EFECTO: Abre los paneles desde el centro
             splash.classList.add('splash-end'); 
+            
+            // Sonido mecánico/eléctrico al abrir los paneles
+            if(splashSfx) splashSfx.play().catch(()=>{});
 
             setTimeout(() => {
-                splash.style.display = 'none'; // Matamos el div del splash
-                showCard(); // Cae la tarjeta 3D
+                splash.style.display = 'none'; 
+                showCard(); 
+                
+                // Arranca el ambiente zumbante de la tarjeta flotando
+                if(ambientFloat) { 
+                    ambientFloat.volume = 0.4; 
+                    ambientFloat.play().catch(()=>{}); 
+                }
             }, 800);
         });
     }
@@ -171,6 +182,8 @@ function initPortfolioLogic() {
     const transVideo = document.getElementById('transition-video');
     const navBtns = document.querySelectorAll('.nav-btn');
     const views = document.querySelectorAll('.holo-view');
+    const ambientDocked = document.getElementById('ambient-docked');
+    const disconnectSfx = document.getElementById('disconnect-sfx');
 
     if (connectBtn && hologramDeck) {
         connectBtn.addEventListener('click', (e) => {
@@ -198,9 +211,17 @@ function initPortfolioLogic() {
                         hologramDeck.classList.remove('hidden');
                         hologramScreen.classList.remove('tv-closing');
                         hologramDeck.classList.add('active');
+
+                        if (ambientDocked) { 
+                            ambientDocked.currentTime = 0; 
+                            ambientDocked.volume = 0.5; 
+                            ambientDocked.play().catch(()=>{}); 
+                        }
                     };
                 }
                 currentState = 2;
+
+                if (ambientFloat) ambientFloat.pause();
                 
                 // Reset de menús al verde por defecto
                 navBtns.forEach(btn => btn.classList.remove('active'));
@@ -221,6 +242,18 @@ function initPortfolioLogic() {
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', (e) => {
             e.stopPropagation();
+
+            const player = document.getElementById('holo-audio-player');
+            if (player && !player.paused) {
+                player.pause();
+                document.querySelectorAll('.play-mini-btn').forEach(btn => btn.innerText = '▶');
+            }
+
+            if (disconnectSfx) {
+                disconnectSfx.currentTime = 0;
+                disconnectSfx.play().catch(()=>{});
+            }
+            if (ambientDocked) ambientDocked.pause();
             hologramDeck.classList.remove('active'); 
             hologramScreen.classList.add('tv-closing'); 
             
@@ -236,6 +269,9 @@ function initPortfolioLogic() {
                     bigTitle.classList.add('visible');
                 }
                 currentState = 1; 
+                if (ambientFloat) { 
+                    ambientFloat.play().catch(()=>{}); 
+                }
             }, 550); 
         });
     }
@@ -247,6 +283,13 @@ function initPortfolioLogic() {
             btn.classList.add('active');
             
             const targetId = btn.dataset.target; 
+            if (targetId !== 'music') {
+                const player = document.getElementById('holo-audio-player');
+                if (player && !player.paused) {
+                    player.pause();
+                    document.querySelectorAll('.play-mini-btn').forEach(btn => btn.innerText = '▶');
+                }
+            }
             views.forEach(view => {
                 view.classList.add('hidden');
                 view.classList.remove('active');
@@ -376,27 +419,68 @@ function initPortfolioLogic() {
             // 2. Click en el botón de PLAY (Audio real)
             const playBtn = track.querySelector('.play-mini-btn');
             playBtn.addEventListener('click', function(e) {
-                e.stopPropagation(); // Evita que el click abra/cierre el acordeón accidentalmente
+                e.stopPropagation(); // Evita que el click accione el acordeón directamente...
+                
+                if (!track.classList.contains('active')) {
+                    trackMain.click(); 
+                }
                 
                 const audioSrc = this.getAttribute('data-audio');
-                if(!audioSrc || !audioPlayer) return;
+                if(!audioSrc) return;
 
-                // Resetear todos los íconos a Play
+                let player = document.getElementById('holo-audio-player');
+                if (!player) {
+                    player = document.createElement('audio');
+                    player.id = 'holo-audio-player';
+                    document.body.appendChild(player);
+                }
+
+                // Resetear todos los íconos visualmente a Play
                 document.querySelectorAll('.play-mini-btn').forEach(btn => btn.innerText = '▶');
 
-                // Si es la misma canción que ya está sonando, pausarla
-                if (audioPlayer.src.includes(audioSrc) && !audioPlayer.paused) {
-                    audioPlayer.pause();
+                // Lógica de reproducción
+                if (player.src.endsWith(audioSrc) && !player.paused) {
+                    player.pause();
                     this.innerText = '▶';
                 } else {
-                    // Si es una nueva o estaba en pausa, darle Play
-                    audioPlayer.src = audioSrc;
-                    audioPlayer.play();
-                    this.innerText = '⏸'; // Símbolo de Pausa
+                    player.src = audioSrc;
+                    player.play().catch(err => console.error("El navegador bloqueó el audio:", err));
+                    this.innerText = '⏸'; 
                 }
             });
         });
     }
+
+
+
+    // --- SONIDOS UI DEL PORTFOLIO (HOVER Y CLICK) ---
+    const uiHover = document.getElementById('ui-hover');
+    const uiClick = document.getElementById('ui-click');
+    
+    // Seleccionamos la barra de nav, y TODOS los botones y links que existan adentro de las vistas del holograma
+    const uiElements = document.querySelectorAll('.nav-btn, .holo-view button, .holo-view a, .track-main, .design-card-trigger, .folder-trigger');
+    
+    uiElements.forEach(el => {
+        // Ignoramos el botón de desconectar porque ya le pusimos un sonido exclusivo más arriba
+        if (el.id === 'disconnect-btn') return;
+
+        el.addEventListener('mouseenter', () => {
+            if(uiHover) { 
+                uiHover.currentTime = 0; 
+                uiHover.volume = 0.2; 
+                uiHover.play().catch(()=>{}); 
+            }
+        });
+        
+        el.addEventListener('click', () => {
+            if(uiClick) { 
+                let clickClone = uiClick.cloneNode();
+                clickClone.volume = 0.4;
+                clickClone.play().catch(()=>{}); 
+            }
+        });
+    });
+
 }
 
 // --- FUNCIONES DE APOYO PORTFOLIO ---
@@ -676,4 +760,132 @@ window.triggerBSOD = function() {
         document.addEventListener('keydown', killBSOD);
         document.addEventListener('click', killBSOD);
     }, 500);
+}
+
+
+// --- SISTEMA DE PESTAÑAS (SOULPAGE / SOULCARD) ---
+window.switchTab = function(tabId) {
+    const btnPage = document.getElementById('btn-soulpage');
+    const btnCard = document.getElementById('btn-soulcard');
+    
+    // Seleccionamos todos los elementos de cada grupo
+    const pageEls = document.querySelectorAll('.soulpage-only');
+    const cardEls = document.querySelectorAll('.soulcard-only');
+
+    if (tabId === 'soulpage') {
+        // Activar botones
+        btnPage.classList.add('active');
+        btnCard.classList.remove('active');
+        // Mostrar/Ocultar
+        pageEls.forEach(el => el.style.display = ''); // Vuelve a su estado original (flex/block)
+        cardEls.forEach(el => el.style.display = 'none');
+    } else {
+        // Activar botones
+        btnCard.classList.add('active');
+        btnPage.classList.remove('active');
+        // Mostrar/Ocultar
+        pageEls.forEach(el => el.style.display = 'none');
+        cardEls.forEach(el => el.style.display = ''); 
+    }
+};
+
+
+
+// --- FUNCIONES FRUTIGER AERO & WEB 1.0 ---
+function initFrutigerAero() {
+    // 1. Efectos de Sonido en botones
+    const hoverSfx = document.getElementById('hover-sfx');
+    const clickSfx = document.getElementById('click-sfx');
+    
+    document.querySelectorAll('a, button, .folder-trigger, .aero-btn').forEach(el => {
+        el.addEventListener('mouseenter', () => { 
+            if(hoverSfx) { hoverSfx.currentTime = 0; hoverSfx.play().catch(()=>{}); } 
+        });
+        el.addEventListener('click', () => { 
+            if(clickSfx) { clickSfx.currentTime = 0; clickSfx.play().catch(()=>{}); } 
+        });
+    });
+
+    // 2. Generador de Burbujas Dinámico
+    const glassLayer = document.querySelector('.aero-glass-overlay');
+    if (glassLayer) {
+        for(let i = 0; i < 12; i++) {
+            let b = document.createElement('div');
+            b.className = 'aero-bubble';
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.width = (Math.random() * 40 + 20) + 'px'; // Tamaños entre 20px y 60px
+            b.style.height = b.style.width;
+            b.style.animationDuration = (Math.random() * 6 + 6) + 's'; // Velocidad aleatoria
+            b.style.animationDelay = Math.random() * 5 + 's';
+            glassLayer.appendChild(b);
+        }
+    }
+
+    // 3. Reloj Analógico
+    setInterval(() => {
+        const now = new Date();
+        const hr = document.getElementById('hour-hand');
+        const mn = document.getElementById('min-hand');
+        const sc = document.getElementById('sec-hand');
+        if(hr && mn && sc) {
+            hr.style.transform = `rotate(${(now.getHours() * 30) + (now.getMinutes() / 2)}deg)`;
+            mn.style.transform = `rotate(${now.getMinutes() * 6}deg)`;
+            sc.style.transform = `rotate(${now.getSeconds() * 6}deg)`;
+        }
+    }, 1000);
+
+    // 5. GENERADOR DE BURBUJAS INTERACTIVO (AL HACER CLICK EN EL FONDO)
+    const introLayer = document.getElementById('intro-layer');
+    const bubbleSfx = document.getElementById('bubble-sfx');
+    if (introLayer) {
+        introLayer.addEventListener('click', (e) => {
+            if (e.target.closest('.intro-content-wrapper') || e.target.closest('button') || e.target.closest('a')) {
+                return; 
+            }
+
+            // --- REPRODUCIR SONIDO MULTIPLE ---
+            if(bubbleSfx) {
+                // Clonamos el nodo para que si hacés click rápido, suenen varias burbujas a la vez
+                let sfxClone = bubbleSfx.cloneNode();
+                sfxClone.volume = 0.6; // Ajustá el volumen acá (0.0 a 1.0)
+                sfxClone.play().catch(e => console.log("Audio bloqueado por navegador", e));
+            }
+
+            const numBubbles = Math.floor(Math.random() * 3) + 2;
+            for(let i = 0; i < numBubbles; i++) {
+                let b = document.createElement('div');
+                b.className = 'aero-bubble';
+                let size = Math.random() * 25 + 10; 
+                b.style.width = size + 'px'; b.style.height = size + 'px';
+                let offsetX = (Math.random() * 40 - 20); let offsetY = (Math.random() * 40 - 20);
+                b.style.left = (e.clientX - size/2 + offsetX) + 'px';
+                let bottomPos = window.innerHeight - e.clientY;
+                b.style.bottom = (bottomPos - size/2 + offsetY) + 'px';
+                b.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
+                b.style.animationDelay = '0s'; 
+                
+                const glassLayer = document.querySelector('.aero-glass-overlay');
+                if(glassLayer) glassLayer.appendChild(b);
+                
+                setTimeout(() => b.remove(), 5000); 
+            }
+        });
+    }
+}
+
+// 4. Lógica del Mini Winamp BGM
+window.toggleBGM = function() {
+    const bgm = document.getElementById('bgm-audio');
+    const btn = document.getElementById('winamp-play');
+    if(!bgm || !btn) return;
+    
+    if(bgm.paused) {
+        bgm.play();
+        btn.innerText = "[ PAUSE BGM ]";
+        btn.style.background = "#ffff00"; // Se ilumina
+    } else {
+        bgm.pause();
+        btn.innerText = "[ PLAY BGM ]";
+        btn.style.background = "#e0e0e0";
+    }
 }

@@ -3,14 +3,19 @@
 /* EL FONDO (Padre) */
 /* CONFIG GENERAL */
 #intro-layer {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 9999;
-    background-color: #ff6600; /* Fondo naranja infinito */
-    overflow-y: auto;
-    font-family: 'Times New Roman', Times, serif;
-    color: black;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
+    
+    /* Fondo Aurora Dinámico */
+    background: linear-gradient(45deg, #ff6600, #ffaa00, #ff3300, #ff8800);
+    background-size: 400% 400%;
+    animation: auroraBG 15s ease infinite;
+    
+    overflow-y: auto; font-family: 'Times New Roman', Times, serif; color: black;
+}
+@keyframes auroraBG { 
+    0% { background-position: 0% 50%; } 
+    50% { background-position: 100% 50%; } 
+    100% { background-position: 0% 50%; } 
 }
 
 /* LA CAJA DE CONTENIDO (Hijo) */
@@ -22,6 +27,7 @@
     align-items: center;
     padding: 40px 20px;
     overflow-x: hidden;
+    margin-left: 0;
 }
 
 
@@ -29,9 +35,112 @@
     position: relative; /* Referencia para la sidebar */
     width: 100%;
     max-width: 800px;
-    margin: 0 auto; /* Centrado */
+    margin-top: 2vh;
+
     z-index: 15; /* Por encima de nubes de fondo, debajo de flotantes */
 }
+
+
+
+
+/* --- AERO GLASS OVERLAY (Reflejo curvo) --- */
+.aero-glass-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 40%, rgba(0,0,0,0.1) 41%, rgba(0,0,0,0) 100%);
+    pointer-events: none; /* Crucial para poder clickear lo de abajo */
+    z-index: 9998; /* Arriba de todo menos del CRT */
+    mix-blend-mode: overlay;
+}
+
+/* Burbujas Flotantes */
+.aero-bubble {
+    position: fixed; bottom: -50px;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.1) 60%, rgba(255,255,255,0.4) 100%);
+    border-radius: 50%; 
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.1);
+    pointer-events: none; z-index: 9997;
+    animation: floatBubble ease-in infinite;
+}
+@keyframes floatBubble { 
+    0% { transform: translateY(0) scale(1); opacity: 0; } 
+    10% { opacity: 0.8; } 
+    100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
+}
+
+/* --- TEXTOS EXTREMOS WEB 1.0 --- */
+.wordart-text {
+    font-family: 'Comic Sans MS', 'Brush Script MT', cursive, sans-serif;
+    font-size: 4rem !important;
+    font-style: italic;
+    background: linear-gradient(to bottom, #ff0000 0%, #ffff00 50%, #ff0000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(4px 4px 0px #000); /* Sombra dura negra */
+    transform: rotate(-3deg);
+    display: inline-block;
+    margin: 15px 0;
+}
+.rainbow-text {
+    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: rainbowAnim 3s linear infinite;
+    font-weight: bold; background-size: 200% 200%;
+}
+@keyframes rainbowAnim { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+
+/* --- BOTONES FRUTIGER AERO (Tabs de navegación) --- */
+.tab-navigation {
+    display: flex; justify-content: space-between; gap: 20px;
+    background: transparent; border: none; box-shadow: none; padding: 0; margin: 30px 0;
+}
+.aero-btn {
+    flex: 1; padding: 15px; font-size: 1.2rem; font-weight: bold; font-family: 'Arial', sans-serif; cursor: pointer;
+    /* Gradiente Acuoso (Burbuja) */
+    background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(150,200,255,0.6) 50%, rgba(50,150,255,0.8) 51%, rgba(0,100,255,1) 100%);
+    border: 1px solid #0055ff; border-radius: 25px; color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    box-shadow: 0 4px 15px rgba(0,50,150,0.5), inset 0 3px 5px rgba(255,255,255,1); /* Brillo superior */
+    transition: all 0.2s;
+}
+.aero-btn:hover {
+    transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,100,255,0.8), inset 0 3px 8px rgba(255,255,255,1);
+}
+.aero-btn.active {
+    background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,150,0,0.6) 50%, rgba(255,100,0,0.9) 51%, rgba(200,50,0,1) 100%);
+    border-color: #ff3300; pointer-events: none;
+    box-shadow: 0 0 20px rgba(255,100,0,0.8), inset 0 2px 5px rgba(255,255,255,1);
+}
+
+/* --- WIDGETS FLOTANTES --- */
+#mini-winamp {
+    position: fixed; bottom: 20px; left: 20px; z-index: 10000;
+    background: #c0c0c0; border: 2px outset #fff; padding: 5px; width: 200px; box-shadow: 3px 3px 0 #000;
+}
+.winamp-title { background: #000080; color: white; padding: 2px 5px; font-family: 'Courier New', monospace; font-size: 0.8rem; margin-bottom: 5px; }
+#winamp-play { width: 100%; background: #e0e0e0; border: 2px outset #fff; cursor: pointer; font-weight: bold; }
+
+#aero-clock {
+    position: fixed; top: 20px; left: 20px; width: 100px; height: 100px; z-index: 10000;
+    border-radius: 50%; background: radial-gradient(circle, #ffffff 0%, #e0e0e0 100%);
+    border: 4px solid #c0c0c0; box-shadow: inset 0 0 10px #000, 5px 5px 10px rgba(0,0,0,0.5);
+    /* Efecto cristal en el vidrio del reloj */
+    overflow: hidden;
+}
+#aero-clock::after {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
+    border-radius: 50% 50% 0 0; pointer-events: none;
+}
+.hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: black; border-radius: 5px; }
+.hour-hand { width: 4px; height: 25px; margin-left: -2px; }
+.min-hand { width: 3px; height: 35px; margin-left: -1.5px; }
+.sec-hand { width: 1px; height: 40px; background: red; margin-left: -0.5px; }
+.clock-center { position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; background: red; border-radius: 50%; transform: translate(-50%, -50%); }
+
+
+
+
 
 
 /* MARQUEE SUPERIOR (Estilo Noticia Urgente) */
@@ -385,27 +494,14 @@
 
 
 .social-sidebar {
-    position: absolute;
-    top: 205px;
-    right: -70px; 
-    width: 80px;
-    
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     gap: 15px;
-    
-    background-color: #ffffcc; 
-    border: 3px solid black;
-    border-left: none;
-    
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    
-    padding: 15px 5px; 
-    
-    box-shadow: 5px 5px 0px blue;
-    
-    z-index: 0;
+    margin: 25px 0;
+    flex-wrap: wrap;
+    background: rgba(0,0,0,0.1); /* Sutil fondo para enmarcarlas */
+    padding: 10px;
+    border: 1px inset #808080;
 }
 
 .social-sidebar a {
@@ -423,7 +519,7 @@
 }
 
 .social-sidebar a:hover {
-    transform: translate(-2px, -2px);
+    transform: scale(1.1) translateY(-2px);
     background: #fff;
     cursor: pointer;
 }
@@ -434,9 +530,49 @@
 }
 
 .social-sidebar img {
-    width: 28px;
-    height: 28px;
-    image-rendering: pixelated; /* Para que se vean retro */
+    width: 32px;
+    height: auto;
+    transition: transform 0.2s;
+    filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5));
+}
+
+
+/* --- BOTONES DE PESTAÑAS (TABS) --- */
+.tab-navigation {
+    display: flex;
+    justify-content: space-between;
+    background: #c0c0c0; /* Gris clásico Win95 */
+    border: 3px outset #fff;
+    padding: 10px;
+    margin: 35px 0; /* Buen espacio entre tu bio y los textos de abajo */
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.5); /* Sombra dura de la época */
+}
+.tab-navigation .win95-btn {
+    flex: 1; /* Esto hace que se dividan el ancho 50/50 automáticamente */
+    margin: 0 5px;
+    padding: 15px 10px;
+    font-size: 1.2rem;
+    font-weight: 900;
+    font-family: 'Arial', sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: #e0e0e0;
+    border: 3px outset #fff;
+    color: #000;
+    transition: all 0.1s;
+}
+/* Estilo "Hundido" cuando la pestaña está activa */
+.tab-navigation .win95-btn.active {
+    background: #000080; /* Azul fuerte Win95 */
+    color: #fff;
+    border: 3px inset #000; /* Borde hundido */
+    pointer-events: none; /* No se puede clickear la que ya está activa */
+    text-shadow: 1px 1px 0 #000;
+}
+
+.tab-navigation .win95-btn:active {
+    border: 3px inset #fff;
+    background: #ccc;
 }
 
 
