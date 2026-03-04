@@ -25,27 +25,358 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// =========================================================================
 // LÓGICA DE LA BIO (index.html)
-// =========================================================================
 function initBioLogic() {
+    // 0. MOTOR MSCHF SPLASH SCREEN (Efectos Aleatorios)
+    const splashScreen = document.getElementById('mschf-splash');
+    const mainBtn = document.getElementById('giant-aero-btn');
+    const effectLayer = document.getElementById('effect-layer');
+    
+    if (splashScreen && mainBtn) {
+        document.documentElement.style.overflow = 'hidden';
+        let isTriggered = false;
+
+        // Audios
+        const playSound = (id) => { const audio = document.getElementById(id); if(audio) { audio.currentTime = 0; audio.play().catch(()=>{}); } }
+
+        mainBtn.addEventListener('click', () => {
+            if (isTriggered) return;
+            isTriggered = true;
+
+            const randomEffect = Math.floor(Math.random() * 4) + 1;
+            console.log("💥 MSCHF Effect Triggered: " + randomEffect);
+
+            switch (randomEffect) {
+                
+                case 1: // EL CD BARREDORA (CORTINILLA PERFECTA)
+                    
+                    playSound('sfx-cd');
+
+                    const cd = document.createElement('img');
+                    cd.src = 'assets/img/cd.png'; 
+                    cd.className = 'retro-cd-wipe';
+                    
+                    // 1. Calculamos las matemáticas PRIMERO
+                    const duration = 2000; 
+                    let startTime = null;
+                    const wH = window.innerHeight;
+                    const wW = window.innerWidth;
+                    
+                    const cdWidth = Math.max(wW * 1.5, 800);
+                    const radius = cdWidth / 2; 
+                    
+                    // Le sumamos 50px extra de margen de seguridad para esconderlo bien abajo
+                    const startY = wH + radius + 50; 
+                    const endY = -radius - 50; 
+
+                    // 2. TRUCO CLAVE: Lo posicionamos fuera de la pantalla ANTES de inyectarlo
+                    cd.style.top = startY + 'px';
+                    cd.style.transform = `translate(-50%, -50%) rotate(0deg)`;
+                    
+                    // 3. Ahora sí, lo metemos al HTML (el usuario no va a ver ni un píxel)
+                    document.body.appendChild(cd);
+
+                    function animateWipe(timestamp) {
+                        if (!startTime) startTime = timestamp;
+                        let progress = (timestamp - startTime) / duration;
+                        if (progress > 1) progress = 1;
+
+                        let easeProgress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+                        const currentY = startY + (endY - startY) * easeProgress;
+                        const currentRotation = easeProgress * 720; 
+                        
+                        cd.style.top = currentY + 'px';
+                        cd.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg)`;
+                        
+                        let bottomInset = wH - currentY; 
+                        if (bottomInset < 0) bottomInset = 0; 
+                        
+                        splashScreen.style.clipPath = `inset(0 0 ${bottomInset}px 0)`;
+
+                        if (progress < 1) {
+                            requestAnimationFrame(animateWipe);
+                        } else {
+                            cd.remove();
+                            endSplash();
+                            splashScreen.style.clipPath = 'none'; 
+                        }
+                    }
+                    
+                    setTimeout(() => requestAnimationFrame(animateWipe), 400);
+                    break;
+
+                case 2: // INUNDACIÓN DE AGUA (PREMIUM FRUTIGER AERO)
+                    // 1. El botón explota
+                    playSound('sfx-pop');
+                    mainBtn.classList.add('btn-explode');
+                    
+                    // 2. Creamos la masa de agua
+                    const water = document.createElement('div');
+                    water.className = 'frutiger-flood';
+                    effectLayer.appendChild(water);
+                    
+                    // 3. Generador masivo de burbujas
+                    // Dispara burbujas cada 30 milisegundos mientras sube el agua
+                    let bubbleStorm = setInterval(() => {
+                        let b = document.createElement('div');
+                        b.className = 'flood-bubble';
+                        b.style.left = (Math.random() * 100) + 'vw'; // Posición horizontal aleatoria
+                        
+                        // Tamaños de burbujas bien variados
+                        let size = Math.random() * 40 + 10; 
+                        b.style.width = size + 'px';
+                        b.style.height = size + 'px';
+                        
+                        // Velocidades de subida aleatorias (entre 1.5 y 3 segundos)
+                        b.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+                        
+                        water.appendChild(b);
+                        
+                        // Autodestrucción de la burbuja para no matar la memoria de la PC
+                        setTimeout(() => b.remove(), 3000);
+                    }, 30);
+
+                    // 4. Iniciar la subida del agua con un micro-retraso
+                    setTimeout(() => {
+                        playSound('sfx-water');
+                        water.style.height = '120vh'; // Sube más allá del techo
+                    }, 200);
+
+                    // 5. Limpieza final y transición a la bio
+                    setTimeout(() => {
+                        clearInterval(bubbleStorm); // Cortamos la fábrica de burbujas
+                        splashScreen.style.opacity = '0'; // Fundido a tu página
+                        
+                        setTimeout(() => endSplash(), 800);
+                    }, 1800); // Esperamos a que el agua tape todo antes de hacer el fundido
+                    break;
+
+                case 3: // VIRUS MSCHF (COBERTURA TOTAL Y REVELACIÓN)
+                    
+                    // 1. Ocultamos SOLO el botón gigante. 
+                    // IMPORTANTE: Mantenemos el fondo blanco del splash intacto.
+                    mainBtn.style.visibility = 'hidden';
+                    
+                    const totalWindows = 950; // Ejército de ventanas para tapar todo
+                    const windowsArray = [];
+                    
+                    let currentX = 0;
+                    let currentY = 0;
+                    
+                    // 2. Ráfaga de ventanas (cada 15 milisegundos)
+                    for (let i = 0; i < totalWindows; i++) {
+                        setTimeout(() => {
+                            
+                            // Truco para cubrir toda la pantalla: 
+                            // Si se sale de los bordes, o cada 12 ventanas, saltamos a una coordenada aleatoria
+                            if (currentX > window.innerWidth - 320 || currentY > window.innerHeight - 140 || i % 12 === 0) {
+                                currentX = Math.random() * (window.innerWidth - 300);
+                                currentY = Math.random() * (window.innerHeight - 150);
+                            }
+
+                            let win = document.createElement('div');
+                            win.className = 'aero-error-window';
+                            win.style.left = currentX + 'px';
+                            win.style.top = currentY + 'px';
+                            win.style.zIndex = 100 + i; 
+                            
+                            win.innerHTML = `
+                                <div class="aero-error-titlebar">
+                                    <span class="aero-error-title">Windows - Fatal Application Exit</span>
+                                    <div class="aero-error-close">X</div>
+                                </div>
+                                <div class="aero-error-content">
+                                    <div class="aero-error-icon">❌</div>
+                                    <div class="aero-error-text">SOULPAGE.exe has stopped working.<br>A fatal exception 0E has occurred.</div>
+                                </div>
+                            `;
+                            
+                            effectLayer.appendChild(win);
+                            windowsArray.push(win); // Las enfilamos en orden de llegada
+
+                            // Sonido (1 de cada 5 para que suene caótico pero no rompa los parlantes)
+                            if (i % 20 === 0) {
+                                let errorSfx = document.getElementById('sfx-error');
+                                if(errorSfx) {
+                                    let sfxClone = errorSfx.cloneNode();
+                                    sfxClone.volume = 0.3;
+                                    sfxClone.play().catch(()=>{});
+                                }
+                            }
+
+                            // Desplazamiento diagonal típico de Windows
+                            currentX += 30;
+                            currentY += 30;
+
+                        }, i * 2); // Ráfaga ultrarrápida
+                    }
+
+                    // Calculamos el tiempo exacto en el que termina de aparecer la ventana N° 150
+                    let timeToFinishSpawning = totalWindows * 2;
+                    
+                    // 3. EL MOMENTO CLAVE (Cuando la pantalla está tapada)
+                    setTimeout(() => {
+                        
+                        // AHORA SÍ quitamos el fondo blanco. 
+                        // Como está todo tapado por ventanas de error, el usuario no lo nota.
+                        splashScreen.style.background = 'transparent';
+                        
+                        // Dejamos el caos congelado en pantalla por casi un segundo (800ms)
+                        setTimeout(() => {
+                            
+                            // 4. EFECTO REVELACIÓN (Las primeras en llegar, son las primeras en irse)
+                            for (let j = 0; j < windowsArray.length; j++) {
+                                setTimeout(() => {
+                                    // Le agregamos un efectito: se achican un poquito al desvanecerse
+                                    windowsArray[j].style.transition = 'opacity 0.15s, transform 0.15s';
+                                    windowsArray[j].style.opacity = '0';
+                                    windowsArray[j].style.transform = 'scale(0.8)';
+                                    
+                                    setTimeout(() => windowsArray[j].remove(), 150);
+                                }, j * 3); // Se van borrando a la misma velocidad que aparecieron
+                            }
+
+                            // 5. Finalizamos cuando se borra la última
+                            setTimeout(() => {
+                                endSplash(); 
+                            }, (windowsArray.length * 2) + 200);
+
+                        }, 800); // Fin de la pausa dramática
+
+                    }, timeToFinishSpawning); 
+                    
+                    break;
+
+                case 4: // CRISTAL ROTO 3D CON BOTÓN ROMPIÉNDOSE (PREMIUM + MEJORA)
+                    
+                    // 1. Efecto de tensión antes de romperse
+                    mainBtn.classList.add('crack-flash');
+                    
+                    setTimeout(() => {
+                        playSound('sfx-shatter');
+                        
+                        // 2. Ocultar botón inmediatamente (dejamos de verlo)
+                        mainBtn.style.visibility = 'hidden';
+                        splashScreen.style.background = 'transparent';
+                        splashScreen.style.perspective = '1000px'; 
+                        
+                        // Obtener posición y tamaño del botón para crear piezas centrales
+                        const btnRect = mainBtn.getBoundingClientRect();
+                        
+                        // 3. Generar 12 trozos del botón centralmente y añadir animación al instante
+                        for(let k=0; k<12; k++) {
+                            let btnShard = document.createElement('div');
+                            btnShard.className = 'btn-shard-premium'; // Nueva clase CSS naranja/blanca
+                            btnShard.classList.add('shatter-fall'); // Añadir animación instantáneamente
+                            
+                            // Tamaño aproximado para cubrir el botón
+                            let w = btnRect.width / 4; 
+                            let h = btnRect.height / 3;
+                            btnShard.style.width = (Math.random() * w * 0.5 + w * 0.75) + 'px'; // Variar tamaño
+                            btnShard.style.height = (Math.random() * h * 0.5 + h * 0.75) + 'px';
+                            
+                            // Posicionar centralmente donde estaba el botón, con ligera variación
+                            btnShard.style.left = (btnRect.left + (Math.random() * btnRect.width * 0.8 + btnRect.width * 0.1)) + 'px';
+                            btnShard.style.top = (btnRect.top + (Math.random() * btnRect.height * 0.8 + btnRect.height * 0.1)) + 'px';
+                            
+                            // FÍSICAS 3D (Mismas variables CSS para trozos de botón)
+                            btnShard.style.setProperty('--move-x', (Math.random() * 800 - 400) + 'px'); 
+                            btnShard.style.setProperty('--move-z', (Math.random() * 600) + 'px'); 
+                            btnShard.style.setProperty('--rot-x', (Math.random() * 1080 - 540) + 'deg'); 
+                            btnShard.style.setProperty('--rot-y', (Math.random() * 1080 - 540) + 'deg'); 
+                            btnShard.style.setProperty('--rot-z', (Math.random() * 720 - 360) + 'deg'); 
+                            
+                            effectLayer.appendChild(btnShard); 
+                        }
+                        
+                        // 4. Generar 45 astillas de cristal (predominantemente periféricas for effect)
+                        for(let i=0; i<45; i++) {
+                            let shard = document.createElement('div');
+                            shard.className = 'glass-shard-premium';
+                            
+                            let w = Math.random() * 300 + 100;
+                            let h = Math.random() * 300 + 100;
+                            shard.style.width = w + 'px';
+                            shard.style.height = h + 'px';
+                            
+                            // Distribución aleatoria por la pantalla
+                            shard.style.left = (Math.random() * 120 - 10) + 'vw';
+                            shard.style.top = (Math.random() * 120 - 10) + 'vh';
+                            
+                            // Polígono irregular
+                            let p1 = `${Math.random()*50}% 0%`; 
+                            let p2 = `100% ${Math.random()*50}%`; 
+                            let p3 = `${50 + Math.random()*50}% 100%`; 
+                            let p4 = `0% ${50 + Math.random()*50}%`; 
+                            shard.style.clipPath = `polygon(${p1}, ${p2}, ${p3}, ${p4})`;
+                            
+                            // Variables CSS 3D
+                            shard.style.setProperty('--move-x', (Math.random() * 800 - 400) + 'px'); 
+                            shard.style.setProperty('--move-z', (Math.random() * 600) + 'px'); 
+                            shard.style.setProperty('--rot-x', (Math.random() * 1080 - 540) + 'deg'); 
+                            shard.style.setProperty('--rot-y', (Math.random() * 1080 - 540) + 'deg'); 
+                            shard.style.setProperty('--rot-z', (Math.random() * 720 - 360) + 'deg'); 
+                            
+                            effectLayer.appendChild(shard);
+                            
+                            // Caída diferida para astillas de cristal
+                            setTimeout(() => {
+                                shard.classList.add('shatter-fall');
+                            }, Math.random() * 150);
+                        }
+                        
+                        // 5. Esperamos a que todo se caiga y terminamos
+                        setTimeout(() => endSplash(), 1500);
+
+                    }, 100);
+                    break;
+            }
+        });
+
+        function endSplash() {
+            splashScreen.style.display = 'none';
+            document.documentElement.style.overflow = '';
+            
+            const bgm = document.getElementById('bgm-audio');
+            const winampBtn = document.getElementById('winamp-play');
+            
+            if (bgm && bgm.paused) {
+                bgm.volume = 0.5; // Ajustá este número si la música arranca muy fuerte
+                bgm.play().catch(e => console.log("Audio bloqueado:", e));
+                
+                if (winampBtn) {
+                    winampBtn.innerText = "[ PAUSE BGM ]";
+                    winampBtn.style.background = "#ffff00";
+                }
+            }
+        }
+    }
+
+
+    initFrutigerAero();
+
     // --- 1. TRANSICIÓN A PORTFOLIO (TV OFF) ---
     const startVirtualBtn = document.getElementById('start-virtual-btn');
     const introLayer = document.getElementById('intro-layer');
 
-    initFrutigerAero();
-
     if (startVirtualBtn && introLayer) {
-        startVirtualBtn.addEventListener('click', () => {
-            startVirtualBtn.textContent = "INICIANDO...";
+        startVirtualBtn.addEventListener('click', (e) => {
+            e.preventDefault(); 
             
-            // Efecto de tele apagándose
-            introLayer.classList.add('crt-shutdown-effect');
-
-            // Esperar que termine la animación y cambiar de HTML
+            startVirtualBtn.textContent = "INICIANDO...";
+            startVirtualBtn.disabled = true; 
+            startVirtualBtn.style.cursor = "wait";
+            
             setTimeout(() => {
-                window.location.href = 'portfolio.html';
-            }, 550); 
+                
+                introLayer.classList.add('crt-shutdown-effect');
+
+                setTimeout(() => {
+                    window.location.href = 'portfolio.html';
+                }, 1750); 
+                
+            }, 1000); 
         });
     }
 
