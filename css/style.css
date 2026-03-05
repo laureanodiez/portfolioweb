@@ -300,7 +300,14 @@
 .carousel {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: relative;
+  left: -8%;
+  transform: translateX(-50%);
+  margin-top: 10vh;
+  width: 100vw;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
   transform: translateZ(-288px); /* Empujamos el centro hacia atrás */
   transform-style: preserve-3d;
   transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1); /* Giro suave */
@@ -1222,8 +1229,8 @@ body {
   position: absolute;
   
   /* COORDENADAS PARA CENTRARLO */
-  top: 15vh;    /* 15% de margen superior (aire arriba) */
-  bottom: 15vh; /* 25% de margen inferior (espacio para la tarjeta) */
+  top: 5vh;    /* 15% de margen superior (aire arriba) */
+  bottom: 5vh; /* 25% de margen inferior (espacio para la tarjeta) */
   left: 5vw;    /* 5% margen izquierdo */
   right: 5vw;   /* 5% margen derecho */
   
@@ -1689,4 +1696,48 @@ body {
     .carousel-controls {
         display: none !important;
     }
+}
+
+
+
+.cyber-swipe-hint {
+    position: absolute;
+    /* Lo empujamos bien abajo del carrusel */
+    bottom: -40%; 
+    left: 45%;
+    transform: translateX(-50%);
+    
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(255, 0, 0); /* Cyan Neón */
+    letter-spacing: 4px;
+    white-space: nowrap;
+    
+    /* Brillo de tubo de neón */
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.8), 0 0 10px rgba(255, 0, 0, 0.5);
+    
+    pointer-events: none; 
+    z-index: 50;
+    
+    /* Animación de parpadeo eléctrico */
+    animation: cyberFlicker 2s infinite;
+    transition: opacity 0.4s ease;
+}
+
+@keyframes cyberFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { 
+        opacity: 1; 
+        text-shadow: 0 0 5px rgb(255, 0, 0), 0 0 15px rgb(255, 0, 0); 
+    }
+    20%, 22%, 24%, 55% { 
+        opacity: 0.2; 
+        text-shadow: none; 
+    }
+}
+
+/* Cuando el JS lo mata al hacer touch */
+.cyber-swipe-hint.fade-out {
+    opacity: 0 !important;
+    animation: none; /* Cortamos el parpadeo */
 }

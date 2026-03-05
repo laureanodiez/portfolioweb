@@ -155,10 +155,9 @@ function initBioLogic() {
                 case 3: // VIRUS MSCHF (COBERTURA TOTAL Y REVELACIÓN)
                     
                     // 1. Ocultamos SOLO el botón gigante. 
-                    // IMPORTANTE: Mantenemos el fondo blanco del splash intacto.
                     mainBtn.style.visibility = 'hidden';
                     
-                    const totalWindows = 950; // Ejército de ventanas para tapar todo
+                    const totalWindows = 350;
                     const windowsArray = [];
                     
                     let currentX = 0;
@@ -364,6 +363,18 @@ function initBioLogic() {
         startVirtualBtn.addEventListener('click', (e) => {
             e.preventDefault(); 
             
+            const bgm = document.getElementById('bgm-audio');
+            if (bgm && !bgm.paused) {
+                bgm.pause(); // Silencio inmediato
+                
+                // Por prolijidad, actualizamos el botón del Winamp a "Play"
+                const winampBtn = document.getElementById('winamp-play');
+                if (winampBtn) {
+                    winampBtn.innerText = "[ PLAY BGM ]";
+                    winampBtn.style.background = "#c0c0c0"; // Vuelve al gris
+                }
+            }
+
             startVirtualBtn.textContent = "INICIANDO...";
             startVirtualBtn.disabled = true; 
             startVirtualBtn.style.cursor = "wait";
@@ -712,6 +723,28 @@ function initPortfolioLogic() {
             else if (diffX > 40) { selectedIndex--; rotateCarousel(); }
         });
         window.addEventListener('pointercancel', () => { isDragging = false; scene.style.cursor = 'grab'; });
+    }
+
+    const swipeHint = document.getElementById('swipe-hint');
+    const carouselArea = document.getElementById('design-carousel'); // Cambiá este ID por el del contenedor de tu modelo 3D
+
+    if (swipeHint && carouselArea) {
+        // Función para matar el cartel de una vez por todas
+        const hideSwipeHint = () => {
+            if (!swipeHint.classList.contains('fade-out')) {
+                swipeHint.classList.add('fade-out');
+                
+                // Lo borramos del HTML después de 500ms (lo que dura la transición CSS) 
+                // para que no quede ocupando memoria invisible.
+                setTimeout(() => {
+                    swipeHint.remove();
+                }, 500);
+            }
+        };
+
+        // Escuchamos si toca con el dedo o hace click con el mouse
+        carouselArea.addEventListener('touchstart', hideSwipeHint, { once: true });
+        carouselArea.addEventListener('mousedown', hideSwipeHint, { once: true });
     }
 
     

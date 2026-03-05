@@ -1617,3 +1617,121 @@ body {
         transform: translate3d(var(--move-x), 150vh, var(--move-z)) rotateX(var(--rot-x)) rotateY(var(--rot-y)) rotateZ(var(--rot-z)); 
     }
 }
+
+
+
+/* =========================================================
+   TARJETA DE FILOSOFÍA (EL PENTÁGONO)
+   ========================================================= */
+.aero-philosophy-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin: 30px 0;
+    padding: 25px;
+    
+    /* Efecto Aero Glass (Vidrio esmerilado) */
+    background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.2) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 120, 255, 0.15), inset 0 0 15px rgba(255,255,255,0.5);
+    
+    /* Animación de entrada suave */
+    animation: fadeInCard 1s ease-out forwards;
+}
+
+/* --- EL PENTÁGONO CSS --- */
+.pentagon-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    /* Animación de levitación */
+    animation: floatPentagon 4s ease-in-out infinite;
+}
+
+.css-pentagon {
+    width: 100%;
+    height: 100%;
+    /* Un gradiente de agua vibrante */
+    background: linear-gradient(180deg, #00d2ff 0%, #3a7bd5 100%);
+    /* LA MAGIA: Cortamos el cuadrado para hacer un pentágono perfecto */
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    position: relative;
+    z-index: 2;
+}
+
+/* Sombra brillante que resplandece detrás del pentágono */
+.pentagon-glow {
+    position: absolute;
+    top: 10%; left: 10%; width: 80%; height: 80%;
+    background: #00d2ff;
+    filter: blur(15px);
+    z-index: 1;
+    opacity: 0.7;
+}
+
+@keyframes floatPentagon {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); } /* Sube y gira un poquito */
+}
+
+/* --- TEXTOS --- */
+.philosophy-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.philosophy-title {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 1.4rem;
+    color: #005599;
+    margin: 0;
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+}
+
+.philosophy-content p {
+    font-family: 'Verdana', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #222;
+    margin: 0;
+}
+
+.philosophy-content strong {
+    color: #004488;
+    font-weight: bold;
+}
+
+/* Responsive: Para que en celulares el pentágono quede arriba del texto */
+@media (max-width: 600px) {
+    .aero-philosophy-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 15px;
+    }
+}
+
+
+/* 1. Preparamos la figura y su brillo para que puedan transicionar suavemente */
+.css-pentagon, .pentagon-glow {
+    /* Una curva de resorte (bouncy) que dura 0.8 segundos */
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 2. Cuando el mouse pasa por ARRIBA de la tarjeta entera... */
+.aero-philosophy-card:hover .css-pentagon {
+    /* Da 2 vueltas completas (720deg) y crece un 15% */
+    transform: rotate(720deg) scale(1.15);
+}
+
+.aero-philosophy-card:hover .pentagon-glow {
+    /* El brillo también gira y crece para acompañar la figura */
+    transform: rotate(720deg) scale(1.15);
+    /* Hacemos que el brillo sea más intenso al pasar el mouse */
+    opacity: 1;
+    filter: blur(20px);
+}
