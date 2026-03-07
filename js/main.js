@@ -337,11 +337,12 @@ function initBioLogic() {
             splashScreen.style.display = 'none';
             document.documentElement.style.overflow = '';
             
+            // 1. Control de Audio
             const bgm = document.getElementById('bgm-audio');
             const winampBtn = document.getElementById('winamp-play');
             
             if (bgm && bgm.paused) {
-                bgm.volume = 0.5; // Ajustá este número si la música arranca muy fuerte
+                bgm.volume = 0.5; 
                 bgm.play().catch(e => console.log("Audio bloqueado:", e));
                 
                 if (winampBtn) {
@@ -349,6 +350,14 @@ function initBioLogic() {
                     winampBtn.style.background = "#ffff00";
                 }
             }
+
+            const revealItems = document.querySelectorAll('.reveal-item');
+            
+            revealItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('is-visible');
+                }, 100 + (index * 150)); 
+            });
         }
     }
 
@@ -1184,19 +1193,6 @@ function initFrutigerAero() {
             glassLayer.appendChild(b);
         }
     }
-
-    // 3. Reloj Analógico
-    setInterval(() => {
-        const now = new Date();
-        const hr = document.getElementById('hour-hand');
-        const mn = document.getElementById('min-hand');
-        const sc = document.getElementById('sec-hand');
-        if(hr && mn && sc) {
-            hr.style.transform = `rotate(${(now.getHours() * 30) + (now.getMinutes() / 2)}deg)`;
-            mn.style.transform = `rotate(${now.getMinutes() * 6}deg)`;
-            sc.style.transform = `rotate(${now.getSeconds() * 6}deg)`;
-        }
-    }, 1000);
 
     // 5. GENERADOR DE BURBUJAS INTERACTIVO (AL HACER CLICK EN EL FONDO)
     const introLayer = document.getElementById('intro-layer');

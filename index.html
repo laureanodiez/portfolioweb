@@ -7,7 +7,6 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <!-- UMD Three.js r147 y GLTFLoader -->
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
   <script type="importmap">
     {
@@ -23,6 +22,10 @@
   <link rel="stylesheet" href="css/style-inicio.css">
   <div id="intro-layer">
     <div id="intro-layer">
+    <div id="mini-winamp">
+            <div class="winamp-title">▶ LAUREANO_AMP v1.0</div>
+            <button id="winamp-play" onclick="toggleBGM()">[ BGM PLAY / PAUSE ]</button>
+    </div>
     
     <div id="mschf-splash">
         <button id="giant-aero-btn">
@@ -32,10 +35,10 @@
     </div>
 
     <div class="aero-glass-overlay"></div>
-    <div class="intro-container">
+    <div class="intro-container reveal-item">
       <div class="intro-shell">
 
-        <div id="aero-widget" class="status-bar">
+        <div id="aero-widget reveal-item" class="status-bar">
             <div class="status-item">
                 <span id="live-time">00:00:00</span>
             </div>
@@ -53,14 +56,14 @@
 
         <div class="intro-content-wrapper top-block">
 
-            <div class="marquee-box">
+            <div class="marquee-box reveal-item">
                 <marquee scrollamount="8" bgcolor="blue">
                     HOLA  ///  HELLO  ///  OLÁ  ///  BONJOUR  ///  こんにちは  ///  你好  ///  CIAO  ///  HALLO  ///  안녕하세요  ///  ПРИВЕТ  ///  नमस्ते  ///  مرحبا  ///  ΓΕΙΑ ΣΑΣ  ///  שלום  ///  สวัสดี  ///  ALOHA  ///
                 </marquee>
             </div>
 
-            <header class="site-header">
-                <div style="text-align: right; font-size: 0.8rem;">Last Updated: 5/3/2026</div>
+            <header class="site-header reveal-item">
+                <div style="text-align: right; font-size: 0.8rem;">Last Updated: 7/3/2026</div>
                 <h1 class="wordart-text">Laureano Diez</h1>
                 <p class="rainbow-text">stuffmaker</p>
                 <br>
@@ -68,12 +71,12 @@
                 <img src="assets/img/gifs/uc-3.gif" alt="working">
             </header>
 
-            <div class="tab-navigation">
+            <div class="tab-navigation reveal-item">
                 <button id="btn-soulpage" class="aero-btn active" onclick="switchTab('soulpage')">SOULPAGE BIO</button>
                 <button id="btn-soulcard" class="aero-btn" onclick="switchTab('soulcard')">SOULCARD PORTFOLIO</button>
             </div>
 
-            <div class="blog-entry soulpage-only">
+            <div class="blog-entry soulpage-only reveal-item">
                 <div class="blog-title">
                     <span>Notepad.exe - readme.txt</span>
                     <span>[X]</span>
@@ -158,7 +161,7 @@
                 </div>
             </div>
 
-            <div class="text-block-extra">
+            <div class="text-block-extra reveal-item">
                 <div class="soulpage-only">
                     <img src="assets/img/gifs/pyramid.gif" alt="pyramid" style="width: 200px; display: block; margin-left: auto; margin-right: auto;">
 
@@ -407,20 +410,8 @@
             <br><br>
         </div>
       </div>
+
       
-
-
-      <div id="aero-clock">
-            <div class="hand hour-hand" id="hour-hand"></div>
-            <div class="hand min-hand" id="min-hand"></div>
-            <div class="hand sec-hand" id="sec-hand"></div>
-            <div class="clock-center"></div>
-      </div>
-
-      <div id="mini-winamp">
-            <div class="winamp-title">▶ LAUREANO_AMP v1.0</div>
-            <button id="winamp-play" onclick="toggleBGM()">[ BGM PLAY / PAUSE ]</button>
-      </div>
 
         <audio id="sfx-cd" src="assets/sounds/lift.mp3"></audio>
         <audio id="sfx-pop" src="assets/sounds/balloon-pop.mp3"></audio>

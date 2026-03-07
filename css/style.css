@@ -10,24 +10,24 @@
 /* TEMA: DESARROLLO (Morado) */
 .theme-dev {
   --holo-rgb: 189, 0, 255;
-  --holo-dark-text: #2a0038; /* Morado muy oscuro */
+  --holo-dark-text: #2a0038;
 }
 
 /* TEMA: VIDEOJUEGOS (Cyan/Azul Futuro) */
 .theme-games {
   --holo-rgb: 0, 234, 255;
-  --holo-dark-text: #00353b; /* Azul muy oscuro */
+  --holo-dark-text: #00353b;
 }
 
 /* TEMA: MÚSICA (Ámbar/Naranja Retro) */
 .theme-music {
   --holo-rgb: 255, 174, 0;
-  --holo-dark-text: #3d2a00; /* Marrón/Naranja oscuro */
+  --holo-dark-text: #3d2a00;
 }
 
 /* TEMA: DISEÑO (Amarillo Eléctrico) */
 .theme-design {
-  --holo-rgb: 255, 0, 0; /* Gold */
+  --holo-rgb: 255, 0, 0;
   --holo-dark-text: #3b0000;
 }
 
@@ -46,7 +46,7 @@
   background: rgba(0,0,0,0.3);
   border: 1px dashed rgba(var(--holo-rgb), 0.4);
   padding: 1rem;
-  font-family: 'Courier New', monospace; /* Fuente monoespaciada obligatoria */
+  font-family: 'Courier New', monospace;
 }
 
 .term-header {
@@ -70,7 +70,7 @@
   content: "";
   position: absolute;
   top: 0; left: 0; bottom: 0;
-  width: var(--w, 0%); /* Variable CSS que setearemos con JS */
+  width: var(--w, 0%);
   background: repeating-linear-gradient(
     90deg,
     rgb(var(--holo-rgb)),
@@ -92,7 +92,7 @@
   padding: 1rem;
   margin-bottom: 1rem;
   transition: all 0.3s;
-  color: inherit; /* Hereda el color del tema */
+  color: inherit;
 }
 
 .repo-card:hover {
@@ -156,7 +156,7 @@
 .cart-img {
   width: 100%; height: 100%;
   object-fit: cover;
-  image-rendering: pixelated; /* CLAVE para pixel art */
+  image-rendering: pixelated;
   opacity: 0.8;
   transition: 0.3s;
 }
@@ -212,8 +212,8 @@
   left: 5px;
   top: 5px;
   border: 1px solid rgba(var(--holo-rgb), 0.3);
-  background: rgba(0,0,0,0.8); /* Fondo oscuro para que se lea el texto */
-  transition: transform 1s, border-color 0.3s; /* Solo animamos la rotación y el borde aquí */
+  background: rgba(0,0,0,0.8);
+  transition: transform 1s, border-color 0.3s;
   /* Importante: NO overflow:hidden aquí, o cortará el contenido 3D */
 }
 
@@ -228,7 +228,7 @@
 
 .project-thumb {
   width: 100%;
-  height: 120px; /* Altura fija para las portadas */
+  height: 120px;
   object-fit: cover;
   border-bottom: 1px solid rgba(var(--holo-rgb), 0.2);
   display: block;
@@ -236,11 +236,11 @@
 
 /* El contenedor de detalles oculto (ACORDEÓN) */
 .design-cell-details {
-  max-height: 0; /* Cerrado por defecto */
+  max-height: 0;
   overflow: hidden;
   opacity: 0;
   padding: 0 10px;
-  transition: all 0.4s ease-out; /* Animación suave */
+  transition: all 0.4s ease-out;
   font-family: 'Courier New', monospace;
 }
 
@@ -270,7 +270,7 @@
 }
 
 .carousel-cell.active .design-cell-details {
-  max-height: 200px; /* Altura suficiente para el contenido */
+  max-height: 200px;
   opacity: 1;
   padding-bottom: 10px;
 }
@@ -282,8 +282,8 @@
 .carousel-scene {
   margin: 40px auto;
   position: relative;
-  width: 210px; /* Ancho de la carta individual */
-  height: 140px; /* Alto de la carta */
+  width: 210px;
+  height: 140px;
   perspective: 1000px;
   user-select: none; 
   touch-action: pan-y; 
@@ -292,7 +292,6 @@
 }
 
 .carousel-scene.shifted {
-  /* Subimos todo el bloque 60px (podés ajustar este número si querés más o menos espacio) */
   transform: translateY(-60px); 
 }
 
@@ -308,9 +307,9 @@
   max-width: 100%;
   display: flex;
   justify-content: center;
-  transform: translateZ(-288px); /* Empujamos el centro hacia atrás */
+  transform: translateZ(-288px);
   transform-style: preserve-3d;
-  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1); /* Giro suave */
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 
@@ -324,7 +323,7 @@
   width: 100%; height: 80%;
   background-size: cover;
   background-position: center;
-  filter: grayscale(100%); /* B/N por defecto */
+  filter: grayscale(100%);
   border-bottom: 1px solid rgba(var(--holo-rgb), 0.5);
 }
 
@@ -346,16 +345,16 @@
   left: 0; right: 0;
   transform: translateY(-50%);
   display: flex;
-  justify-content: space-between; /* Uno a cada extremo */
-  pointer-events: none; /* Permite hacer clic en el centro a través del contenedor */
-  margin-top: 0; /* Reseteamos el margen */
-  padding: 0 10px; /* Un poco de margen lateral */
+  justify-content: space-between; 
+  pointer-events: none; 
+  margin-top: 0; 
+  padding: 0 10px; 
   z-index: 100;
 }
 
 .c-btn {
-  pointer-events: auto; /* Reactivamos clicks en los botones */
-  background: rgba(0,0,0,0.8); /* Fondo oscuro para que se lea sobre las cartas de atrás */
+  pointer-events: auto;
+  background: rgba(0,0,0,0.8);
   border: 1px solid rgb(var(--holo-rgb));
   color: rgb(var(--holo-rgb));
   padding: 5px 20px;
@@ -455,7 +454,7 @@
   width: 100%; height: 100%;
   object-fit: cover;
   opacity: 0.8;
-  filter: sepia(50%) hue-rotate(-30deg); /* Tono retro */
+  filter: sepia(50%) hue-rotate(-30deg);
 }
 
 @keyframes spinVinyl { from {transform: rotate(0deg);} to {transform: rotate(360deg);} }
@@ -525,8 +524,8 @@
 /* --- ACORDEÓN DE MÚSICA --- */
 .track-item {
   display: flex;
-  flex-direction: column; /* Cambiamos a columna para apilar el detalle abajo */
-  padding: 0; /* Quitamos padding viejo */
+  flex-direction: column;
+  padding: 0;
   border-bottom: 1px dashed rgba(var(--holo-rgb), 0.2);
 }
 
@@ -554,7 +553,7 @@
 
 /* Cuando el track está activo, expandimos el acordeón */
 .track-item.active .track-expanded {
-  max-height: 150px; /* Suficiente para el texto y botones */
+  max-height: 150px;
   opacity: 1;
   padding-bottom: 1rem;
 }
@@ -599,12 +598,12 @@
 }
 
 .social-chip {
-  flex: 1; /* Todos del mismo ancho */
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1/1; /* Cuadrados perfectos */
+  aspect-ratio: 1/1;
   max-width: 80px;   /* Que no sean gigantes */
   
   border: 1px solid rgba(var(--holo-rgb), 0.5);
@@ -629,7 +628,7 @@
 /* Hover Effect: "Activación" */
 .social-chip:hover {
   background: rgba(var(--holo-rgb), 0.8);
-  color: var(--holo-dark-text); /* Texto oscuro para contraste */
+  color: var(--holo-dark-text);
   box-shadow: 0 0 15px rgba(var(--holo-rgb), 0.5);
   transform: translateY(-5px);
 }
@@ -656,7 +655,7 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
   position:absolute; inset:0;
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
-  z-index:11; /* sobre paneles */
+  z-index:11;
 }
 #splashName {
   color:#fff; font-size:2.5rem; margin-bottom:1rem; text-align:center;
@@ -691,48 +690,35 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
 
 /* — Tarjeta y menús — */
 #card {
-  /* ——— DIMENSIONES RESPONSIVE ——— */
-  /* Ocupa el 85% del ancho de pantalla, pero nunca más de 500px */
   width: 75vw;
   max-width: 300px; 
   
-  /* La magia matemática: 3024 / 1890 = 1.6 (o 8/5) */
-  /* Esto obliga al navegador a calcular la altura automáticamente */
   aspect-ratio: 1.6; 
   
-  /* ——— POSICIONAMIENTO INICIAL ——— */
   position: absolute;
-  top: -100vh; /* Fuera de pantalla al inicio */
+  top: -100vh;
   left: 0; 
   
-  /* ——— IMAGEN DE FONDO ——— */
-  background-color: transparent; /* Quitamos el blanco */
-  background-image: url('../assets/img/card-front.png'); /* <--- Asegúrate de la ruta */
-  background-size: cover;  /* Cubre todo el div sin deformarse */
+  background-color: transparent;
+  background-image: url('../assets/img/card-front.png');
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   
-  /* ——— ESTÉTICA 3D & ACABADOS ——— */
-  /*border-radius: 16px; /* Ajusta esto según qué tan redondas son las esquinas de tu diseño */
+  /*border-radius: 16px;*/
   
-  /* Sombra de "objeto apoyado": Pequeña y oscura */
   box-shadow: 0 2px 10px rgba(0,0,0,0.5); 
   
-  /*transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
   
-  /* Quitamos bordes si la imagen ya tiene el diseño completo */
   border: none; 
   
-  /* Configuraciones de interacción */
   cursor: pointer;
   z-index: 20;
-  transform-style: preserve-3d; /* Vital para el paralaje */
+  transform-style: preserve-3d;
   
-  /* Transiciones suaves para movimientos */
   transition: top 0.5s, left 0.5s, box-shadow 0.3s; 
 }
 
-/* Opcional: Capa de brillo sutil (Gloss) que reacciona al mover la tarjeta */
 #card::after {
   content: "";
   position: absolute;
@@ -744,9 +730,9 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
     transparent 50%, 
     transparent 100%
   );
-  /*border-radius: 16px; /* Debe coincidir con el del padre */
+  /*border-radius: 16px;
   pointer-events: none;
-  mix-blend-mode: overlay; /* Mezcla el brillo con tu diseño */
+  mix-blend-mode: overlay; */
 }
 
 
@@ -779,7 +765,7 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
 
 /* — CCTV‑style mini‑screen — */
 #screenWrapper {
-  display: none;                /* oculto por defecto */
+  display: none;               
   position: absolute;
   width: 300px;
   height: 200px;
@@ -795,7 +781,7 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
 }
 #screenWrapper.visible {
   display: block;
-  top: 50px; /* posición final al bajar */
+  top: 50px;
 }
 #closeScanner {
   position: absolute;
@@ -867,7 +853,7 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
 
 /* Menús descienden con el scroll y quedan debajo del banner */
 #menuSection.scrolled {
-  top: 5rem; /* Debajo del banner fijo */
+  top: 5rem;
   bottom: auto;
   transform: translateX(-50%) scale(0.9);
 }
@@ -949,7 +935,7 @@ html, body { width:100%; height:100%; font-family:'Geo',sans-serif; overflow-x:h
 
 /* — CONTENIDO SCROLLABLE — */
 .pageContent {
-  margin-top: 100vh; /* Empieza después de la vista inicial */
+  margin-top: 100vh;
   padding: 2rem;
   min-height: 100vh;
   transition: padding-top 0.5s ease;
@@ -966,7 +952,7 @@ body.scroll-enabled .pageContent {
 
 /* Ajustar padding cuando el banner está visible */
 body.banner-visible .pageContent {
-  padding-top: 6rem; /* Espacio para el banner fijo */
+  padding-top: 6rem;
 }
 
 /* Deshabilitar scroll cuando la carta no está elevada */
@@ -1022,8 +1008,8 @@ body.scroll-disabled .pageContent { display: none; }
 .crt-container {
   position: fixed;
   inset: 0;
-  z-index: 9999; /* Por encima de TODO */
-  pointer-events: none; /* Permite clicks a través de la capa */
+  z-index: 9999;
+  pointer-events: none;
   overflow: hidden;
   
   /* La curvatura de la pantalla física */
@@ -1031,7 +1017,7 @@ body.scroll-disabled .pageContent { display: none; }
   box-shadow: 
     inset 0 0 3rem rgba(0,0,0,0.7), 
     inset 0 0 8rem rgba(0,0,0,0.4),
-    inset 0 0 2px rgba(20, 20, 20, 0.5); /* Borde sutil */
+    inset 0 0 2px rgba(20, 20, 20, 0.5);
   display: none; 
   pointer-events: none; 
 }
@@ -1047,8 +1033,8 @@ body.scroll-disabled .pageContent { display: none; }
     rgba(0,0,0,0.2) 50%,
     rgba(0,0,0,0.2)
   );
-  background-size: 100% 4px; /* Grosor de línea */
-  animation: scrollScanlines 10s linear infinite; /* Movimiento lento */
+  background-size: 100% 4px;
+  animation: scrollScanlines 10s linear infinite;
   opacity: 0.6;
 }
 
@@ -1108,7 +1094,7 @@ body {
 
 /* Agregamos profundidad al escenario principal */
 #mainContent {
-  perspective: 1200px; /* Mientras menor el número, más dramático el 3D */
+  perspective: 1200px;
   overflow: hidden;    /* Para que nada se salga de la pantalla */
 }
 
@@ -1143,7 +1129,7 @@ body {
 /* ESTADO 1: FLOTANDO (Cuando la tarjeta sube) */
 /* Activaremos esta clase con JS */
 #card.floating {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Sombra más fuerte al volar */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 /* Cuando flota, mostramos el botón */
@@ -1164,8 +1150,8 @@ body {
   
   /* Feedback visual de conexión */
   border: 2px solid #0f0;
-  box-shadow: 0 -20px 40px rgba(0, 255, 0, 0.4); /* Luz verde hacia arriba */
-  z-index: 200; /* Siempre encima */
+  box-shadow: 0 -20px 40px rgba(0, 255, 0, 0.4);
+  z-index: 200;
   transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -1220,7 +1206,7 @@ body {
 
 /* ESTADO ACTIVO (ENCENDIDO) */
 #hologram-deck.active .hologram-screen {
-  transform: scale(1, 1); /* Se expande a tamaño completo */
+  transform: scale(1, 1);
   opacity: 1;
   pointer-events: auto;
 }
@@ -1230,15 +1216,15 @@ body {
   
   /* COORDENADAS PARA CENTRARLO */
   top: 5vh;    /* 15% de margen superior (aire arriba) */
-  bottom: 5vh; /* 25% de margen inferior (espacio para la tarjeta) */
+  bottom: 5vh;
   left: 5vw;    /* 5% margen izquierdo */
   right: 5vw;   /* 5% margen derecho */
   
   /* Opcional: Ancho máximo para que no se estire infinito en PC */
   max-width: 1200px;
-  margin: 0 auto; /* Centra el bloque si alcanza el max-width */
+  margin: 0 auto;
   
-  pointer-events: none; /* El contenedor es invisible al mouse */
+  pointer-events: none;
   z-index: 50;
   
   /* Aseguramos que el contenido interno (la pantalla verde) ocupe todo este espacio */
@@ -1258,7 +1244,7 @@ body {
 
 .holo-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 columnas */
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   width: 100%;
   max-width: 500px;
@@ -1310,14 +1296,14 @@ body {
 /* ——— TÍTULOS (ESTADO FLOTANTE) ——— */
 #bigTitle {
   position: absolute;
-  top: 3rem; /* Mucho más arriba (antes era 15%) */
+  top: 3rem;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   z-index: 5;
   transition: all 0.5s ease;
-  width: 100%; /* Asegura que se centre bien */
-  pointer-events: none; /* Para que no moleste a clicks en esa zona */
+  width: 100%;
+  pointer-events: none;
 }
 
 #bigTitle.visible {
@@ -1333,14 +1319,14 @@ body {
 
 #mainTitle {
   color: #fff;
-  font-size: 3.5rem; /* Grande e impactante */
+  font-size: 3.5rem;
   margin: 0;
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
 #subtitle {
-  color: #0f0; /* Verde terminal */
+  color: #0f0;
   font-size: 1.2rem;
   letter-spacing: 0.5rem;
   margin-top: 0.5rem;
@@ -1355,12 +1341,12 @@ body {
     filter: brightness(1);
   }
   50% {
-    transform: scale(1, 0.005); /* Se aplasta verticalmente (línea horizontal) */
+    transform: scale(1, 0.005);
     opacity: 0.8;
-    filter: brightness(2); /* Flash de luz al comprimirse */
+    filter: brightness(2);
   }
   100% {
-    transform: scale(0, 0); /* Se comprime horizontalmente hasta desaparecer */
+    transform: scale(0, 0);
     opacity: 0;
   }
 }
@@ -1373,7 +1359,7 @@ body {
 
 /* Color de los caracteres random mientras se decodifican */
 .dud {
-  color: #5f5; /* Verde más brillante o diferente al texto final */
+  color: #5f5;
   opacity: 0.7;
 }
 
@@ -1401,8 +1387,8 @@ body {
 }
 
 .holo-body {
-  flex: 1; /* Ocupa el resto de la altura */
-  display: flex; /* Sidebar a la izq, contenido a la der */
+  flex: 1;
+  display: flex;
   width: 100%;
   overflow: hidden;
 }
@@ -1415,7 +1401,7 @@ body {
   /* FLEXBOX VERTICAL */
   display: flex;
   flex-direction: column;
-  height: 100%; /* Ocupa toda la altura disponible */
+  height: 100%;
   
   /* Si la pantalla es RIDÍCULAMENTE pequeña (tipo reloj), permitimos scroll */
   overflow-y: auto; 
@@ -1427,7 +1413,7 @@ body {
 
 /* FOOTER SOCIAL EN SIDEBAR */
 .sidebar-footer {
-  margin-top: auto; /* Empuja todo hacia abajo */
+  margin-top: auto;
   padding: 1rem 0;
   display: flex;
   flex-direction: column;
@@ -1459,8 +1445,8 @@ body {
   flex: 1; 
   
   /* Límites para que no se vean ni gigantes ni microscópicos */
-  max-height: 100px; /* En pantallas altas, no crecen más de esto */
-  min-height: 60px;  /* En pantallas bajas, fuerzan scroll si es necesario */
+  max-height: 100px;
+  min-height: 60px;
   
   background: transparent;
   border: none;
@@ -1470,7 +1456,7 @@ body {
   /* Alineación interna */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centrado vertical automático */
+  justify-content: center;
   align-items: center;     /* Centrado horizontal automático */
   gap: 8px;                /* Espacio entre icono y texto */
   
@@ -1482,8 +1468,8 @@ body {
 }
 
 .nav-btn:hover {
-  background: rgba(var(--holo-rgb), 0.1); /* Brillo suave */
-  color: rgb(var(--holo-rgb)); /* Texto full color */
+  background: rgba(var(--holo-rgb), 0.1);
+  color: rgb(var(--holo-rgb));
   text-shadow: 0 0 8px rgba(var(--holo-rgb), 0.6);
 }
 
@@ -1513,7 +1499,7 @@ body {
 .holo-content-area {
   flex: 1;
   padding: 2rem;
-  overflow-y: auto; /* Scroll si el texto es largo */
+  overflow-y: auto;
   position: relative;
 }
 
@@ -1543,7 +1529,7 @@ body {
 
 .home-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* Izquierda pequeña, derecha ancha */
+  grid-template-columns: 1fr 2fr;
   gap: 2rem;
   margin-bottom: 2rem;
 }
@@ -1567,7 +1553,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(100%) sepia(20%) hue-rotate(90deg); /* Filtro verdoso */
+  filter: grayscale(100%) sepia(20%) hue-rotate(90deg);
   opacity: 0.8;
 }
 
@@ -1652,13 +1638,13 @@ body {
 
 /* CAPA CONTENEDORA (El lienzo negro) */
 #video-layer {
-  position: fixed; /* Se pega a la pantalla, ignora el scroll */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999; /* Siempre encima de todo */
-  background: #000; /* Fondo negro por seguridad */
+  z-index: 9999;
+  background: #000;
   
   /* REGLA DE ORO: Ocultar lo que sobra para que no aparezca barra de scroll */
   overflow: hidden; 
@@ -1710,7 +1696,7 @@ body {
     font-family: 'Courier New', Courier, monospace;
     font-size: 1rem;
     font-weight: bold;
-    color: rgb(255, 0, 0); /* Cyan Neón */
+    color: rgb(255, 0, 0);
     letter-spacing: 4px;
     white-space: nowrap;
     
@@ -1739,5 +1725,5 @@ body {
 /* Cuando el JS lo mata al hacer touch */
 .cyber-swipe-hint.fade-out {
     opacity: 0 !important;
-    animation: none; /* Cortamos el parpadeo */
+    animation: none;
 }
