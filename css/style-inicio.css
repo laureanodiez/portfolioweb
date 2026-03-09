@@ -1,6 +1,16 @@
+:root {
+    --z-base: 10;
+    --z-content: 20;
+    --z-sticky: 100;
+    --z-overlay: 9000;
+    --z-fixed-ui: 9999;
+    --z-modal: 10000;
+    --z-splash: 99999;
+    --z-cursor: 100000;
+}
 
 #intro-layer {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: var(--z-fixed-ui);
     
     background: linear-gradient(45deg, #ff6600, #ffaa00, #ff3300, #ff8800);
     background-size: 400% 400%;
@@ -8,6 +18,8 @@
     
     overflow-y: auto; font-family: 'Times New Roman', Times, serif; color: black;
     overflow-x: hidden;
+
+    
 }
 @keyframes auroraBG { 
     0% { background-position: 0% 50%; } 
@@ -53,7 +65,7 @@
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 40%, rgba(0,0,0,0.1) 41%, rgba(0,0,0,0) 100%);
     pointer-events: none; 
-    z-index: 9998; 
+    z-index: var(--z-overlay);
     mix-blend-mode: overlay;
 }
 
@@ -62,7 +74,7 @@
     background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.1) 60%, rgba(255,255,255,0.4) 100%);
     border-radius: 50%; 
     box-shadow: inset 0 0 10px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.1);
-    pointer-events: none; z-index: 9997;
+    pointer-events: none; z-index: var(--z-overlay);
     animation: floatBubble ease-in infinite;
 }
 @keyframes floatBubble { 
@@ -103,7 +115,7 @@
     margin: 30px 0;
     position: sticky;
     top: 60px;
-    z-index: 9999;
+    z-index: var(--z-sticky);
 }
 .aero-btn {
     flex: 1; padding: 15px; font-size: 1.2rem; font-weight: bold; font-family: 'Arial', sans-serif; cursor: pointer;
@@ -123,7 +135,7 @@
 }
 
 #mini-winamp {
-    position: fixed; bottom: 20px; left: 20px; z-index: 10000;
+    position: fixed; bottom: 20px; left: 20px; z-index: var(--z-modal);
     background: #c0c0c0; border: 2px outset #fff; padding: 5px; width: 200px; box-shadow: 3px 3px 0 #000;
 }
 .winamp-title { background: #000080; color: white; padding: 2px 5px; font-family: 'Courier New', monospace; font-size: 0.8rem; margin-bottom: 5px; }
@@ -835,7 +847,7 @@ input, textarea, .raw-content {
     width: 12px; 
     height: 19px;
     pointer-events: none;
-    z-index: 9999;
+    z-index: var(--z-cursor);
     
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='19' viewBox='0 0 12 19'%3E%3Cpath fill='black' stroke='white' stroke-width='1' d='M1,1 L1,17 L5,13 L8,18 L10,17 L7,12 L11,12 Z' /%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -873,7 +885,7 @@ input, textarea, .raw-content {
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     font-weight: bold;
-    z-index: 10000; /* Z-index alto igual que el Winamp */
+    z-index: var(--z-modal);
     white-space: nowrap;
 }
 
@@ -1046,7 +1058,7 @@ input, textarea, .raw-content {
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    z-index: 99999;
+    z-index: var(--z-modal);
     align-items: center;
     justify-content: center;
 }
@@ -1243,7 +1255,7 @@ body {
 /* --- AERO SPLASH SCREEN (Bienvenida) --- */
 #mschf-splash {
     position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background: #ffffff; z-index: 100000;
+    background: #ffffff; z-index: var(--z-splash);
     display: flex; justify-content: center; align-items: center;
     overflow: hidden; perspective: 1000px;
     transition: opacity 0.5s ease;
@@ -1293,7 +1305,7 @@ body {
     width: 150vw; 
     min-width: 800px; 
     
-    z-index: 100005; 
+    z-index: var(--z-splash);
     pointer-events: none;
     filter: drop-shadow(0px -10px 40px rgba(0,0,0,0.8)); 
 }
@@ -1602,4 +1614,207 @@ body {
     transform: rotate(720deg) scale(1.15);
     opacity: 1;
     filter: blur(20px);
+}
+
+
+/* =========================================================
+   CLASES UTILITARIAS Y DE REFACTORIZACIÓN (FASE 1)
+   ========================================================= */
+
+/* Limpieza de la tipografía para móviles (Evita desborde horizontal) */
+.wordart-text {
+    font-size: clamp(2rem, 10vw, 4rem) !important;
+}
+
+/* Reemplazo accesible de la etiqueta <marquee> */
+.css-marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    width: 100%;
+}
+.css-marquee span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marqueeScroll 15s linear infinite;
+}
+@keyframes marqueeScroll {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+/* Marquee más rápido para los badges (reemplazo del segundo <marquee>) */
+.css-marquee-fast {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+}
+.css-marquee-fast .badge-strip {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marqueeScroll 10s linear infinite;
+}
+.css-marquee-fast:hover .badge-strip {
+    animation-play-state: paused;
+}
+
+/* Clases extraídas del HTML (Separación de responsabilidades) */
+.header-metadata { text-align: right; font-size: 0.8rem; }
+.mt-10 { margin-top: 10px; }
+.bio-avatar-container { float: left; margin-right: 15px; margin-bottom: 5px; border: 2px solid black; }
+.bio-avatar-img { width: 100px; height: 120px; display: block; object-fit: cover; }
+.clearfix { clear: both; }
+
+.table-header-cell { background: #e0e0e0; }
+.centered-gif { width: 200px; display: block; margin: 0 auto; }
+.underline-text { text-decoration: underline; }
+.quote-style { text-align: center; font-style: italic; border-top: 1px solid #000; padding-top: 10px; margin-top: 10px; }
+.centered-block { display: block; margin: 0 auto; }
+
+.visor-opacity { width: 80px; opacity: 0.5; }
+.text-xs { font-size: 0.7rem; }
+.highlight-yellow { background: yellow; display: inline-block; padding: 2px; }
+
+.system-alert { background: #000080; color: white; text-align: center; }
+.inverted-title { background: #fff; color: #000; }
+
+.runner-gif { margin-top: 40px; margin-bottom: -60px; width: 25%; display: block; }
+
+.lucky-wrapper { text-align: center; margin: 30px 0; }
+.btn-icon { width: 20px; vertical-align: middle; }
+.status-text { font-size: 0.8rem; margin-top: 5px; color: blue; }
+.lavalamp-gif { display: block; margin: 10px auto; }
+.hub-star { color: yellow; }
+.sub-text { font-size: 0.7rem; color: #888; }
+.footer-copy { margin-top: 20px; font-size: 0.8rem; position: relative; }
+.mailbox-gif { position: absolute;} 
+.mail-icon { width: 15px; vertical-align: middle; }
+
+
+@media (max-width: 650px) {
+    .tab-navigation {
+        flex-direction: row; 
+        padding: 5px;
+        gap: 5px;
+    }
+    .tab-navigation .win95-btn {
+        margin: 0;
+        padding: 10px 2px;
+        font-size: 0.75rem;
+        letter-spacing: -0.5px; 
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        word-wrap: break-word; 
+    }
+
+    .odometer {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        padding: 5px 10px;
+    }
+
+    .visitor-counter-wrapper {
+        width: 90%;
+        max-width: 350px;
+        padding: 10px;
+    }
+
+    .site-header img {
+        max-width: 90%;
+        height: auto;
+    }
+
+    /* --- FIX 2: ESCALADO DE TEXTOS Y AVATAR --- */
+    /* Reduce la fuente base para mejorar la legibilidad y estructura en pantallas chicas */
+    .raw-content, 
+    .philosophy-content p, 
+    .product-body p, 
+    .diary-content p, 
+    .ugly-table td {
+        font-size: 0.85rem; 
+        line-height: 1.5;
+    }
+    /* Achica la foto de perfil del Notepad */
+    .bio-avatar-img {
+        width: 75px;
+        height: 90px;
+    }
+    .bio-avatar-container {
+        margin-right: 10px;
+    }
+    /* Títulos secundarios ajustados */
+    .product-header h2 {
+        font-size: 1.4rem;
+    }
+
+    /* --- FIX 3: RECALCULO DE NUBES Y ESPACIOS --- */
+    /* Acerca las nubes al centro y amplía su porcentaje para cubrir los bordes al encoger la pantalla */
+    .heavenly-section {
+        padding: 80px 0;
+        margin-top: -60px;
+        margin-bottom: -60px;
+    }
+    .cloud-top {
+        top: -80px;
+        width: 350%; /* Compensa la pérdida de ancho en móviles */
+    }
+    .cloud-bottom {
+        bottom: -80px;
+        width: 400%;
+    }
+    .cloud-stage {
+        height: 300px; /* Reduce la altura total del escenario */
+    }
+    .hidden-card {
+        width: 250px; /* Tarjeta proporcional al nuevo escenario */
+        bottom: 30px;
+    }
+
+    /* --- FIX 4: CONTENEDOR DE OFERTA ROTO --- */
+    /* Evita el desborde lateral del título */
+    .catalog-title {
+        font-size: 1.3rem; 
+        padding: 5px 10px;
+        width: 90%; 
+        box-sizing: border-box;
+    }
+    /* Pasa los elementos de la oferta de fila a columna (uno debajo del otro) concentrados al medio */
+    .offer-layout {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    .out-of-stock-box {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    /* Fuerza al GIF de "Sales" a no superar el ancho de la caja */
+    .shop-wrapper .centered-block { 
+        max-width: 100%;
+        height: auto;
+    }
+    /* Achica el botón de "Iniciar Prueba Virtual" */
+    #start-virtual-btn {
+        font-size: 1.1rem;
+        padding: 12px 10px;
+    }
+
+    /* --- FIX 5: ESCALADO DEL RUNNER GIF --- */
+    /* Pasa del 25% (muy chico en móvil) a un tamaño visible y centrado */
+    .runner-gif {
+        width: 55%; 
+        margin: 20px auto -60px auto; 
+    }
+}
+
+.aero-bubble, 
+.pentagon-wrapper, 
+.hidden-card,
+.frutiger-flood::before {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }

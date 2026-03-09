@@ -1565,6 +1565,7 @@ body {
   background: rgb(var(--holo-rgb));
   box-shadow: 0 0 10px rgb(var(--holo-rgb));
   animation: scanAvatar 3s ease-in-out infinite;
+  will-change: top, opacity;
 }
 
 @keyframes scanAvatar {

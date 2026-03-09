@@ -2,282 +2,206 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=800">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Laureano Diez</title>
   <link rel="icon" type="image/png" href="assets/img/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@v0.163.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@v0.163.0/examples/jsm/"
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="css/style-inicio.css">
 </head>
 <body>
 
-  <link rel="stylesheet" href="css/style-inicio.css">
   <div id="intro-layer">
-    <div id="mini-winamp">
-            <div class="winamp-title">▶ MUSICPLAYER.EXE</div>
-            <button id="winamp-play" onclick="toggleBGM()">[ BGM PLAY / PAUSE ]</button>
+    
+    <div id="mini-winamp" class="reveal-item">
+        <div class="winamp-title">▶ MUSICPLAYER.EXE</div>
+        <button id="winamp-play" onclick="toggleBGM()">[ BGM PLAY / PAUSE ]</button>
     </div>
-    <div id="aero-widget" class="status-bar">
-            <div class="status-item">
-                <span id="live-time">00:00:00</span>
-            </div>
-            <div class="status-separator">|</div>
-            <div class="status-item">
-                <span id="live-date">...</span>
-            </div>
-            <div class="status-separator">|</div>
-            <div class="status-item">
-                <span id="weather-city">Detectando...</span>
-                <span id="weather-icon">...</span>
-                <span id="weather-temp">--°C</span>
-            </div>
+
+    <div id="aero-widget" class="status-bar reveal-item" aria-live="polite">
+        <div class="status-item"><span id="live-time">00:00:00</span></div>
+        <div class="status-separator">|</div>
+        <div class="status-item"><span id="live-date">...</span></div>
+        <div class="status-separator">|</div>
+        <div class="status-item">
+            <span id="weather-city">Detectando...</span>
+            <span id="weather-icon"></span>
+            <span id="weather-temp">--°C</span>
+        </div>
     </div>
     
-    <div id="mschf-splash">
-        <button id="giant-aero-btn">
+    <div id="mschf-splash" role="presentation">
+        <button id="giant-aero-btn" aria-label="Iniciar experiencia web">
             <span class="btn-text">EL INTERNET QUE NOS PROMETIERON</span>
-            <div class="glare"></div> </button>
+            <div class="glare"></div> 
+        </button>
         <div id="effect-layer"></div>
     </div>
 
-    <div class="aero-glass-overlay"></div>
-    <div class="intro-container reveal-item">
+    <div class="aero-glass-overlay" aria-hidden="true"></div>
+
+    <div class="intro-container">
       <div class="intro-shell">
 
-        <div class="intro-content-wrapper top-block">
+        <nav class="tab-navigation reveal-item" aria-label="Secciones del portafolio">
+            <button id="btn-soulpage" class="win95-btn active" onclick="switchTab('soulpage')" aria-selected="true">SOULPAGE BIO</button>
+            <button id="btn-soulcard" class="win95-btn" onclick="switchTab('soulcard')" aria-selected="false">SOULCARD PORTFOLIO</button>
+        </nav>
 
-            <div class="marquee-box reveal-item">
-                <marquee scrollamount="8" bgcolor="blue">
-                    HOLA  ///  HELLO  ///  OLÁ  ///  BONJOUR  ///  こんにちは  ///  你好  ///  CIAO  ///  HALLO  ///  안녕하세요  ///  ПРИВЕТ  ///  नमस्ते  ///  مرحبا  ///  ΓΕΙΑ ΣΑΣ  ///  שלום  ///  สวัสดี  ///  ALOHA  ///
-                </marquee>
+        <main class="intro-content-wrapper top-block reveal-item">
+
+            <div class="marquee-box">
+                <div class="css-marquee">
+                    <span>HOLA /// HELLO /// OLÁ /// BONJOUR /// こんにちは /// 你好 /// CIAO /// HALLO /// 안녕하세요 /// ПРИВЕТ /// नमस्ते /// مرحبا /// ΓΕΙΑ ΣΑΣ /// שלום /// สวัสดี /// ALOHA ///</span>
+                </div>
             </div>
 
-            <header class="site-header reveal-item">
-                <div style="text-align: right; font-size: 0.8rem;">Last Updated: 9/3/2026</div>
+            <header class="site-header">
+                <div class="header-metadata">Last Updated: 9/3/2026</div>
                 <h1 class="wordart-text">Laureano Diez</h1>
                 <p class="rainbow-text">stuffmaker</p>
                 <br>
-                <img src="assets/img/gifs/uc-1.gif" alt="working" style=" margin-top: 10px;">
-                <img src="assets/img/gifs/uc-3.gif" alt="working">
+                <img src="assets/img/gifs/uc-1.gif" alt="" class="mt-10">
+                <img src="assets/img/gifs/uc-3.gif" alt="">
             </header>
 
-            <div class="tab-navigation">
-                <button id="btn-soulpage" class="aero-btn active" onclick="switchTab('soulpage')">SOULPAGE BIO</button>
-                <button id="btn-soulcard" class="aero-btn" onclick="switchTab('soulcard')">SOULCARD PORTFOLIO</button>
-            </div>
-
-            <div class="blog-entry soulpage-only reveal-item">
+            <article class="blog-entry soulpage-only">
                 <div class="blog-title">
                     <span>Notepad.exe - readme.txt</span>
-                    <span>[X]</span>
+                    <span aria-hidden="true">[X]</span>
                 </div>
+                
                 <div class="raw-content">
-                    <div style="float: left; margin-right: 15px; margin-bottom: 5px; border: 2px solid black;">
-                        <img src="assets/img/bio.JPG" style="width: 100px; height: 120px; display: block;">
+                    <div class="bio-avatar-container">
+                        <img src="assets/img/bio.JPG" alt="Fotografía de Laureano Diez" class="bio-avatar-img">
                     </div>
                     
                     <p>Hola!!</p>
-                    <p>Soy <strong>Laureano Diez</strong>. Soy de Rosario, Argentina y  <span class="highlight">en este sitio comparto sobre mí y mis proyectos.</span> Vivo para crear, paso demasiado tiempo intentando traducir las ideas de mi cabeza a través del uso de las computadoras.</p>
+                    <p>Soy <strong>Laureano Diez</strong>. Soy de Rosario, Argentina y <span class="highlight">en este sitio comparto sobre mí y mis proyectos.</span> Vivo para crear, paso demasiado tiempo intentando traducir las ideas de mi cabeza a través del uso de las computadoras.</p>
                     <p>Me gusta la menta granizada, el pan de la gallega, el gatorade de uva (descontinuado) y programar cosas que no sirven para nada pero que se ven bien.</p>
-                    <br>
+                    <div class="clearfix"></div>
 
-                    <div class="social-sidebar">
-                        <a href="https://www.instagram.com/laureano_diez/" target="_blank" title="Instagram">
-                            <img src="assets/img/icons/ig.webp" alt="IG">
-                        </a>
-                        <a href="https://github.com/laureanodiez" target="_blank" title="GitHub">
-                            <img src="assets/img/icons/gh.png" alt="GH">
-                        </a>
-                        <a href="https://www.linkedin.com/in/laureanodiez/" target="_blank" title="LinkedIn">
-                            <img src="assets/img/icons/in.png" alt="IN">
-                        </a>
-                        <a href="https://letterboxd.com/lxx10/" target="_blank" title="Letterboxd">
-                            <img src="assets/img/icons/bxd.webp" alt="LB">
-                        </a>
-                        <a href="https://open.spotify.com/user/laureanodiez" target="_blank" title="Spotify">
-                            <img src="assets/img/icons/spotify.png" alt="SF">
-                        </a>
-                        <a href="https://www.duolingo.com/profile/LaureanoDiez" target="_blank" title="Duolingo">
-                            <img src="assets/img/icons/duo.png" alt="DUO">
-                        </a>
-                    </div>
+                    <aside class="social-sidebar" aria-label="Redes Sociales">
+                        <a href="https://www.instagram.com/laureano_diez/" target="_blank" rel="noopener noreferrer" title="Instagram"><img src="assets/img/icons/ig.webp" alt=""></a>
+                        <a href="https://github.com/laureanodiez" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="assets/img/icons/gh.png" alt=""></a>
+                        <a href="https://www.linkedin.com/in/laureanodiez/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><img src="assets/img/icons/in.png" alt=""></a>
+                        <a href="https://letterboxd.com/lxx10/" target="_blank" rel="noopener noreferrer" title="Letterboxd"><img src="assets/img/icons/bxd.webp" alt=""></a>
+                        <a href="https://open.spotify.com/user/laureanodiez" target="_blank" rel="noopener noreferrer" title="Spotify"><img src="assets/img/icons/spotify.png" alt=""></a>
+                        <a href="https://www.duolingo.com/profile/LaureanoDiez" target="_blank" rel="noopener noreferrer" title="Duolingo"><img src="assets/img/icons/duo.png" alt=""></a>
+                    </aside>
 
-                    <div class="soulpage-only">
+                    <section class="soulpage-only">
                         <p>Algunas de mis ~obras favoritas~:</p>
                         
-                        <button id="fav-toggle-btn" class="folder-trigger" type="button" onclick="toggleFavorites()">
-                            <span class="folder-icon">📁</span> [ CLICK PARA VER ]
+                        <button id="fav-toggle-btn" class="folder-trigger" type="button" onclick="toggleFavorites()" aria-expanded="false">
+                            <span class="folder-icon" aria-hidden="true">📁</span> [ CLICK PARA VER ]
                         </button>
 
                         <div id="fav-content" class="hidden-folder-content">
                             <div class="table-container">
-                                <table class="ugly-table">
-                                    <tr>
-                                        <td style="background: #e0e0e0;"><strong>Películas:</strong></td>
-                                    </tr>
+                                <table class="ugly-table" aria-label="Lista de obras favoritas">
+                                    <tr><td class="table-header-cell"><strong>Películas:</strong></td></tr>
                                     <tr>
                                         <td>
-                                            1. <a href="https://letterboxd.com/film/teen-beach-movie/" target="_blank">Teen Beach Movie</a><br>
-                                            2. <a href="https://letterboxd.com/film/almost-famous/" target="_blank">Almost Famous</a><br>
-                                            3. <a href="https://letterboxd.com/film/marty-supreme/" target="_blank">Marty Supreme</a>
+                                            1. <a href="https://letterboxd.com/film/teen-beach-movie/" target="_blank" rel="noopener">Teen Beach Movie</a><br>
+                                            2. <a href="https://letterboxd.com/film/almost-famous/" target="_blank" rel="noopener">Almost Famous</a><br>
+                                            3. <a href="https://letterboxd.com/film/marty-supreme/" target="_blank" rel="noopener">Marty Supreme</a>
                                         </td>
                                     </tr>
-                                    
-                                    <tr>
-                                        <td style="background: #e0e0e0;"><strong>Álbumes:</strong></td>
-                                    </tr>
+                                    <tr><td class="table-header-cell"><strong>Álbumes:</strong></td></tr>
                                     <tr>
                                         <td>
-                                            >> <a href="https://www.youtube.com/watch?v=5QqXXjDKNP4&list=OLAK5uy_k1mcSWx0aLWGsylsyyXaprA2arXKF-o0I&index=1" target="_blank" rel="noopener noreferrer">Tranquility Base Hotel & Casino - Arctic Monkeys</a><br>
-                                            >> <a href="https://www.youtube.com/watch?v=jTrCFsjKix0&list=PLlrpE08Vg_Evmq41-WQNjnkt0YMoRl3cZ&index=1" target="_blank" rel="noopener noreferrer">Blue Album (1967-1970) - The Beatles</a><br>
-                                            >> <a href="https://www.youtube.com/watch?v=-LeE86jZEXo&list=PLrs2g03ILsleCw-Jnr_bdBoR_VD_ETkEb&index=1" target="_blank" rel="noopener noreferrer">Pet Sounds - The Beach Boys</a>
+                                            >> <a href="https://www.youtube.com/watch?v=5QqXXjDKNP4" target="_blank" rel="noopener">Tranquility Base Hotel & Casino - Arctic Monkeys</a><br>
+                                            >> <a href="https://www.youtube.com/watch?v=jTrCFsjKix0" target="_blank" rel="noopener">Blue Album (1967-1970) - The Beatles</a><br>
+                                            >> <a href="https://www.youtube.com/watch?v=-LeE86jZEXo" target="_blank" rel="noopener">Pet Sounds - The Beach Boys</a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td style="background: #e0e0e0;"><strong>Juegos:</strong></td>
-                                    </tr>
+                                    <tr><td class="table-header-cell"><strong>Juegos:</strong></td></tr>
                                     <tr>
                                         <td>
-                                            >> <a href="https://store.steampowered.com/app/22380/Fallout_New_Vegas/" target="_blank" rel="noopener noreferrer">Fallout: New Vegas</a><br>
-                                            >> <a href="https://store.steampowered.com/app/632470/Disco_Elysium__The_Final_Cut/" target="_blank" rel="noopener noreferrer">Disco Elysium</a><br>
-                                            >> <a href="https://www.cpjourney.net/" target="_blank" rel="noopener noreferrer">Club Penguin</a>
+                                            >> <a href="https://store.steampowered.com/app/22380/Fallout_New_Vegas/" target="_blank" rel="noopener">Fallout: New Vegas</a><br>
+                                            >> <a href="https://store.steampowered.com/app/632470/Disco_Elysium__The_Final_Cut/" target="_blank" rel="noopener">Disco Elysium</a><br>
+                                            >> <a href="https://www.cpjourney.net/" target="_blank" rel="noopener">Club Penguin</a>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
-                    
-                    </div>
+                    </section>
                 </div>
-            </div>
+            </article>
 
-            <div class="text-block-extra reveal-item">
+            <section class="text-block-extra">
                 <div class="soulpage-only">
-                    <img src="assets/img/gifs/pyramid.gif" alt="pyramid" style="width: 200px; display: block; margin-left: auto; margin-right: auto;">
+                    <img src="assets/img/gifs/pyramid.gif" alt="Pirámide 3D giratoria" class="centered-gif">
 
-                    <div class="retro-diary-entry">
-                        <div class="diary-header">
-                            <span class="blink-cursor">_</span> SYSTEM_LOG: USER_THOUGHTS.TXT
-                        </div>
+                    <article class="retro-diary-entry">
+                        <header class="diary-header">
+                            <span class="blink-cursor" aria-hidden="true">_</span> SYSTEM_LOG: USER_THOUGHTS.TXT
+                        </header>
                         <div class="diary-content">
                             <p class="comment-style">// Proyectos y mi proceso creativo:</p>
-                            <p>
-                                Siempre he sentido una fascinación por cómo la tecnología puede actuar como un puente entre la imaginación abstracta y la realidad tangible. 
-                                Creo que encuentro en la acción de expresarme creativamente a aquello que la gente dice buscar toda su vida, especialmente a través de la música.
-                            </p>
-                            <p>
-                                Aplico mi punto de vista creativo a absolutamente todo lo que pueda tocar, lo que no significa que siempre salga bien! Pero el resultado siempre va a ser una expresión de mí.
-                                <br><br>
+                            <p>Siempre he sentido una fascinación por cómo la tecnología puede actuar como un puente entre la imaginación abstracta y la realidad tangible. Creo que encuentro en la acción de expresarme creativamente a aquello que la gente dice buscar toda su vida, especialmente a través de la música.</p>
+                            <p>Aplico mi punto de vista creativo a absolutamente todo lo que pueda tocar, lo que no significa que siempre salga bien! Pero el resultado siempre va a ser una expresión de mí.<br><br>
                                 <span class="highlight-text">Una no tangible, al menos.</span>
                             </p>
-                            <p>
-                                Si bien muchos logros son materiales, físicos, palpables a través de productos finales, como lo puede ser un disco con su caja en el caso de la música, o una pintura o escultura en el caso del arte plástico, las expresiones artísticas digitales quedan, muchas veces, exentas de esta posibilidad de "tocar" una obra de la que estás ciertamente orgulloso. 
-                                En un mundo donde todo tiende a ser efímero y espontáneo, yo —y cada vez más gente que escapa del contenido generado por IA— prefiero más... <span style="text-decoration: underline;">lo físico (ver SOULCARD)</span>.
-                            </p>
+                            <p>Si bien muchos logros son materiales, físicos, palpables a través de productos finales, como lo puede ser un disco con su caja en el caso de la música, o una pintura o escultura en el caso del arte plástico, las expresiones artísticas digitales quedan, muchas veces, exentas de esta posibilidad de "tocar" una obra de la que estás ciertamente orgulloso. En un mundo donde todo tiende a ser efímero y espontáneo, yo —y cada vez más gente que escapa del contenido generado por IA— prefiero más... <span class="underline-text">lo físico (ver SOULCARD)</span>.</p>
                         </div>
-                    </div>
+                    </article>
                 </div>
 
-                <div class="aero-philosophy-card soulpage-only">
-                    <div class="pentagon-wrapper">
+                <aside class="aero-philosophy-card soulpage-only">
+                    <div class="pentagon-wrapper" aria-hidden="true">
                         <div class="css-pentagon"></div>
                         <div class="pentagon-glow"></div>
                     </div>
                     <div class="philosophy-content">
                         <h3 class="philosophy-title">La Filosofía del Pentágono</h3>
-                        <p>
-                            La naturaleza ama al <strong>hexágono</strong>. Es la figura funcional por excelencia, matemáticamente perfecta y la base de innumerables estructuras químicas esenciales. 
-                        </p>
-                        <p>
-                            El pentágono, por otro lado, es una figura que no es perfecta, pero que en su imperfección esconde mucho valor y potencia: tiene usos funcionales y forma parte del paisaje natural, como en las flores! Pero, incluso en sus valores, está lejos (por una arista) de representar una figura perfecta.
-                        </p>
-                        <p>
-                            Por eso, yo elijo al <strong>pentágono</strong>. 
-                        </p>
-                        <p>
-                            Identifico mis ideas con el pentágono porque todos somos un poco un pentágono, nunca vamos a alcanzar la perfección del hexágono, <em>y eso <span style="text-decoration: underline;">está bien!</span></em> Es en esa asimetría donde reside nuestra verdadera capacidad de ser humanos.
-                        </p>
-                        
+                        <p>La naturaleza ama al <strong>hexágono</strong>. Es la figura funcional por excelencia, matemáticamente perfecta y la base de innumerables estructuras químicas esenciales.</p>
+                        <p>El pentágono, por otro lado, es una figura que no es perfecta, pero que en su imperfección esconde mucho valor y potencia: tiene usos funcionales y forma parte del paisaje natural, como en las flores! Pero, incluso en sus valores, está lejos (por una arista) de representar una figura perfecta.</p>
+                        <p>Por eso, yo elijo al <strong>pentágono</strong>.</p>
+                        <p>Identifico mis ideas con el pentágono porque todos somos un poco un pentágono, nunca vamos a alcanzar la perfección del hexágono, <em>y eso <span class="underline-text">está bien!</span></em> Es en esa asimetría donde reside nuestra verdadera capacidad de ser humanos.</p>
                     </div>
-                </div>
+                </aside>
                 
-
-                <div class="soulcard-only" style="display: none;">
-                    <div class="glitch-separator">
-                        <hr>
-                    </div>
+                <article class="soulcard-only" style="display: none;">
+                    <div class="glitch-separator" aria-hidden="true"><hr></div>
 
                     <div class="product-ad-container">
-                        <div class="product-header">
+                        <header class="product-header">
                             <h2>SOUL CARD<span class="tm">©</span></h2>
                             <span class="version-tag">v1.0 (Physical Release)</span>
-                        </div>
+                        </header>
 
                         <div class="product-body">
-                            <p>
-                                Uno al presentarse formalmente, estilaba usar una tarjeta de negocios. Elegante, empoderante, pero antiguo. 
-                                Es un producto que parecía haber muerto a manos de las redes sociales. Pero, <strong>como todo vuelve...</strong>
-                            </p>
-                            
-                            <p>
-                                Imaginate que el trabajo de toda tu vida sea accesible desde un mismo punto, con respaldo físico, uno que ya todos conocen, pero con una funcionalidad desconocida, desaprovechada.
-                                La <strong>"Soul Card™"</strong> es un artefacto digital diseñado para contener todas las facetas creativas de una persona en un solo objeto portable. 
-                                Es el intento definitivo de organizar el caos creativo en un formato de bolsillo.
-                            </p>
+                            <p>Uno al presentarse formalmente, estilaba usar una tarjeta de negocios. Elegante, empoderante, pero antiguo. Es un producto que parecía haber muerto a manos de las redes sociales. Pero, <strong>como todo vuelve...</strong></p>
+                            <p>Imaginate que el trabajo de toda tu vida sea accesible desde un mismo punto, con respaldo físico, uno que ya todos conocen, pero con una funcionalidad desconocida, desaprovechada. La <strong>"Soul Card™"</strong> es un artefacto digital diseñado para contener todas las facetas creativas de una persona en un solo objeto portable. Es el intento definitivo de organizar el caos creativo en un formato de bolsillo.</p>
 
                             <div class="slogan-box">
                                 <div class="slogan-top">FÁCIL. RÁPIDA. INTUITIVA. ATRACTIVA.</div>
                                 <div class="slogan-main">MÁS QUE UN PORTFOLIO</div>
-                                <div class="slogan-bottom">PERSONALIZABLE &bull; PORTABLE &bull; ETERNA</div>
+                                <div class="slogan-bottom">PERSONALIZABLE • PORTABLE • ETERNA</div>
                             </div>
 
-                            <p>
-                                Todo proyecto, cualquier desarrollo digital del que haya participado o liderado, en un sólo lugar.
-                                Transferís todos tus proyectos a tu <strong>SOULCARD©</strong> y podés comenzar a organizarlo y decorarlo a tu gusto, con infinitas opciones. 
-                            </p>
-                            <p style="text-align: center; font-style: italic; border-top: 1px solid #000; padding-top: 10px; margin-top: 10px;">
-                                "Al insertar tu SOULCARD al visor especial <strong>SOULVISION</strong> vas a poder experimentar cada proyecto en su integridad, como nunca antes. Tu creatividad es el límite."
-                            </p>
-                            
+                            <p>Todo proyecto, cualquier desarrollo digital del que haya participado o liderado, en un sólo lugar. Transferís todos tus proyectos a tu <strong>SOULCARD©</strong> y podés comenzar a organizarlo y decorarlo a tu gusto, con infinitas opciones.</p>
+                            <p class="quote-style">"Al insertar tu SOULCARD al visor especial <strong>SOULVISION</strong> vas a poder experimentar cada proyecto en su integridad, como nunca antes. Tu creatividad es el límite."</p>
                         </div>
-                        <img src="assets/img/gifs/cctv.gif" alt="cctv" style="display: block; margin: 0 auto;">  
+                        <img src="assets/img/gifs/cctv.gif" alt="Animación de circuito cerrado" class="centered-block">  
                     </div>
-                </div>
-            </div>
-
-            
-
-
-
-        </div>
+                </article>
+            </section>
+        </main>
       </div>
 
-
-    <div class="heavenly-section soulcard-only" id="heaven-trigger" style="display: none;">
-    
-      <img src="assets/img/cloud base.png" class="cloud-floating cloud-top" alt="Nube Arriba">
-      
-      <img src="assets/img/cloud base.png" class="cloud-floating cloud-bottom" alt="Nube Abajo">
-      
-
-
-      <h2 class="mystic-title">THE ULTIMATE SOUL-UTION</h2>
+      <section class="heavenly-section soulcard-only" id="heaven-trigger" style="display: none;">
+        <img src="assets/img/cloud base.png" class="cloud-floating cloud-top" alt="" aria-hidden="true">
+        <img src="assets/img/cloud base.png" class="cloud-floating cloud-bottom" alt="" aria-hidden="true">
+        
+        <h2 class="mystic-title">THE ULTIMATE SOUL-UTION</h2>
 
         <div class="cloud-stage">
-
-          <img src="assets/img/card00.png" class="hidden-card" alt="SoulCard">  
-          <img src="assets/img/cloud base 3.png" class="cloud-halo" alt="Nube Fondo">
-            
-           <!-- posibles efectos    <img src="assets/img/sparkle.gif" class="sparkle s1">
-            <img src="assets/img/sparkle.gif" class="sparkle s2">-->
+          <img src="assets/img/card00.png" class="hidden-card" alt="Renderizado 3D de la SoulCard">  
+          <img src="assets/img/cloud base 3.png" class="cloud-halo" alt="" aria-hidden="true">
         </div>
 
         <div class="card-story-box">
@@ -287,86 +211,78 @@
             </div>
             <p class="story-small">Todos los proyectos de tu vida, en un solo lugar.</p>
         </div>
+      </section>
 
-      </div>
-
-
-      <div class="intro-content-wrapper shop-wrapper bottom-block soulcard-only" style="display: none;">
-        <div class="cloud-border-top"></div>
+      <section class="intro-content-wrapper shop-wrapper bottom-block soulcard-only" style="display: none;">
+        <div class="cloud-border-top" aria-hidden="true"></div>
         <div class="catalog-section">
-            <div class="catalog-title">★ OFERTA IMPERDIBLE ★</div>
+            <h3 class="catalog-title">★ OFERTA IMPERDIBLE ★</h3>
 
             <div class="offer-layout">
                 <div class="out-of-stock-box">
                     <p class="blink-red">⚠️ VISOR-X AGOTADO</p>
-                    <img src="assets/img/visor-preview.png" style="width: 80px; opacity: 0.5;">
-                    <p style="font-size: 0.7rem;">(Intente buscar en eBay)</p>
+                    <img src="assets/img/visor-preview.png" alt="" class="visor-opacity">
+                    <p class="text-xs">(Intente buscar en eBay)</p>
                 </div>
-                <img src="assets/img/gifs/sales.gif" alt="sales" style=" display: block; margin: 0 auto;">
+                <img src="assets/img/gifs/sales.gif" alt="Señal de oferta animada" class="centered-block">
 
                 <div class="sales-pitch">
                     <p><strong>PACK COMBO: SOUL CARD™ + VISOR</strong></p>
                     <p>Lamentablemente no tenemos stock físico. Pero...</p>
-                    <p style="background: yellow; display: inline-block; padding: 2px;">HEMOS HABILITADO UNA PRUEBA DE SOFTWARE.</p>
+                    <p class="highlight-yellow">HEMOS HABILITADO UNA PRUEBA DE SOFTWARE.</p>
                 </div>
             </div>
         </div>
 
-        <div class="blog-entry" style="background: #000080; color: white; text-align: center;">
-            <div class="blog-title" style="background: #fff; color: #000;">
+        <article class="blog-entry system-alert">
+            <header class="blog-title inverted-title">
                 <span>System_Alert</span>
-            </div>
+            </header>
             <p>HAGA CLICK ABAJO PARA INICIAR LA SIMULACIÓN.</p>
-            
-            <button id="start-virtual-btn" href="/portfolio.html">
+            <button id="start-virtual-btn" href="/portfolio.html" aria-label="Iniciar portafolio virtual">
                 [ INICIAR PRUEBA VIRTUAL ]
             </button>
-        </div>
-      </div>
+        </article>
+      </section>
       
-      <img src="assets/img/gifs/run.gif" alt="working" style="margin-top: 40px; margin-bottom: -60px; width: 25%;display: block;">
+      <img src="assets/img/gifs/run.gif" alt="" class="runner-gif">
       
-      <div class="intro-content-wrapper footer-block">
-        <div class="guestbook-section">
-            <div class="guestbook-header">
-                <span class="blink-red">●</span> LIVE GUESTBOOK
-            </div>
+      <footer class="intro-content-wrapper footer-block">
+        <section class="guestbook-section">
+            <header class="guestbook-header">
+                <span class="blink-red" aria-hidden="true">●</span> LIVE GUESTBOOK
+            </header>
             <div id="guestbook-embed" class="guestbook-frame">
-                <iframe src="https://www3.cbox.ws/box/?boxid=3552250&boxtag=l9ImTi" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>	
+                <iframe src="https://www3.cbox.ws/box/?boxid=3552250&boxtag=l9ImTi" width="100%" height="450" title="Caja de comentarios en vivo" frameborder="0" scrolling="auto"></iframe>	
             </div>
-        </div>
+        </section>
 
-        <div class="lucky-wrapper" style="text-align: center; margin: 30px 0;">
+        <section class="lucky-wrapper">
             <button id="lucky-btn" class="win95-btn" onclick="spinRoulette()">
-                <img src="assets/img/dice.png" style="width: 20px; vertical-align: middle;"> 
+                <img src="assets/img/dice.png" alt="" class="btn-icon"> 
                 I'M FEELING LUCKY
             </button>
-            <div id="lucky-status" style="font-size: 0.8rem; margin-top: 5px; color: blue;"></div>
-            <img src="assets/img/gifs/lavalamp.gif" alt="working" style="">
+            <div id="lucky-status" class="status-text" aria-live="assertive"></div>
+            <img src="assets/img/gifs/lavalamp.gif" alt="" class="lavalamp-gif">
+        </section>
 
-        </div>
-
-        <div id="chaos-modal" class="modal-overlay">
+        <div id="chaos-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chaos-title">
             <div class="win95-window">
-                <div class="window-header">
+                <header class="window-header">
                     <span id="chaos-title">System32.exe</span>
-                    <button class="close-btn" onclick="closeChaos()">X</button>
-                </div>
+                    <button class="close-btn" onclick="closeChaos()" aria-label="Cerrar ventana">X</button>
+                </header>
                 <div class="window-body">
-                    <div id="chaos-content">
-                        </div>
+                    <div id="chaos-content"></div>
                 </div>
             </div>
         </div>
 
         <div class="chaos-footer">
-            
             <hr class="retro-hr">
-
             <div class="ring-container">
                 <div class="ring-title">🏆 MEMBER OF THE RING OF CHAOS 🏆</div>
-                
-                <marquee scrollamount="5" scrolldelay="100" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+                <div class="css-marquee-fast">
                     <div class="badge-strip">
                         <img src="https://cyber.dabamos.de/88x31/netscape4.gif" alt="Netscape Now">
                         <img src="https://cyber.dabamos.de/88x31/ie_sucks.gif" alt="IE Sucks">
@@ -379,57 +295,51 @@
                         <img src="https://cyber.dabamos.de/88x31/piracy.gif" alt="Piracy is Crime">
                         <img src="https://cyber.dabamos.de/88x31/construct.gif" alt="Work in Progress">
                     </div>
-                </marquee>
-
-                <div class="ring-nav">
+                </div>
+                <nav class="ring-nav" aria-label="Navegación Web Ring">
                     <a href="https://cameronsworld.net/" target="_blank">[ &lt;&lt; PREV ]</a>
-                    <span style="color:yellow;">★ THE CHAOS HUB ★</span>
+                    <span class="hub-star">★ THE CHAOS HUB ★</span>
                     <a href="https://theuselessweb.com/" target="_blank">[ NEXT &gt;&gt; ]</a>
                     <br>
                     <a href="#" onclick="alert('You just joined! (Do you have alzheimer?)'); return false;">[ JOIN RING ]</a>
                     <a href="#" onclick="alert('no'); return false;">[ REPORT ]</a>
-                </div>
+                </nav>
             </div>
 
             <div class="visitor-counter-wrapper">
                 <p>YOU ARE VISITOR NUMBER:</p>
-                <div id="hit-counter" class="odometer">0000014832</div>
-                <p style="font-size: 0.7rem; color: #888;">(Since 2002)</p>
+                <div id="hit-counter" class="odometer" aria-live="polite">0000014832</div>
+                <p class="sub-text">(Since 2002)</p>
             </div>
 
-            <div style="margin-top: 20px; font-size: 0.8rem;">
+            <div class="footer-copy">
                 COPYRIGHT © 2002-2026 LAUREANO DIEZ.<br>
                 ALL RIGHTS RESERVED. DO NOT STEAL MY HTML.<br>
-                <img src="assets/img/gifs/mailbox.gif" alt="working" style="position: absolute;">
-
-                <img src="assets/img/icons/mail.png" style="width:15px; vertical-align:middle;"> <a href="mailto:contactolaureanodiez@gmail.com">EMAIL ME</a>
-              </div>
-
+                <img src="assets/img/gifs/mailbox.gif" alt="" class="mailbox-gif">
+                <img src="assets/img/icons/mail.png" alt="" class="mail-icon"> <a href="mailto:contactolaureanodiez@gmail.com">EMAIL ME</a>
+            </div>
             <br><br>
         </div>
-      </div>
+      </footer>
 
-      
-
-        <audio id="sfx-cd" src="assets/sounds/lift.mp3"></audio>
-        <audio id="sfx-pop" src="assets/sounds/balloon-pop.mp3"></audio>
-        <audio id="sfx-water" src="assets/sounds/water-flood.mp3"></audio>
-        <audio id="sfx-error" src="assets/sounds/win-error.mp3"></audio>
-        <audio id="sfx-shatter" src="assets/sounds/glass-shatter.mp3"></audio>
-        <audio id="bgm-audio" src="assets/sounds/frutiger2.wav" loop></audio>
-        <audio id="hover-sfx" src="assets/sounds/hover-liquid.mp3"></audio>
-        <audio id="click-sfx" src="assets/sounds/click-glass.mp3"></audio>
-        <audio id="bubble-sfx" src="assets/sounds/bubble-pop.mp3"></audio>
+      <audio id="sfx-cd" src="assets/sounds/lift.mp3" preload="auto"></audio>
+      <audio id="sfx-pop" src="assets/sounds/balloon-pop.mp3" preload="auto"></audio>
+      <audio id="sfx-water" src="assets/sounds/water-flood.mp3" preload="auto"></audio>
+      <audio id="sfx-error" src="assets/sounds/win-error.mp3" preload="auto"></audio>
+      <audio id="sfx-shatter" src="assets/sounds/glass-shatter.mp3" preload="auto"></audio>
+      <audio id="bgm-audio" src="assets/sounds/frutiger2.wav" loop preload="auto"></audio>
+      <audio id="hover-sfx" src="assets/sounds/hover-liquid.mp3" preload="auto"></audio>
+      <audio id="click-sfx" src="assets/sounds/click-glass.mp3" preload="auto"></audio>
+      <audio id="bubble-sfx" src="assets/sounds/bubble-pop.mp3" preload="auto"></audio>
 
     </div>
-</div>
+  </div>
 
-  <div class="crt-container">
+  <div class="crt-container" aria-hidden="true">
     <div class="scanlines"></div>
     <div class="glow"></div>
   </div>
 
   <script src="js/main.js"></script>
-
 </body>
 </html>
