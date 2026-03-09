@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1024">
+  <meta name="viewport" content="width=800">
   <title>Laureano Diez</title>
   <link rel="icon" type="image/png" href="assets/img/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Geo&display=swap" rel="stylesheet">
@@ -21,24 +21,11 @@
 
   <link rel="stylesheet" href="css/style-inicio.css">
   <div id="intro-layer">
-    <div id="intro-layer">
     <div id="mini-winamp">
-            <div class="winamp-title">▶ LAUREANO_AMP v1.0</div>
+            <div class="winamp-title">▶ MUSICPLAYER.EXE</div>
             <button id="winamp-play" onclick="toggleBGM()">[ BGM PLAY / PAUSE ]</button>
     </div>
-    
-    <div id="mschf-splash">
-        <button id="giant-aero-btn">
-            <span class="btn-text">EL INTERNET QUE NOS PROMETIERON</span>
-            <div class="glare"></div> </button>
-        <div id="effect-layer"></div>
-    </div>
-
-    <div class="aero-glass-overlay"></div>
-    <div class="intro-container reveal-item">
-      <div class="intro-shell">
-
-        <div id="aero-widget reveal-item" class="status-bar">
+    <div id="aero-widget" class="status-bar">
             <div class="status-item">
                 <span id="live-time">00:00:00</span>
             </div>
@@ -52,7 +39,18 @@
                 <span id="weather-icon">...</span>
                 <span id="weather-temp">--°C</span>
             </div>
-        </div>
+    </div>
+    
+    <div id="mschf-splash">
+        <button id="giant-aero-btn">
+            <span class="btn-text">EL INTERNET QUE NOS PROMETIERON</span>
+            <div class="glare"></div> </button>
+        <div id="effect-layer"></div>
+    </div>
+
+    <div class="aero-glass-overlay"></div>
+    <div class="intro-container reveal-item">
+      <div class="intro-shell">
 
         <div class="intro-content-wrapper top-block">
 
@@ -63,7 +61,7 @@
             </div>
 
             <header class="site-header reveal-item">
-                <div style="text-align: right; font-size: 0.8rem;">Last Updated: 7/3/2026</div>
+                <div style="text-align: right; font-size: 0.8rem;">Last Updated: 9/3/2026</div>
                 <h1 class="wordart-text">Laureano Diez</h1>
                 <p class="rainbow-text">stuffmaker</p>
                 <br>
@@ -71,7 +69,7 @@
                 <img src="assets/img/gifs/uc-3.gif" alt="working">
             </header>
 
-            <div class="tab-navigation reveal-item">
+            <div class="tab-navigation">
                 <button id="btn-soulpage" class="aero-btn active" onclick="switchTab('soulpage')">SOULPAGE BIO</button>
                 <button id="btn-soulcard" class="aero-btn" onclick="switchTab('soulcard')">SOULCARD PORTFOLIO</button>
             </div>
@@ -418,7 +416,7 @@
         <audio id="sfx-water" src="assets/sounds/water-flood.mp3"></audio>
         <audio id="sfx-error" src="assets/sounds/win-error.mp3"></audio>
         <audio id="sfx-shatter" src="assets/sounds/glass-shatter.mp3"></audio>
-        <audio id="bgm-audio" src="assets/sounds/bgm.wav" loop></audio>
+        <audio id="bgm-audio" src="assets/sounds/frutiger2.wav" loop></audio>
         <audio id="hover-sfx" src="assets/sounds/hover-liquid.mp3"></audio>
         <audio id="click-sfx" src="assets/sounds/click-glass.mp3"></audio>
         <audio id="bubble-sfx" src="assets/sounds/bubble-pop.mp3"></audio>

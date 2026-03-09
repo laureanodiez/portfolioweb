@@ -7,6 +7,7 @@
     animation: auroraBG 15s ease infinite;
     
     overflow-y: auto; font-family: 'Times New Roman', Times, serif; color: black;
+    overflow-x: hidden;
 }
 @keyframes auroraBG { 
     0% { background-position: 0% 50%; } 
@@ -20,7 +21,7 @@
     flex-direction: column;
     align-items: center;
     padding: 40px 20px;
-    overflow-x: hidden;
+    /*overflow-x: hidden;*/
     margin-left: 0;
 }
 
@@ -92,8 +93,17 @@
 @keyframes rainbowAnim { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
 .tab-navigation {
-    display: flex; justify-content: space-between; gap: 20px;
-    background: transparent; border: none; box-shadow: none; padding: 0; margin: 30px 0;
+    display: flex; 
+    justify-content: space-between; 
+    gap: 20px;
+    background: transparent; 
+    border: none; 
+    box-shadow: none; 
+    padding: 0; 
+    margin: 30px 0;
+    position: sticky;
+    top: 60px;
+    z-index: 9999;
 }
 .aero-btn {
     flex: 1; padding: 15px; font-size: 1.2rem; font-weight: bold; font-family: 'Arial', sans-serif; cursor: pointer;
@@ -842,19 +852,17 @@ input, textarea, .raw-content {
 
 
 
-/* --- WIDGET DE ESTADO (CLIMA Y HORA) --- */
 .status-bar {
-    position: absolute;
-    /* Ajustamos el TOP para que monte sobre el borde de la caja amarilla */
-    /* Como es hijo del shell, 0 es el inicio. -20px lo sube un poco para el efecto "pestaña" */
-    top: -20px; 
+    position: fixed; 
+    top: 20px; 
     
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: max-content;
     
     background: #c0c0c0;
     border: 2px outset #fff;
-    /* Sombra importante para que se destaque sobre el fondo naranja/nubes */
     box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
     
     display: flex;
@@ -865,11 +873,10 @@ input, textarea, .raw-content {
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     font-weight: bold;
-    
-    /* Z-INDEX SUPREMO: Para que nada lo tape (ni la máscara ni las nubes) */
-    z-index: 1000; 
+    z-index: 10000; /* Z-index alto igual que el Winamp */
     white-space: nowrap;
 }
+
 
 @media (max-width: 600px) {
     .status-bar {
@@ -885,12 +892,8 @@ input, textarea, .raw-content {
 /* --- EFECTOS ATMOSFÉRICOS (Se aplican con JS al contenedor principal) --- */
 /* Base del widget (aseguramos posición para que el aura se centre) */
 #aero-widget {
-    position: absolute;
-    /* Ajusta este top si sientes que flota muy arriba o abajo */
-    top: -25px; 
     z-index: 1000;
-    transition: all 0.5s ease;
-    /* Importante: para que el aura salga desde atrás de ESTE elemento */
+    transition: background-color 0.5s, border-color 0.5s, color 0.5s;
     transform-style: preserve-3d; 
 }
 
@@ -1230,6 +1233,7 @@ html.no-scroll, body.no-scroll {
 /* Aseguramos que el fondo detrás de la intro sea negro para que el apagado se vea real */
 body {
     background-color: #000; 
+    overflow-x: hidden;
 }
 
 

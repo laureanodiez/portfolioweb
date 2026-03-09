@@ -1160,6 +1160,10 @@ window.switchTab = function(tabId) {
         pageEls.forEach(el => el.style.display = 'none');
         cardEls.forEach(el => el.style.display = ''); 
     }
+    const scrollContainer = document.getElementById('intro-layer');
+    if (scrollContainer) {
+        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 };
 
 
