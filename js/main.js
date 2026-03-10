@@ -742,13 +742,8 @@
     // 3. UTILIDADES GLOBALES (API PÚBLICA Y EFECTOS)
     // =========================================================================
 
-    // Optimización rAF para la estela del ratón (Performance)
+    // Optimización rAF para la estela del ratón con Estados Dinámicos
     function initMouseTrail() {
-        const cursorImages = {
-            default: 'assets/img/cursors/Normal\ Select.cur',
-            pointer: 'assets/img/cursors/Link\ Select.cur',
-            text:    'assets/img/cursors/Text\ Select.cur'
-        };
         let isDrawing = false;
         let lastEvent = null;
 
@@ -765,18 +760,20 @@
 
         function drawTrail(e) {
             const hoveredElement = e.target;
-            let currentCursor = cursorImages.default;
+            let cursorClass = 'trail-default'; 
 
-            if (hoveredElement.matches('a, button, .folder-trigger, .nav-btn, .social-sidebar a') || 
-                hoveredElement.closest('a') || hoveredElement.closest('button')) {
-                currentCursor = cursorImages.pointer;
-            } else if (hoveredElement.matches('input, textarea, p, span')) {
-                 currentCursor = cursorImages.text; 
+            const computedCursor = window.getComputedStyle(hoveredElement).cursor;
+
+            if (computedCursor.includes('pointer') || hoveredElement.closest('a, button, .folder-trigger, .nav-btn')) {
+                cursorClass = 'trail-pointer'; 
+            } 
+            else if (computedCursor.includes('text') || hoveredElement.closest('.raw-content, p, h1, h2, h3, li')) {
+                cursorClass = 'trail-text'; 
             }
 
             const trail = document.createElement('div');
-            trail.className = 'mouse-trail';
-            trail.style.backgroundImage = `url('${currentCursor}')`;
+            trail.className = 'mouse-trail ' + cursorClass;
+            
             trail.style.left = (e.pageX - 2) + 'px';
             trail.style.top = (e.pageY - 2) + 'px';
             document.body.appendChild(trail);
