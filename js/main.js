@@ -140,12 +140,28 @@
                             }, 1800); 
                             break;
 
-                        case 3: // VIRUS MSCHF
+                        case 3: // VIRUS MSCHF (Arquitectura DOM Clonning)
                             mainBtn.style.visibility = 'hidden';
-                            const totalWindows = 350;
+                            
+                            const isMobileDevice = window.innerWidth <= 650;
+                            const totalWindows = isMobileDevice ? 40 : 150; 
                             const windowsArray = [];
                             let currentX = 0, currentY = 0;
-                            
+
+                            const winTemplate = document.createElement('div');
+                            winTemplate.className = 'aero-error-window';
+                            winTemplate.innerHTML = `
+                                <div class="aero-error-titlebar">
+                                    <span class="aero-error-title">Windows - Fatal Application Exit</span>
+                                    <div class="aero-error-close">X</div>
+                                </div>
+                                <div class="aero-error-content">
+                                    <div class="aero-error-icon">❌</div>
+                                    <div class="aero-error-text">SOULPAGE.exe has stopped working.<br>A fatal exception 0E has occurred.</div>
+                                </div>`;
+
+                            const soundInterval = isMobileDevice ? 5 : 12;
+
                             for (let i = 0; i < totalWindows; i++) {
                                 setTimeout(() => {
                                     if (currentX > window.innerWidth - 320 || currentY > window.innerHeight - 140 || i % 12 === 0) {
@@ -153,25 +169,15 @@
                                         currentY = Math.random() * (window.innerHeight - 150);
                                     }
 
-                                    let win = document.createElement('div');
-                                    win.className = 'aero-error-window';
+                                    let win = winTemplate.cloneNode(true);
                                     win.style.left = currentX + 'px';
                                     win.style.top = currentY + 'px';
                                     win.style.zIndex = 100 + i; 
-                                    win.innerHTML = `
-                                        <div class="aero-error-titlebar">
-                                            <span class="aero-error-title">Windows - Fatal Application Exit</span>
-                                            <div class="aero-error-close">X</div>
-                                        </div>
-                                        <div class="aero-error-content">
-                                            <div class="aero-error-icon">❌</div>
-                                            <div class="aero-error-text">SOULPAGE.exe has stopped working.<br>A fatal exception 0E has occurred.</div>
-                                        </div>`;
                                     
                                     effectLayer.appendChild(win);
                                     windowsArray.push(win);
 
-                                    if (i % 20 === 0) {
+                                    if (i % soundInterval === 0) {
                                         let errorSfx = document.getElementById('sfx-error');
                                         if(errorSfx) {
                                             let sfxClone = errorSfx.cloneNode();
@@ -180,28 +186,27 @@
                                         }
                                     }
                                     currentX += 30; currentY += 30;
-                                }, i * 2); 
+                                }, i * 4); 
                             }
 
                             setTimeout(() => {
                                 splashScreen.style.background = 'transparent';
                                 setTimeout(() => {
+                                    // 3. DESTRUCCIÓN EFICIENTE: Delegamos interpolación al CSS
                                     for (let j = 0; j < windowsArray.length; j++) {
                                         setTimeout(() => {
-                                            windowsArray[j].style.transition = 'opacity 0.15s, transform 0.15s';
-                                            windowsArray[j].style.opacity = '0';
-                                            windowsArray[j].style.transform = 'scale(0.8)';
-                                            setTimeout(() => windowsArray[j].remove(), 150);
-                                        }, j * 3); 
+                                            windowsArray[j].classList.add('error-hide');
+                                            setTimeout(() => windowsArray[j].remove(), 200);
+                                        }, j * 5); 
                                     }
                                     setTimeout(() => {
                                         splashScreen.style.display = 'none';
                                         triggerStaggeredReveal(true);
-                                    }, (windowsArray.length * 2) + 200);
+                                    }, (windowsArray.length * 5) + 300);
                                 }, 800); 
-                            }, totalWindows * 2); 
+                            }, totalWindows * 4); 
                             break;
-
+                        
                         case 4: // CRISTAL ROTO
                             mainBtn.classList.add('crack-flash');
                             setTimeout(() => {
@@ -852,6 +857,7 @@
         const hoverSfx = document.getElementById('hover-sfx');
         const clickSfx = document.getElementById('click-sfx');
         
+        // Sonidos UI (se mantienen intactos)
         document.querySelectorAll('a, button, .folder-trigger, .aero-btn').forEach(el => {
             el.addEventListener('mouseenter', () => { 
                 if(hoverSfx) { hoverSfx.currentTime = 0; hoverSfx.play().catch(()=>{}); } 
@@ -862,23 +868,48 @@
         });
 
         const glassLayer = document.querySelector('.aero-glass-overlay');
-        if (glassLayer) {
-            for(let i = 0; i < 12; i++) {
-                let b = document.createElement('div');
-                b.className = 'aero-bubble';
-                b.style.left = Math.random() * 100 + 'vw';
-                b.style.width = (Math.random() * 40 + 20) + 'px';
-                b.style.height = b.style.width;
-                b.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
-                b.style.animationDelay = Math.random() * 5 + 's';
-                glassLayer.appendChild(b);
-            }
+        if (!glassLayer) return;
+
+        // 1. BURBUJAS AMBIENTALES (Loop infinito, cero procesamiento JS)
+        for(let i = 0; i < 12; i++) {
+            let b = document.createElement('div');
+            b.className = 'aero-bubble ambient-bubble';
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.width = (Math.random() * 40 + 20) + 'px';
+            b.style.height = b.style.width;
+            b.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
+            b.style.animationDelay = Math.random() * 5 + 's';
+            glassLayer.appendChild(b);
         }
 
+        // 2. PATRÓN OBJECT POOLING: Burbujas Interactivas (Click)
+        const POOL_SIZE = 15; // Límite estricto de memoria (re-usables)
+        const bubblePool = [];
+
+        // Pre-construimos el escuadrón de burbujas en memoria una sola vez
+        for(let i = 0; i < POOL_SIZE; i++) {
+            let b = document.createElement('div');
+            b.className = 'aero-bubble interactive-bubble';
+            glassLayer.appendChild(b);
+            
+            // EVENTO NATIVO: Cuando la animación CSS termina, la burbuja se auto-recicla
+            b.addEventListener('animationend', function() {
+                this.classList.remove('animate-bubble');
+                this.style.opacity = '0'; // Forzamos invisibilidad visual
+                const poolItem = bubblePool.find(item => item.el === this);
+                if (poolItem) poolItem.active = false; // Marcada como "lista para usar"
+            });
+
+            bubblePool.push({ el: b, active: false });
+        }
+
+        // 3. EL DISPARADOR (Reciclaje en tiempo real)
         const introLayer = document.getElementById('intro-layer');
         const bubbleSfx = document.getElementById('bubble-sfx');
+        
         if (introLayer) {
             introLayer.addEventListener('click', (e) => {
+                // Prevenimos clics en cajas de texto o botones
                 if (e.target.closest('.intro-content-wrapper') || e.target.closest('button') || e.target.closest('a')) return; 
 
                 if(bubbleSfx) {
@@ -888,19 +919,37 @@
                 }
 
                 const numBubbles = Math.floor(Math.random() * 3) + 2;
-                for(let i = 0; i < numBubbles; i++) {
-                    let b = document.createElement('div');
-                    b.className = 'aero-bubble';
-                    let size = Math.random() * 25 + 10; 
-                    b.style.width = size + 'px'; b.style.height = size + 'px';
-                    let offsetX = (Math.random() * 40 - 20); let offsetY = (Math.random() * 40 - 20);
-                    b.style.left = (e.clientX - size/2 + offsetX) + 'px';
-                    b.style.bottom = (window.innerHeight - e.clientY - size/2 + offsetY) + 'px';
-                    b.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
-                    b.style.animationDelay = '0s'; 
-                    
-                    if(glassLayer) glassLayer.appendChild(b);
-                    setTimeout(() => b.remove(), 5000); 
+                let spawned = 0;
+
+                // Escaneamos la "piscina" buscando burbujas desocupadas
+                for (let i = 0; i < bubblePool.length; i++) {
+                    if (!bubblePool[i].active) {
+                        let poolItem = bubblePool[i];
+                        poolItem.active = true;
+                        let b = poolItem.el;
+
+                        let size = Math.random() * 25 + 10; 
+                        let offsetX = (Math.random() * 40 - 20); 
+                        let offsetY = (Math.random() * 40 - 20);
+                        
+                        // Posicionamos matemáticamente
+                        b.style.width = size + 'px'; 
+                        b.style.height = size + 'px';
+                        b.style.left = (e.clientX - size/2 + offsetX) + 'px';
+                        b.style.bottom = (window.innerHeight - e.clientY - size/2 + offsetY) + 'px';
+                        b.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
+
+                        // TRUCO DE INGENIERÍA: Forzar 'Reflow' para reiniciar la animación CSS
+                        b.classList.remove('animate-bubble');
+                        void b.offsetWidth; // El navegador lee esto y recalcula la geometría en el acto
+                        
+                        // Disparamos la burbuja
+                        b.style.opacity = '1';
+                        b.classList.add('animate-bubble');
+
+                        spawned++;
+                        if (spawned >= numBubbles) break; // Detener bucle al alcanzar el límite requerido
+                    }
                 }
             });
         }

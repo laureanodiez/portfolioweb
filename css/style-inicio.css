@@ -70,17 +70,31 @@
 }
 
 .aero-bubble {
-    position: fixed; bottom: -50px;
+    position: fixed;
     background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.1) 60%, rgba(255,255,255,0.4) 100%);
     border-radius: 50%; 
     box-shadow: inset 0 0 10px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.1);
-    pointer-events: none; z-index: var(--z-overlay);
+    pointer-events: none; 
+    z-index: var(--z-overlay);
+    
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+.aero-bubble.ambient-bubble {
+    bottom: -50px;
     animation: floatBubble ease-in infinite;
 }
+.aero-bubble.interactive-bubble {
+    opacity: 0;
+}
+.aero-bubble.interactive-bubble.animate-bubble {
+    animation: floatBubble ease-in forwards;
+}
 @keyframes floatBubble { 
-    0% { transform: translateY(0) scale(1); opacity: 0; } 
-    10% { opacity: 0.8; } 
-    100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
+    0% { transform: translateZ(0) translateY(0) scale(0.5); opacity: 0; } 
+    15% { opacity: 0.8; transform: translateZ(0) translateY(-20px) scale(1); } 
+    100% { transform: translateZ(0) translateY(-120vh) scale(1.5); opacity: 0; } 
 }
 
 .wordart-text {
@@ -1445,12 +1459,16 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transform: scale(0.9);
+    
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0) scale(0.9);
+    
     animation: popInError 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 @keyframes popInError {
-    to { transform: scale(1); }
+    to { transform: translateZ(0) scale(1); }
 }
 
 .aero-error-titlebar {
@@ -1499,6 +1517,11 @@ body {
     font-family: 'Tahoma', sans-serif;
     font-size: 13px;
     color: #000;
+}
+.aero-error-window.error-hide {
+    opacity: 0 !important;
+    transform: translateZ(0) scale(0.8) !important;
+    transition: opacity 0.15s ease, transform 0.15s ease !important;
 }
 
 
