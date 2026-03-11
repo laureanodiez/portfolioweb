@@ -1008,29 +1008,79 @@
         }
     };
 
-    const chaosContent = [
-        { type: 'game', title: 'DOOM (Dos.Zone)', platform: 'all', src: 'https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Foriginal%2F2022%2F10%2F12%2Fdoom.jsdos' },
-        { type: 'game', title: 'WOLFENSTEIN 3D', src: 'https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Foriginal%2F2022%2F10%2F12%2Fwolfenstein-3d.jsdos', platform: 'all' },
+const chaosContent = [
+        { type: 'game', title: 'DOOM (1993)', platform: 'all', src: 'https://archive.org/details/doom_20221019' },
+        { type: 'game', title: 'WOLFENSTEIN 3D', src: 'https://archive.org/embed/msdos_Wolfenstein_3D_1992', platform: 'all' },
+        { type: 'game', title: 'PRINCE OF PERSIA', platform: 'desktop', src: 'https://archive.org/embed/msdos_Prince_of_Persia_1990' },        
         { type: 'game', title: 'RESIDENT EVIL 2 (1996), LEON DISC', platform: 'desktop', src: 'https://www.retrogames.cc/embed/42943-resident-evil-2-dual-shock-ver-disc-1-leon.html' },
         { type: 'game', title: 'SILENT HILL (PS1)', platform: 'desktop', src: 'https://www.retrogames.cc/embed/41684-silent-hill.html' },
-        { type: 'game', title: 'PRINCE OF PERSIA', platform: 'desktop', src: 'https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Foriginal%2F2022%2F10%2F12%2Fprince-of-persia.jsdos' },
         { type: 'game', title: 'CRASH BANDICOOT', platform: 'desktop', src: 'https://www.retrogames.cc/embed/40784-crash-bandicoot.html' },
         { type: 'game', title: 'SONIC THE HEDGEHOG', platform: 'desktop', src: 'https://www.retrogames.cc/embed/30899-sonic-the-hedgehog-usa-europe.html' },
-        { type: 'game', title: '2048 CLASSIC', src: 'https://play2048.co/', platform: 'mobile' },
+        { type: 'game', title: '2048 CLASSIC', src: 'https://gabrielecirulli.github.io/2048/', platform: 'mobile' }, // Repo original del autor
+        { type: 'game', title: 'SPACE CADET PINBALL', src: 'https://alula.github.io/SpaceCadetPinball/', platform: 'desktop' }, // Reemplazo de Cookie Clicker
+        { type: 'game', title: 'MINESWEEPER', src: 'https://minesweeperonline.com/', platform: 'all' }, // Reemplazo de Geometry Dash
+        { type: 'game', title: 'FLOPPY BIRD', src: 'https://nebezb.com/floppybird/', platform: 'mobile' }, // Reemplazo de Flappy Bird (Clon seguro)
         { type: 'game', title: 'HEXTRIS', src: 'https://hextris.io/', platform: 'mobile' },
         { type: 'game', title: 'CHROME DINO', src: 'https://chromedino.com/', platform: 'mobile' },
-        { type: 'game', title: 'FLAPPY BIRD', src: 'https://flappy-bird.io/', platform: 'mobile' },
-        { type: 'game', title: 'COOKIE CLICKER', src: 'https://orteil.dashnet.org/cookieclicker/', platform: 'mobile' },
         { type: 'game', title: 'LITTLE ALCHEMY 2', src: 'https://littlealchemy2.com/', platform: 'mobile' },
-        { type: 'game', title: 'GEOMETRY DASH (Scratch)', src: 'https://scratch.mit.edu/projects/105500895/embed', platform: 'mobile' },
-        { type: 'game', title: 'PAPI JUMP', src: 'https://www.addictinggames.com/embed/html5-games/23635', platform: 'mobile' },
-        { type: 'video', title: 'RICK ROLL', src: 'https://www.youtube.com/embed/xvFZjo5PgG0', platform: 'all' },
-        { type: 'video', title: 'NYAN CAT', src: 'https://www.youtube.com/embed/wZZ7oFKsKzY', platform: 'all' },
+        { type: 'video', title: 'NOT A RICK ROLL', src: 'https://top-shows.netlify.app/', platform: 'all' },
+        { type: 'video', title: 'NYAN CAT', src: 'https://www.youtube.com/embed/QH2-TGUlwu4?autoplay=1', platform: 'all' }, 
+        { type: 'game', title: 'THE MATRIX', src: 'https://matrixscreensaver.online/', platform: 'all' },
         { type: 'bsod', title: 'FATAL ERROR', html: '', platform: 'all' },
-        { type: 'image', title: 'YOU ARE AN IDIOT', html: '<div style="text-align:center;"><img src="https://media.tenor.com/262I3J7JAt0AAAAM/you-are-an-idiot-smile.gif" style="width:100%;" alt="Animación You Are An Idiot"></div>', platform: 'all' },
-        { type: 'game', title: 'SYSTEM UPDATE...', src: 'https://fakeupdate.net/win98/', platform: 'all' },
-        { type: 'image', title: 'FBI SEIZURE', html: `<div style="background:black; color:white; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; font-family:Arial, sans-serif;"><img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Seal_of_the_Federal_Bureau_of_Investigation.png" style="width:150px; margin-bottom:20px;" alt="Sello del FBI"><h1 style="color:red; text-transform:uppercase; font-size:2rem;">This Domain Has Been Seized</h1><p style="max-width:80%; margin:20px auto;">by the Federal Bureau of Investigation pursuant to a seizure warrant issued by the United States District Court.</p><p style="color:gray; font-size:0.8rem;">IP LOGGED: 192.168.0.1 (Don't worry, it's a joke)</p></div>`, platform: 'all' },
-        { type: 'game', title: 'THE MATRIX', src: 'https://screensaver.online/matrix/', platform: 'all' },
+
+        // 1. FAKE UPDATE RECONSTRUIDO
+        { 
+            type: 'image', 
+            title: 'SYSTEM UPDATE...', 
+            platform: 'all',
+            html: `
+            <div style="background:#000; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; font-family:'Courier New', monospace; text-align:center;">
+                <h2 style="color:#00ff00;">CONFIGURANDO ACTUALIZACIONES</h2>
+                <p style="margin: 15px 0; font-size:1.2rem;">23% completado.</p>
+                <p style="color:#888;">No apague el equipo.</p>
+                <div style="margin-top:30px; width:80%; max-width:300px; height:20px; border:2px solid #888; padding:2px; box-sizing:border-box;">
+                    <div style="width:23%; height:100%; background:#00ff00; animation: fakeLoad 10s infinite;"></div>
+                </div>
+            </div>
+            <style>@keyframes fakeLoad { 0% {width: 23%;} 50% {width: 29%;} 100% {width: 23%;} }</style>
+            ` 
+        },
+
+        // 2. FBI SEIZURE RECONSTRUIDO
+        { 
+            type: 'image', 
+            title: 'FBI SEIZURE', 
+            platform: 'all',
+            html: `
+            <div style="background:#fff; color:#000; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; font-family:'Times New Roman', serif; padding: 20px; box-sizing:border-box;">
+                <div style="border: 6px solid #800000; padding: 20px; max-width: 90%; background: #fffbfb;">
+                    <h1 style="color:#800000; font-size: clamp(2rem, 5vw, 3.5rem); margin: 0; border-bottom: 3px solid #800000; padding-bottom: 10px;">THIS DOMAIN HAS BEEN SEIZED</h1>
+                    <h3 style="margin-top: 20px; color:#333;">as part of a coordinated law enforcement action by</h3>
+                    <h2 style="font-size: clamp(1.5rem, 4vw, 2.5rem); margin:10px 0;">The Federal Bureau of Investigation</h2>
+                    <p style="font-size: 0.9rem; color: #555; margin-top: 30px; border-top: 1px solid #ccc; padding-top:10px;">Pursuant to a seizure warrant issued by the United States District Court.</p>
+                </div>
+            </div>` 
+        },
+
+        // 3. YOU ARE AN IDIOT RECONSTRUIDO (Ataque epiléptico retro)
+        { 
+            type: 'image', 
+            title: 'YOU ARE AN IDIOT', 
+            platform: 'all',
+            html: `
+            <div id="idiot-container" style="background:#fff; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; animation: idiotFlash 0.15s infinite;">
+                <h1 style="color:#000; font-family:'Comic Sans MS', 'Arial', sans-serif; font-size:clamp(2rem, 8vw, 4rem); margin:0; text-align:center;">YOU ARE AN IDIOT!</h1>
+                <h1 style="color:#000; font-family:'Comic Sans MS', 'Arial', sans-serif; font-size:clamp(3rem, 10vw, 5rem); margin:0;">☺ ☺ ☺</h1>
+            </div>
+            <style>
+                @keyframes idiotFlash { 
+                    0% { background-color: #ffffff; filter: invert(0); } 
+                    50% { background-color: #000000; filter: invert(1); } 
+                    100% { background-color: #ffffff; filter: invert(0); } 
+                }
+            </style>
+            ` 
+        }
     ];
 
     window.spinRoulette = function() {
