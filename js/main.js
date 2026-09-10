@@ -132,6 +132,157 @@
         });
     }
 
+
+    // ==========================================
+// 1. FUNCIÓN MAESTRA DE CACHÉ
+// ==========================================
+async function fetchWithCache(key, fetchCallback) {
+  // Revisamos si ya existe en localStorage
+  const cachedData = localStorage.getItem(key);
+  
+  if (cachedData) {
+    console.log(`[Cache Hit] Cargado desde memoria: ${key}`);
+    return JSON.parse(cachedData);
+  }
+
+  // Si no existe, ejecutamos la llamada a la API
+  console.log(`[Cache Miss] Llamando a la API para: ${key}`);
+  const data = await fetchCallback();
+
+  // Guardamos el resultado en localStorage para la próxima vez
+  localStorage.setItem(key, JSON.stringify(data));
+  
+  return data;
+}
+
+
+// ==========================================
+// 2. PELÍCULAS (OMDb)
+// ==========================================
+const OMDB_API_KEY = '3da1d12c'; 
+
+async function updateMoviePosters() {
+  const movieLinks = document.querySelectorAll('.favs-cat:first-of-type .thumb-link');
+
+  for (const link of movieLinks) {
+    const titleElement = link.querySelector('.thumb-title');
+    if (!titleElement) continue;
+    
+    const movieTitle = titleElement.textContent.trim();
+    const cacheKey = `movie_${movieTitle}`; // Clave única para localStorage
+
+    try {
+      // Usamos el caché aquí
+      const data = await fetchWithCache(cacheKey, async () => {
+        const searchUrl = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&t=${encodeURIComponent(movieTitle)}`;
+        const response = await fetch(searchUrl);
+        return await response.json();
+      });
+
+      if (data.Response === "True" && data.Poster && data.Poster !== "N/A") {
+        const thumbElement = link.querySelector('.thumb-film');
+        thumbElement.style.backgroundImage = `url('${data.Poster}')`;
+      } else {
+        console.log(`No se encontró póster en OMDb para: ${movieTitle}`);
+      }
+    } catch (error) {
+      console.error(`Error buscando la película ${movieTitle}:`, error);
+    }
+  }
+}
+
+
+// ==========================================
+// 3. MÚSICA (Last.fm)
+// ==========================================
+const LASTFM_API_KEY = '283f1a519934630cc177c00b1c63544f';
+
+async function updateAlbumCovers() {
+  const albumCategories = document.querySelectorAll('.favs-cat');
+  let albumLinks = [];
+  
+  albumCategories.forEach(cat => {
+    if (cat.querySelector('h3').textContent.toLowerCase() === 'álbumes') {
+      albumLinks = cat.querySelectorAll('.thumb-link');
+    }
+  });
+  
+  for (const link of albumLinks) {
+    const titleElement = link.querySelector('.thumb-title');
+    if (!titleElement) continue;
+    
+    const albumTitle = titleElement.textContent.trim();
+    const cacheKey = `album_${albumTitle}`; // Clave única para localStorage
+
+    try {
+      // Usamos el caché aquí
+      const data = await fetchWithCache(cacheKey, async () => {
+        const searchUrl = `http://ws.audioscrobbler.com/2.0/?method=album.search&album=${encodeURIComponent(albumTitle)}&api_key=${LASTFM_API_KEY}&format=json`;
+        const response = await fetch(searchUrl);
+        return await response.json();
+      });
+
+      if (data.results && data.results.albummatches.album.length > 0) {
+        const thumbElement = link.querySelector('.thumb-album');
+        const images = data.results.albummatches.album[0].image;
+        const largeImage = images.find(img => img.size === 'extralarge') || images[images.length - 1];
+        
+        if (largeImage && largeImage['#text']) {
+          thumbElement.style.backgroundImage = `url('${largeImage['#text']}')`;
+        }
+      } else {
+        console.log(`No se encontró portada para el álbum: ${albumTitle}`);
+      }
+    } catch (error) {
+      console.error(`Error buscando el álbum ${albumTitle}:`, error);
+    }
+  }
+}
+
+
+// ==========================================
+// 4. JUEGOS (RAWG)
+// ==========================================
+const RAWG_API_KEY = '075e3dcf8d804cd8805f16460a519336'; 
+
+async function updateGameCovers() {
+  const gameLinks = document.querySelectorAll('.favs-cat:nth-child(3) .thumb-link'); 
+  
+  for (const link of gameLinks) {
+    const titleElement = link.querySelector('.thumb-title');
+    if (!titleElement) continue;
+    
+    const gameTitle = titleElement.textContent.trim();
+    const cacheKey = `game_${gameTitle}`; // Clave única para localStorage
+
+    try {
+      // Usamos el caché aquí
+      const data = await fetchWithCache(cacheKey, async () => {
+        const searchUrl = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(gameTitle)}&page_size=1`;
+        const response = await fetch(searchUrl);
+        return await response.json();
+      });
+
+      if (data.results && data.results.length > 0) {
+        const thumbElement = link.querySelector('.thumb-game');
+        thumbElement.style.backgroundImage = `url('${data.results[0].background_image}')`;
+      } else {
+        console.log(`No se encontró portada para el juego: ${gameTitle}`);
+      }
+    } catch (error) {
+      console.error(`Error buscando el juego ${gameTitle}:`, error);
+    }
+  }
+}
+
+// ==========================================
+// 5. EJECUTAR TODO
+// ==========================================
+updateMoviePosters();
+updateAlbumCovers();
+updateGameCovers();
+
+
     // --- NOW.EXE: helpers ---
 
     // Cuenta pública de Letterboxd (RSS es público, no necesita API key).
