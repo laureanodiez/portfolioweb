@@ -217,7 +217,7 @@ async function updateAlbumCovers() {
     try {
       // Usamos el caché aquí
       const data = await fetchWithCache(cacheKey, async () => {
-        const searchUrl = `http://ws.audioscrobbler.com/2.0/?method=album.search&album=${encodeURIComponent(albumTitle)}&api_key=${LASTFM_API_KEY}&format=json`;
+        const searchUrl = `https://ws.audioscrobbler.com/2.0/?method=album.search&album=${encodeURIComponent(albumTitle)}&api_key=${LASTFM_API_KEY}&format=json`;
         const response = await fetch(searchUrl);
         return await response.json();
       });
